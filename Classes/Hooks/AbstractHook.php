@@ -24,6 +24,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * @package felogin_bruteforce_protection
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ */
 abstract class Tx_FeloginBruteforceProtection_Hooks_AbstractHook
 {
     /**

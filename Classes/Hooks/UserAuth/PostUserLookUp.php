@@ -24,8 +24,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * @package felogin_bruteforce_protection
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ */
 class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_FeloginBruteforceProtection_Hooks_AbstractHook
 {
+    /**
+     * @var string
+     */
+    const ERROR_MAX_LOGIN_FAILURES = 'error_max_login_failures';
+
     /**
      * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry|null
      */
@@ -50,7 +59,7 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
         $this->userAuthObject = $pObj['pObj'];
         $GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
         if ($this->userAuthObject->loginType == 'FE') {
-            $this->cleanUpEntries();
+            //$this->cleanUpEntries();
             if ($this->userAuthObject->loginFailure == 1) {
                 $this->rememberFailedLogin();
             }
@@ -61,11 +70,67 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
     /**
      * @return void
      */
-    private function validate()
+    private function cleanUpEntries()
     {
-        if ($this->hasEntryForCurrentClient() && $this->getEntryForCurrentClient()->getFailures() >= 10) {
-            $this->userAuthObject->loginFailure = 1;
+        $this->getEntryRepository()->removeEntriesOlderThan(300);
+        $this->getPersistenceManager()->persistAll();
+    }
+
+    /**
+     * @return Tx_FeloginBruteforceProtection_Domain_Model_Entry
+     */
+    private function getEntryForCurrentClient()
+    {
+        if (NULL === $this->currentEntry) {
+            $entry = $this->getEntryRepository()->findOneByIdentifier(Tx_FeloginBruteforceProtection_Service_AuthUser::getIdentifier());
+            if (FALSE === ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry)) {
+                $time = time();
+                /** @var $entry Tx_FeloginBruteforceProtection_Domain_Model_Entry */
+                $entry = $this->getObjectManager()->get('Tx_FeloginBruteforceProtection_Domain_Model_Entry');
+                $entry->setFailures(0);
+                $entry->setCrdate($time);
+                $entry->setTstamp($time);
+                $entry->setIdentifier(Tx_FeloginBruteforceProtection_Service_AuthUser::getIdentifier());
+                $this->getEntryRepository()->add($entry);
+                $this->getPersistenceManager()->persistAll();
+            }
+            $this->currentEntry = $entry;
         }
+
+        return $this->currentEntry;
+    }
+
+    /**
+     * @return Tx_FeloginBruteforceProtection_Domain_Repository_Entry
+     */
+    private function getEntryRepository()
+    {
+        if (NULL === $this->entryRepository) {
+            $this->entryRepository = $this->getObjectManager()->get('Tx_FeloginBruteforceProtection_Domain_Repository_Entry');
+        }
+        return $this->entryRepository;
+    }
+
+    /**
+     * @return string
+     */
+    private function getMaxLoginFailuresErrorMessage()
+    {
+        return Tx_Extbase_Utility_Localization::translate(self::ERROR_MAX_LOGIN_FAILURES, 'felogin_bruteforce_protection', array(
+            (int)(300 / 60)
+        ));
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasEntryForCurrentClient()
+    {
+        $entry = $this->getEntryRepository()->findOneByIdentifier(Tx_FeloginBruteforceProtection_Service_AuthUser::getIdentifier());
+        if ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
     /**
@@ -84,66 +149,13 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
     }
 
     /**
-     * @return Tx_FeloginBruteforceProtection_Domain_Model_Entry
-     */
-    private function getEntryForCurrentClient()
-    {
-        if (NULL === $this->currentEntry) {
-            $entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
-            if (FALSE === ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry)) {
-                $time = time();
-                /** @var $entry Tx_FeloginBruteforceProtection_Domain_Model_Entry */
-                $entry = $this->getObjectManager()->get('Tx_FeloginBruteforceProtection_Domain_Model_Entry');
-                $entry->setFailures(0);
-                $entry->setCrdate($time);
-                $entry->setTstamp($time);
-                $entry->setIdentifier($this->getIdentifier());
-                $this->getEntryRepository()->add($entry);
-                $this->getPersistenceManager()->persistAll();
-            }
-            $this->currentEntry = $entry;
-        }
-
-        return $this->currentEntry;
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasEntryForCurrentClient()
-    {
-        $entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
-        if ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry) {
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    /**
      * @return void
      */
-    private function cleanUpEntries()
+    private function validate()
     {
-        $this->getEntryRepository()->removeEntriesOlderThan(300);
-        $this->getPersistenceManager()->persistAll();
-    }
-
-    /**
-     * @return Tx_FeloginBruteforceProtection_Domain_Repository_Entry
-     */
-    private function getEntryRepository()
-    {
-        if (NULL === $this->entryRepository) {
-            $this->entryRepository = $this->getObjectManager()->get('Tx_FeloginBruteforceProtection_Domain_Repository_Entry');
+        if ($this->hasEntryForCurrentClient() && $this->getEntryForCurrentClient()->getFailures() >= 10) {
+            $this->userAuthObject->loginFailure = 1;
+            $GLOBALS['felogin_bruteforce_protection']['errors'][self::ERROR_MAX_LOGIN_FAILURES] = $this->getMaxLoginFailuresErrorMessage();
         }
-        return $this->entryRepository;
-    }
-
-    /**
-     * @return string
-     */
-    private function getIdentifier()
-    {
-        return md5($_SERVER['REMOTE_ADDR']);
     }
 }

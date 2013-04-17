@@ -28,6 +28,6 @@ $TCA['tx_feloginbruteforceprotection_domain_model_entry'] = array(
         ),
         'searchFields' => 'identifier,failures,',
         'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Entry.php',
-        'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_feloginbruteforceprotection_domain_model_entry.gif'
+        'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/TCA/Entry.gif'
     ),
 );
