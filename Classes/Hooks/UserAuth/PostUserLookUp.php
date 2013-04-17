@@ -59,7 +59,7 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
         $this->userAuthObject = $pObj['pObj'];
         $GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
         if ($this->userAuthObject->loginType == 'FE') {
-            //$this->cleanUpEntries();
+            $this->cleanUpEntries();
             if ($this->userAuthObject->loginFailure == 1) {
                 $this->rememberFailedLogin();
             }
