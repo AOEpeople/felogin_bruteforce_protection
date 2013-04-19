@@ -38,65 +38,63 @@
  */
 class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_Tests_Unit_BaseTestCase
 {
-    /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
-     */
-    protected $fixture;
+	/**
+	 * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
+	 */
+	protected $fixture;
 
-    public function setUp()
-    {
-        $this->fixture = new Tx_FeloginBruteforceProtection_Domain_Model_Entry();
-    }
+	public function setUp()
+	{
+		$this->fixture = new Tx_FeloginBruteforceProtection_Domain_Model_Entry();
+	}
 
-    public function tearDown()
-    {
-        unset($this->fixture);
-    }
+	public function tearDown()
+	{
+		unset($this->fixture);
+	}
 
-    /**
-     * @test
-     */
-    public function getIdentifierReturnsInitialValueForString()
-    {
-    }
+	/**
+	 * @test
+	 */
+	public function getIdentifierReturnsInitialValueForString()
+	{
+	}
 
-    /**
-     * @test
-     */
-    public function setIdentifierForStringSetsIdentifier()
-    {
-        $this->fixture->setIdentifier('Conceived at T3CON10');
+	/**
+	 * @test
+	 */
+	public function setIdentifierForStringSetsIdentifier()
+	{
+		$this->fixture->setIdentifier('Conceived at T3CON10');
 
-        $this->assertSame(
-            'Conceived at T3CON10',
-            $this->fixture->getIdentifier()
-        );
-    }
+		$this->assertSame(
+			'Conceived at T3CON10',
+			$this->fixture->getIdentifier()
+		);
+	}
 
-    /**
-     * @test
-     */
-    public function getFailuresReturnsInitialValueForInteger()
-    {
-        $this->assertSame(
-            0,
-            $this->fixture->getFailures()
-        );
-    }
+	/**
+	 * @test
+	 */
+	public function getFailuresReturnsInitialValueForInteger()
+	{
+		$this->assertSame(
+			0,
+			$this->fixture->getFailures()
+		);
+	}
 
-    /**
-     * @test
-     */
-    public function setFailuresForIntegerSetsFailures()
-    {
-        $this->fixture->setFailures(12);
+	/**
+	 * @test
+	 */
+	public function setFailuresForIntegerSetsFailures()
+	{
+		$this->fixture->setFailures(12);
 
-        $this->assertSame(
-            12,
-            $this->fixture->getFailures()
-        );
-    }
+		$this->assertSame(
+			12,
+			$this->fixture->getFailures()
+		);
+	}
 
 }
-
-?>

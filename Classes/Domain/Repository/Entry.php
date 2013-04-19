@@ -30,51 +30,51 @@
  */
 class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_Persistence_Repository
 {
-    /**
-     * @return void
-     */
-    public function initializeObject()
-    {
-        /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
-        // don't add the pid constraint
-        $defaultQuerySettings->setRespectStoragePage(FALSE);
-        // don't add fields from enablecolumns constraint
-        $defaultQuerySettings->setRespectEnableFields(FALSE);
-        // don't add sys_language_uid constraint
-        $defaultQuerySettings->setRespectSysLanguage(FALSE);
-        $this->setDefaultQuerySettings($defaultQuerySettings);
-    }
+	/**
+	 * @return void
+	 */
+	public function initializeObject()
+	{
+		/** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
+		$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+		// don't add the pid constraint
+		$defaultQuerySettings->setRespectStoragePage(FALSE);
+		// don't add fields from enablecolumns constraint
+		$defaultQuerySettings->setRespectEnableFields(FALSE);
+		// don't add sys_language_uid constraint
+		$defaultQuerySettings->setRespectSysLanguage(FALSE);
+		$this->setDefaultQuerySettings($defaultQuerySettings);
+	}
 
-    /**
-     * @param int $uid
-     * @return object
-     */
-    public function findByUid($uid)
-    {
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
-        $query->getQuerySettings()->setRespectEnableFields(FALSE);
-        $query->matching($query->equals('uid', $uid));
-        return $query->execute()->getFirst();
-    }
+	/**
+	 * @param int $uid
+	 * @return object
+	 */
+	public function findByUid($uid)
+	{
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$query->matching($query->equals('uid', $uid));
+		return $query->execute()->getFirst();
+	}
 
-    /**
-     * @param $seconds
-     * @return void
-     */
-    public function removeEntriesOlderThan($seconds)
-    {
-        $age = (int)time() - $seconds;
-        $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
-        $query->getQuerySettings()->setRespectEnableFields(FALSE);
-        $query->matching($query->lessThan('crdate', $age));
-        foreach ($query->execute() as $object) {
-            $this->removedObjects->attach($object);
-            $this->addedObjects->detach($object);
-        }
-    }
+	/**
+	 * @param $seconds
+	 * @return void
+	 */
+	public function removeEntriesOlderThan($seconds)
+	{
+		$age = (int)time() - $seconds;
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$query->matching($query->lessThan('crdate', $age));
+		foreach ($query->execute() as $object) {
+			$this->removedObjects->attach($object);
+			$this->addedObjects->detach($object);
+		}
+	}
 }

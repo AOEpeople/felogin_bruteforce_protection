@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-    <meta type="array">
-        <type>module</type>
-        <description>Language labels for the brute force protection extension in the FRONTEND</description>
-    </meta>
-    <data type="array">
-        <languageKey index="default" type="array">
-            <label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
-            <label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">identifier</label>
-            <label index="tx_feloginbruteforceprotection_domain_model_entry.failures">failures</label>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the brute force protection extension in the FRONTEND</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
+			<label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">identifier</label>
+			<label index="tx_feloginbruteforceprotection_domain_model_entry.failures">failures</label>
 
-            <label index="restriction_message">Ihre IP-Adresse wurde auf Grund zu vieler fehlgeschlagener Login
-                versuche gesperrt. Bitte versuchen Sie es in %s Minuten noch einmal.
-            </label>
-        </languageKey>
-        <languageKey index="en" type="array">
-            <label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
-            <label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">identifier</label>
-            <label index="tx_feloginbruteforceprotection_domain_model_entry.failures">failures</label>
+			<label index="restriction_message">Ihre IP-Adresse wurde auf Grund zu vieler fehlgeschlagener Login
+				versuche gesperrt. Bitte versuchen Sie es in %s Minuten noch einmal.
+			</label>
+		</languageKey>
+		<languageKey index="en" type="array">
+			<label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
+			<label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">identifier</label>
+			<label index="tx_feloginbruteforceprotection_domain_model_entry.failures">failures</label>
 
-            <label index="restriction_message">You IP address has been banned because of too many login failures.
-                Please try again in %s minutes.
-            </label>
-        </languageKey>
-    </data>
+			<label index="restriction_message">You IP address has been banned because of too many login failures.
+				Please try again in %s minutes.
+			</label>
+		</languageKey>
+	</data>
 </T3locallang>

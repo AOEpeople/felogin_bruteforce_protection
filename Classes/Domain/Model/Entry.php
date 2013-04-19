@@ -30,100 +30,100 @@
  */
 class Tx_FeloginBruteforceProtection_Domain_Model_Entry extends Tx_Extbase_DomainObject_AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $tstamp;
+	/**
+	 * @var string
+	 */
+	protected $tstamp;
 
-    /**
-     * @var string
-     */
-    protected $crdate;
+	/**
+	 * @var string
+	 */
+	protected $crdate;
 
-    /**
-     * @var string
-     * @validate NotEmpty
-     */
-    protected $identifier;
+	/**
+	 * @var string
+	 * @validate NotEmpty
+	 */
+	protected $identifier;
 
-    /**
-     * @var integer
-     * @validate NotEmpty
-     */
-    protected $failures;
+	/**
+	 * @var integer
+	 * @validate NotEmpty
+	 */
+	protected $failures;
 
-    /**
-     * @param string $crdate
-     */
-    public function setCrdate($crdate)
-    {
-        $this->crdate = $crdate;
-    }
+	/**
+	 * @param string $crdate
+	 */
+	public function setCrdate($crdate)
+	{
+		$this->crdate = $crdate;
+	}
 
-    /**
-     * @return string
-     */
-    public function getCrdate()
-    {
-        return $this->crdate;
-    }
+	/**
+	 * @return string
+	 */
+	public function getCrdate()
+	{
+		return $this->crdate;
+	}
 
-    /**
-     * @param string $tstamp
-     */
-    public function setTstamp($tstamp)
-    {
-        $this->tstamp = $tstamp;
-    }
+	/**
+	 * @param string $tstamp
+	 */
+	public function setTstamp($tstamp)
+	{
+		$this->tstamp = $tstamp;
+	}
 
-    /**
-     * @return string
-     */
-    public function getTstamp()
-    {
-        return $this->tstamp;
-    }
+	/**
+	 * @return string
+	 */
+	public function getTstamp()
+	{
+		return $this->tstamp;
+	}
 
-    /**
-     * @return string $identifier
-     */
-    public function getIdentifier()
-    {
-        return $this->identifier;
-    }
+	/**
+	 * @return string $identifier
+	 */
+	public function getIdentifier()
+	{
+		return $this->identifier;
+	}
 
-    /**
-     * @param string $identifier
-     * @return void
-     */
-    public function setIdentifier($identifier)
-    {
-        $this->identifier = $identifier;
-    }
+	/**
+	 * @param string $identifier
+	 * @return void
+	 */
+	public function setIdentifier($identifier)
+	{
+		$this->identifier = $identifier;
+	}
 
-    /**
-     * @return integer $failures
-     */
-    public function getFailures()
-    {
-        return $this->failures;
-    }
+	/**
+	 * @return integer $failures
+	 */
+	public function getFailures()
+	{
+		return $this->failures;
+	}
 
-    /**
-     * @param integer $failures
-     * @return void
-     */
-    public function setFailures($failures)
-    {
-        $this->failures = $failures;
-    }
+	/**
+	 * @param integer $failures
+	 * @return void
+	 */
+	public function setFailures($failures)
+	{
+		$this->failures = $failures;
+	}
 
-    /**
-     * @return void
-     */
-    public function increaseFailures()
-    {
-        $increased = (int)$this->getFailures() + 1;
-        $this->setFailures($increased);
-    }
+	/**
+	 * @return void
+	 */
+	public function increaseFailures()
+	{
+		$increased = (int)$this->getFailures() + 1;
+		$this->setFailures($increased);
+	}
 }

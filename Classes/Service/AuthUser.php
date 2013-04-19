@@ -47,15 +47,15 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private $currentEntry = NULL;
 
-    /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry|null
-     */
-    private $entryRepository = NULL;
+	/**
+	 * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry|null
+	 */
+	private $entryRepository = NULL;
 
-    /**
-     * @var null|Tx_Extbase_Object_ObjectManager
-     */
-    private $objectManager = NULL;
+	/**
+	 * @var null|Tx_Extbase_Object_ObjectManager
+	 */
+	private $objectManager = NULL;
 
 	/**
 	 * @var null|Tx_Extbase_Persistence_Manager
@@ -65,28 +65,29 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	/**
 	 * Ensure TSFE is loaded
 	 */
-	public function __construct() {
-		if(FALSE === ($GLOBALS['TSFE'] instanceof tslib_fe)) {
+	public function __construct()
+	{
+		if (FALSE === ($GLOBALS['TSFE'] instanceof tslib_fe)) {
 			$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 2, 0);
 		}
-		if(FALSE === ($GLOBALS['TSFE']->sys_page instanceof t3lib_pageSelect)) {
+		if (FALSE === ($GLOBALS['TSFE']->sys_page instanceof t3lib_pageSelect)) {
 			$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		}
 	}
 
-    /**
-     * Ensure chain breaking if client is already banned!
-     *
-     * @param   mixed       $userData Data of user.
-     * @return  integer     Chain result (<0: break chain; 100: use next chain service; 200: success)
-     */
-    public function authUser($userData)
-    {
-        if (TRUE === $this->isClientTemporaryRestricted()) {
-            return -1;
-        }
-        return 100;
-    }
+	/**
+	 * Ensure chain breaking if client is already banned!
+	 *
+	 * @param   mixed       $userData Data of user.
+	 * @return  integer     Chain result (<0: break chain; 100: use next chain service; 200: success)
+	 */
+	public function authUser($userData)
+	{
+		if (TRUE === $this->isClientTemporaryRestricted()) {
+			return -1;
+		}
+		return 100;
+	}
 
 	/**
 	 * @return void
@@ -108,17 +109,17 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 		return parent::getUser();
 	}
 
-    /**
-     * @return bool
-     */
-    public function isClientTemporaryRestricted()
-    {
-        $entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
-        if ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry && $entry->getFailures() >= $this->getConfiguration(self::CONF_MAX_FAILURES)) {
-            return TRUE;
-        }
-        return FALSE;
-    }
+	/**
+	 * @return bool
+	 */
+	public function isClientTemporaryRestricted()
+	{
+		$entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
+		if ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry && $entry->getFailures() >= $this->getConfiguration(self::CONF_MAX_FAILURES)) {
+			return TRUE;
+		}
+		return FALSE;
+	}
 
 	/**
 	 * @return void
@@ -157,7 +158,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	private function getConfiguration($key)
 	{
 		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection']);
-		if(array_key_exists($key, $conf)) {
+		if (array_key_exists($key, $conf)) {
 			return $conf[$key];
 		}
 		throw new InvalidArgumentException('Configuration key "' . $key . '" does not exist.');
@@ -252,5 +253,5 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Service/AuthUser.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Service/AuthUser.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Service/AuthUser.php']);
 }

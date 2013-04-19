@@ -35,27 +35,28 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 	 */
 	private $service = NULL;
 
-    /**
-     * @param $params
-     * @return void
-     */
-    public function handlePostUserLookUp(&$params)
-    {
-        $userAuthObject = $params['pObj'];
-        if ($userAuthObject->loginType === 'FE') {
-            $this->getService()->cleanUpEntries();
-            if ($userAuthObject->loginFailure == 1) {
-                $this->getService()->rememberFailedLogin();
-            }
-            $this->getService()->validate($userAuthObject);
-        }
-    }
+	/**
+	 * @param $params
+	 * @return void
+	 */
+	public function handlePostUserLookUp(&$params)
+	{
+		$userAuthObject = $params['pObj'];
+		if ($userAuthObject->loginType === 'FE') {
+			$this->getService()->cleanUpEntries();
+			if ($userAuthObject->loginFailure == 1) {
+				$this->getService()->rememberFailedLogin();
+			}
+			$this->getService()->validate($userAuthObject);
+		}
+	}
 
 	/**
 	 * @return Tx_FeloginBruteforceProtection_Service_AuthUser
 	 */
-	private function getService() {
-		if(NULL === $this->service) {
+	private function getService()
+	{
+		if (NULL === $this->service) {
 			/** @var $objectManager Tx_Extbase_Object_ObjectManager */
 			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 			$this->service = $objectManager->get('Tx_FeloginBruteforceProtection_Service_AuthUser');
@@ -65,5 +66,5 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Hooks/UserAuth/PostUserLookUp.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Hooks/UserAuth/PostUserLookUp.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Hooks/UserAuth/PostUserLookUp.php']);
 }
