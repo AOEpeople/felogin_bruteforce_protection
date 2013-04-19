@@ -44,10 +44,12 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 		$userAuthObject = $params['pObj'];
 		if ($userAuthObject->loginType === 'FE') {
 			$this->getService()->cleanUpEntries();
-			if ($userAuthObject->loginFailure == 1) {
-				$this->getService()->rememberFailedLogin();
+			if (TRUE === $this->getService()->isProtectionEnabled()) {
+				if ($userAuthObject->loginFailure == 1) {
+					$this->getService()->rememberFailedLogin();
+				}
+				$this->getService()->validate($userAuthObject);
 			}
-			$this->getService()->validate($userAuthObject);
 		}
 	}
 

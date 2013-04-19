@@ -1,3 +1,6 @@
+# cat=basic; type=boolean; label=disable brute force protection:If checked, the brute force protection is completely disabled
+disabled = 0
+
 # cat=basic; type=int; label=seconds till reset:Defines the time in seconds till the count for failed login will be reset
 seconds_till_reset = 300
 

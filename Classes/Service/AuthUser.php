@@ -40,6 +40,11 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	/**
 	 * @var string
 	 */
+	const CONF_DISABLED = 'disabled';
+
+	/**
+	 * @var string
+	 */
 	const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
 
 	/**
@@ -83,7 +88,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	public function authUser($userData)
 	{
-		if (TRUE === $this->isClientTemporaryRestricted()) {
+		if (TRUE === $this->isProtectionEnabled() && TRUE === $this->isClientTemporaryRestricted()) {
 			return -1;
 		}
 		return 100;
@@ -103,7 +108,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	public function getUser()
 	{
-		if (TRUE === $this->isClientTemporaryRestricted()) {
+		if (TRUE === $this->isProtectionEnabled() && TRUE === $this->isClientTemporaryRestricted()) {
 			return FALSE;
 		}
 		return parent::getUser();
@@ -119,6 +124,17 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isProtectionEnabled()
+	{
+		if ('1' === $this->getConfiguration(self::CONF_DISABLED)) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	/**
