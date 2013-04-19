@@ -33,15 +33,20 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
     /**
      * @var string
      */
-    const ERROR_MAX_LOGIN_FAILURES = 'error_max_login_failures';
+    const CONF_MAX_FAILURES = 'max_failures';
 
     /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry|null
+     * @var string
+     */
+    const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
+
+    /**
+     * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry
      */
     private $entryRepository = NULL;
 
     /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry|null
+     * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
      */
     private $currentEntry = NULL;
 
@@ -51,19 +56,21 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
     private $userAuthObject = NULL;
 
     /**
-     * @param $pObj
+     * @param $params
      * @return void
      */
-    public function handlePostUserLookUp(&$pObj)
+    public function handlePostUserLookUp(&$params)
     {
-        $this->userAuthObject = $pObj['pObj'];
-        $GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-        if ($this->userAuthObject->loginType == 'FE') {
+        $this->userAuthObject = $params['pObj'];
+        if ($this->userAuthObject->loginType === 'FE') {
+            if(FALSE === ($GLOBALS['TSFE']->sys_page instanceof t3lib_pageSelect)) {
+                $GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+            }
             $this->cleanUpEntries();
             if ($this->userAuthObject->loginFailure == 1) {
                 $this->rememberFailedLogin();
             }
-            $this->validate($pObj);
+            $this->validate();
         }
     }
 
@@ -72,7 +79,7 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
      */
     private function cleanUpEntries()
     {
-        $this->getEntryRepository()->removeEntriesOlderThan(300);
+        $this->getEntryRepository()->removeEntriesOlderThan($this->getConfiguration(self::CONF_SECONDS_TILL_RESET));
         $this->getPersistenceManager()->persistAll();
     }
 
@@ -114,10 +121,10 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
     /**
      * @return string
      */
-    private function getMaxLoginFailuresErrorMessage()
+    private function getRestrictionMessage()
     {
-        return Tx_Extbase_Utility_Localization::translate(self::ERROR_MAX_LOGIN_FAILURES, 'felogin_bruteforce_protection', array(
-            (int)(300 / 60)
+        return Tx_Extbase_Utility_Localization::translate('restriction_message', 'felogin_bruteforce_protection', array(
+            (int)($this->getConfiguration(self::CONF_SECONDS_TILL_RESET) / 60)
         ));
     }
 
@@ -138,12 +145,10 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
      */
     private function rememberFailedLogin()
     {
-        $entry = $this->getEntryForCurrentClient();
-        if ($entry->getFailures() < 10) {
-            $entry->increaseFailures();
-            $entry->setTstamp(time());
-            $this->currentEntry = $entry;
-            $this->getEntryRepository()->add($entry); // Need to use "add", "update" does not work...
+        if ($this->getEntryForCurrentClient()->getFailures() < $this->getConfiguration(self::CONF_MAX_FAILURES)) {
+			$this->getEntryForCurrentClient()->increaseFailures();
+			$this->getEntryForCurrentClient()->setTstamp(time());
+            $this->getEntryRepository()->add($this->getEntryForCurrentClient()); // Need to use "add", "update" does not work...
             $this->getPersistenceManager()->persistAll();
         }
     }
@@ -153,9 +158,15 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp extends Tx_Fe
      */
     private function validate()
     {
-        if ($this->hasEntryForCurrentClient() && $this->getEntryForCurrentClient()->getFailures() >= 10) {
+		$GLOBALS['felogin_bruteforce_protection']['restricted'] = FALSE;
+        if ($this->hasEntryForCurrentClient() && $this->getEntryForCurrentClient()->getFailures() >= $this->getConfiguration(self::CONF_MAX_FAILURES)) {
             $this->userAuthObject->loginFailure = 1;
-            $GLOBALS['felogin_bruteforce_protection']['errors'][self::ERROR_MAX_LOGIN_FAILURES] = $this->getMaxLoginFailuresErrorMessage();
+            $GLOBALS['felogin_bruteforce_protection']['restricted'] = TRUE;
+            $GLOBALS['felogin_bruteforce_protection']['restriction_message'] = $this->getRestrictionMessage();
         }
     }
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Hooks/UserAuth/PostUserLookUp.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Hooks/UserAuth/PostUserLookUp.php']);
 }

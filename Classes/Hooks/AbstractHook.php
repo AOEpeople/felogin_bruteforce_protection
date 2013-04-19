@@ -41,11 +41,17 @@ abstract class Tx_FeloginBruteforceProtection_Hooks_AbstractHook
     private $persistenceManager = NULL;
 
     /**
-     * @return array
+     * @param $key
+     * @return mixed
+     * @throws InvalidArgumentException
      */
-    protected function getConfiguration()
+    protected function getConfiguration($key)
     {
-        return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection']);
+        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection']);
+        if(array_key_exists($key, $conf)) {
+            return $conf[$key];
+        }
+        throw new InvalidArgumentException('Configuration key "' . $key . '" does not exist.');
     }
 
     /**

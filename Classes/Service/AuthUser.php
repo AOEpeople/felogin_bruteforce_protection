@@ -50,7 +50,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
      */
     public function authUser($userData)
     {
-        if (FALSE === $this->isClientAllowed()) {
+        if (TRUE === $this->isClientTemporaryRestricted()) {
             return -1;
         }
         return 100;
@@ -69,7 +69,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
      */
     public function getUser()
     {
-        if (FALSE === $this->isClientAllowed()) {
+        if (TRUE === $this->isClientTemporaryRestricted()) {
             return FALSE;
         }
         return parent::getUser();
@@ -108,7 +108,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
     /**
      * @return bool
      */
-    private function isClientAllowed()
+    public function isClientTemporaryRestricted()
     {
         $GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
         $entry = $this->getEntryRepository()->findOneByIdentifier(self::getIdentifier());
