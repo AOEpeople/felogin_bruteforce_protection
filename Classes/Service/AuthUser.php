@@ -33,24 +33,9 @@ require_once t3lib_extMgm::extPath('sv', 'class.tx_sv_auth.php');
 class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 {
 	/**
-	 * @var string
+	 * @var Tx_FeloginBruteforceProtection_Service_Configuration
 	 */
-	const CONF_MAX_FAILURES = 'max_failures';
-
-	/**
-	 * @var string
-	 */
-	const CONF_DISABLED = 'disabled';
-
-	/**
-	 * @var string
-	 */
-	const RESTRICTION_TIME = 'restriction_time';
-
-	/**
-	 * @var string
-	 */
-	const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
+	private $configuration;
 
 	/**
 	 * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
@@ -109,7 +94,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	public function cleanUpEntries()
 	{
-		$this->getEntryRepository()->removeEntriesOlderThan($this->getConfiguration(self::CONF_SECONDS_TILL_RESET));
+		$this->getEntryRepository()->removeEntriesOlderThan($this->getConfiguration()->get(Tx_FeloginBruteforceProtection_Service_Configuration::CONF_SECONDS_TILL_RESET));
 		$this->getPersistenceManager()->persistAll();
 	}
 
@@ -146,8 +131,8 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 		$entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
 		if (
 			$entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry &&
-			$entry->getFailures() >= $this->getConfiguration(self::CONF_MAX_FAILURES) &&
-			(time() - $entry->getTstamp()) <= $this->getConfiguration(self::RESTRICTION_TIME)
+			$entry->getFailures() >= $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_Service_Configuration::CONF_MAX_FAILURES) &&
+			(time() - $entry->getTstamp()) <= $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_Service_Configuration::RESTRICTION_TIME)
 		) {
 			return TRUE;
 		}
@@ -159,7 +144,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	public function isProtectionEnabled()
 	{
-		if ('1' === $this->getConfiguration(self::CONF_DISABLED)) {
+		if ('1' === $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_Service_Configuration::CONF_DISABLED)) {
 			return FALSE;
 		}
 		return TRUE;
@@ -197,17 +182,14 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	}
 
 	/**
-	 * @param $key
-	 * @return mixed
-	 * @throws InvalidArgumentException
+	 * @return Tx_FeloginBruteforceProtection_Service_Configuration
 	 */
-	private function getConfiguration($key)
+	private function getConfiguration()
 	{
-		$conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection']);
-		if (array_key_exists($key, $conf)) {
-			return $conf[$key];
+		if(FALSE === ($this->configuration instanceof Tx_FeloginBruteforceProtection_Service_Configuration)) {
+			$this->configuration = $this->objectManager->create('Tx_FeloginBruteforceProtection_Service_Configuration');
 		}
-		throw new InvalidArgumentException('Configuration key "' . $key . '" does not exist.');
+		return $this->configuration;
 	}
 
 	/**
@@ -280,7 +262,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private function getRestrictionMessage()
 	{
-		$time = (int)($this->getConfiguration(self::RESTRICTION_TIME) / 60);
+		$time = (int)($this->getConfiguration()->get(Tx_FeloginBruteforceProtection_Service_Configuration::RESTRICTION_TIME) / 60);
 		return Tx_Extbase_Utility_Localization::translate('restriction_message', 'felogin_bruteforce_protection', array(
 			$time,$time
 		));
