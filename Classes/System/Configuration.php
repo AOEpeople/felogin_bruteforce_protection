@@ -43,7 +43,7 @@ class Tx_FeloginBruteforceProtection_System_Configuration
 	/**
 	 * @var string
 	 */
-	const RESTRICTION_TIME = 'restriction_time';
+	const CONF_RESTRICTION_TIME = 'restriction_time';
 
 	/**
 	 * @var string

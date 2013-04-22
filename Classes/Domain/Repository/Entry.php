@@ -61,17 +61,30 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 	}
 
 	/**
-	 * @param $seconds
+	 * @param $secondsTillReset
+	 * @param $maxFailures
+	 * @param $restrictionTime
 	 * @return void
 	 */
-	public function removeEntriesOlderThan($seconds)
+	public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime)
 	{
-		$age = (int)time() - $seconds;
+		$time = time();
+		$age = (int)$time - $secondsTillReset;
+		$restrictionTime = (int)$time - $restrictionTime;
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectEnableFields(FALSE);
-		$query->matching($query->lessThan('crdate', $age));
+		$query->matching($query->logicalOr(
+			$query->logicalAnd(array(
+				$query->lessThan('tstamp', $restrictionTime),
+				$query->greaterThanOrEqual('failures', $maxFailures),
+			)),
+			$query->logicalAnd(array(
+				$query->lessThan('crdate', $age),
+				$query->lessThan('failures', $maxFailures),
+			))
+		));
 		foreach ($query->execute() as $object) {
 			$this->removedObjects->attach($object);
 			$this->addedObjects->detach($object);

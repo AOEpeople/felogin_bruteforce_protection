@@ -90,15 +90,6 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	}
 
 	/**
-	 * @return void
-	 */
-	public function cleanUpEntries()
-	{
-		$this->getEntryRepository()->removeEntriesOlderThan($this->getConfiguration()->get(Tx_FeloginBruteforceProtection_Service_Configuration::CONF_SECONDS_TILL_RESET));
-		$this->getPersistenceManager()->persistAll();
-	}
-
-	/**
 	 * Ensure chain breaking if client is already banned!
 	 * Simulate an invalid user and stop the chain by setting the "fetchAllUsers" configuration to "FALSE";
 	 *
@@ -131,8 +122,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 		$entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
 		if (
 			$entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry &&
-			$entry->getFailures() >= $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_MAX_FAILURES) &&
-			(time() - $entry->getTstamp()) <= $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::RESTRICTION_TIME)
+			$entry->getFailures() >= $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_MAX_FAILURES)
 		) {
 			return TRUE;
 		}
@@ -153,6 +143,15 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	/**
 	 * @return void
 	 */
+	public function resetEntryForCurrentClient()
+	{
+		$this->getEntryRepository()->remove($this->getEntryForCurrentClient());
+		$this->getPersistenceManager()->persistAll();
+	}
+
+	/**
+	 * @return void
+	 */
 	public function rememberFailedLogin()
 	{
 		if (FALSE === $this->isClientTemporaryRestricted()) {
@@ -168,7 +167,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 * @return bool
 	 */
 	public function validate(&$userAuthObject)
-	{	
+	{
 		$GLOBALS['felogin_bruteforce_protection']['restricted'] = FALSE;
 		if ($this->isClientTemporaryRestricted()) {
 			$userAuthObject->loginFailure = 1;
@@ -176,8 +175,6 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 			$GLOBALS['felogin_bruteforce_protection']['restriction_message'] = $this->getRestrictionMessage();
 			return FALSE;
 		}
-		$this->cleanUpEntries();
-		$this->resetEntryForCurrentClient();
 		return TRUE;
 	}
 
@@ -187,7 +184,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	private function getConfiguration()
 	{
 		if(FALSE === ($this->configuration instanceof Tx_FeloginBruteforceProtection_System_Configuration)) {
-			$this->configuration = $this->objectManager->create('Tx_FeloginBruteforceProtection_System_Configuration');
+			$this->configuration = $this->getObjectManager()->create('Tx_FeloginBruteforceProtection_System_Configuration');
 		}
 		return $this->configuration;
 	}
@@ -262,19 +259,10 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private function getRestrictionMessage()
 	{
-		$time = (int)($this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::RESTRICTION_TIME) / 60);
+		$time = (int)($this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_RESTRICTION_TIME) / 60);
 		return Tx_Extbase_Utility_Localization::translate('restriction_message', 'felogin_bruteforce_protection', array(
 			$time,$time
 		));
-	}
-
-	/**
-	 * @return void
-	 */
-	private function resetEntryForCurrentClient()
-	{
-		$this->getEntryRepository()->remove($this->getEntryForCurrentClient());
-		$this->getPersistenceManager()->persistAll();
 	}
 }
 
