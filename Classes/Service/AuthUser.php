@@ -55,27 +55,27 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	/**
 	 * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
 	 */
-	private $currentEntry = NULL;
+	private $currentEntry ;
 
 	/**
-	 * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry|null
+	 * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry
 	 */
-	private $entryRepository = NULL;
+	private $entryRepository;
 
 	/**
-	 * @var null|Tx_Extbase_Object_ObjectManager
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
-	private $objectManager = NULL;
+	private $objectManager;
 
 	/**
-	 * @var null|Tx_Extbase_Persistence_Manager
+	 * @var Tx_Extbase_Persistence_Manager
 	 */
-	private $persistenceManager = NULL;
+	private $persistenceManager;
 
 	/**
 	 * @var t3lib_userauth
 	 */
-	private $t3libUserAuth = NULL;
+	private $t3libUserAuth;
 
 	/**
 	 * Ensure TSFE is loaded
@@ -114,7 +114,10 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	}
 
 	/**
-	 * @return bool|mixed
+	 * Ensure chain breaking if client is already banned!
+	 * Simulate an invalid user and stop the chain by setting the "fetchAllUsers" configuration to "FALSE";
+	 *
+	 * @return bool|array
 	 */
 	public function getUser()
 	{
@@ -211,7 +214,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private function getEntryForCurrentClient()
 	{
-		if (NULL === $this->currentEntry) {
+		if (FALSE === ($this->currentEntry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry)) {
 			$entry = $this->getEntryRepository()->findOneByIdentifier($this->getIdentifier());
 			if (FALSE === ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry)) {
 				$time = time();
@@ -235,7 +238,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private function getEntryRepository()
 	{
-		if (NULL === $this->entryRepository) {
+		if (FALSE === ($this->entryRepository instanceof Tx_FeloginBruteforceProtection_Domain_Repository_Entry)) {
 			$this->entryRepository = $this->getObjectManager()->get('Tx_FeloginBruteforceProtection_Domain_Repository_Entry');
 		}
 		return $this->entryRepository;
@@ -254,7 +257,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private function getObjectManager()
 	{
-		if (NULL === $this->objectManager) {
+		if (FALSE === ($this->objectManager instanceof Tx_Extbase_Object_ObjectManager)) {
 			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		}
 		return $this->objectManager;
@@ -265,7 +268,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	protected function getPersistenceManager()
 	{
-		if (NULL === $this->persistenceManager) {
+		if (FALSE === ($this->persistenceManager instanceof Tx_Extbase_Persistence_Manager)) {
 			$this->persistenceManager = $this->getObjectManager()->get('Tx_Extbase_Persistence_Manager');
 		}
 		return $this->persistenceManager;
