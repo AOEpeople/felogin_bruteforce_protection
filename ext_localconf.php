@@ -21,3 +21,11 @@ t3lib_extMgm::addService(
 );
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/UserAuth/PostUserLookUp.php:Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp->handlePostUserLookUp';
+
+if (TYPO3_MODE == 'BE') {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_FeloginBruteforceProtection_Task_CleanUpEntries'] = array(
+		'extension'   => $_EXTKEY,
+		'title'       => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:scheduler_task_cleanupentries_title',
+		'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:scheduler_task_cleanupentries_description',
+	);
+}

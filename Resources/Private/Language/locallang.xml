@@ -12,6 +12,8 @@
 
 			<label index="restriction_message">Account vorrübergehend gesperrt. Sie haben mehrfach Ihr Passwort falsch eingegeben. Aus Sicherheitsgründen wurden Sie für %s Minuten gesperrt. Bitte versuchen Sie es in %s Minuten erneut oder klicken Sie auf "Passwort vergessen".
 			</label>
+			<label index="scheduler_task_cleanupentries_title">Clean Up</label>
+			<label index="scheduler_task_cleanupentries_description">cleans up the entries which are outdated</label>
 		</languageKey>
 		<languageKey index="en" type="array">
 			<label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
