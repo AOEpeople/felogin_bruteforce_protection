@@ -183,7 +183,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 * @return bool
 	 */
 	public function validate(&$userAuthObject)
-	{
+	{	
 		$GLOBALS['felogin_bruteforce_protection']['restricted'] = FALSE;
 		if ($this->isClientTemporaryRestricted()) {
 			$userAuthObject->loginFailure = 1;
@@ -279,8 +279,9 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	 */
 	private function getRestrictionMessage()
 	{
+		$time = (int)($this->getConfiguration(self::RESTRICTION_TIME) / 60);
 		return Tx_Extbase_Utility_Localization::translate('restriction_message', 'felogin_bruteforce_protection', array(
-			(int)($this->getConfiguration(self::RESTRICTION_TIME) / 60)
+			$time,$time
 		));
 	}
 }
