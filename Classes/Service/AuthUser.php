@@ -192,6 +192,7 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 			return FALSE;
 		}
 		$this->cleanUpEntries();
+		$this->resetEntryForCurrentClient();
 		return TRUE;
 	}
 
@@ -283,6 +284,15 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 		return Tx_Extbase_Utility_Localization::translate('restriction_message', 'felogin_bruteforce_protection', array(
 			$time,$time
 		));
+	}
+
+	/**
+	 * @return void
+	 */
+	private function resetEntryForCurrentClient()
+	{
+		$this->getEntryRepository()->remove($this->getEntryForCurrentClient());
+		$this->getPersistenceManager()->persistAll();
 	}
 }
 
