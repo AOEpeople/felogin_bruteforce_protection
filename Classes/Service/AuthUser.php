@@ -68,6 +68,11 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	private $persistenceManager = NULL;
 
 	/**
+	 * @var t3lib_userauth
+	 */
+	private $t3libUserAuth = NULL;
+
+	/**
 	 * Ensure TSFE is loaded
 	 */
 	public function __construct()
@@ -109,9 +114,20 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	public function getUser()
 	{
 		if (TRUE === $this->isProtectionEnabled() && TRUE === $this->isClientTemporaryRestricted()) {
-			return FALSE;
+			$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'][$this->t3libUserAuth->loginType . '_fetchAllUsers'] = FALSE;
+			return array('uid' => 0);
 		}
 		return parent::getUser();
+	}
+
+	/**
+	 * @param $subType
+	 * @param $loginData
+	 * @param $authInfo
+	 * @param $t3libUserAuth
+	 */
+	public function initAuth(&$subType, &$loginData, &$authInfo, &$t3libUserAuth) {
+		$this->t3libUserAuth = $t3libUserAuth;
 	}
 
 	/**
