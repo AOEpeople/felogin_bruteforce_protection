@@ -31,9 +31,9 @@
 class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 {
 	/**
-	 * @var null|Tx_FeloginBruteforceProtection_Service_AuthUser
+	 * @var Tx_FeloginBruteforceProtection_Service_AuthUser
 	 */
-	private $service = NULL;
+	private $service;
 
 	/**
 	 * @param $params
@@ -43,7 +43,6 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 	{
 		$userAuthObject = $params['pObj'];
 		if ($userAuthObject->loginType === 'FE') {
-			$this->getService()->cleanUpEntries();
 			if (TRUE === $this->getService()->isProtectionEnabled()) {
 				if ($userAuthObject->loginFailure == 1) {
 					$this->getService()->rememberFailedLogin();
@@ -58,10 +57,12 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 	 */
 	private function getService()
 	{
-		if (NULL === $this->service) {
+		if (FALSE === ($this->service instanceof Tx_FeloginBruteforceProtection_Service_AuthUser)) {
 			/** @var $objectManager Tx_Extbase_Object_ObjectManager */
 			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			$this->service = $objectManager->get('Tx_FeloginBruteforceProtection_Service_AuthUser');
+			/** @var $service Tx_FeloginBruteforceProtection_Service_AuthUser */
+			$service = $objectManager->get('Tx_FeloginBruteforceProtection_Service_AuthUser');
+			$this->service = $service;
 		}
 		return $this->service;
 	}

@@ -4,5 +4,8 @@ disabled = 0
 # cat=basic; type=int; label=seconds till reset:Defines the time in seconds till the count for failed login will be reset
 seconds_till_reset = 300
 
+# cat=basic; type=int; label=restriction time:Defines the time in seconds while the user will be restricted
+restriction_time = 1800
+
 # cat=basic; type=int; label=max allowed login failures: Defines the amount of maximum allowed login failures within the seconds configured in "seconds_till_reset"
 max_failures = 10
