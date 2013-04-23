@@ -64,9 +64,10 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 	 * @param $secondsTillReset
 	 * @param $maxFailures
 	 * @param $restrictionTime
+	 * @param $identifier
 	 * @return void
 	 */
-	public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime)
+	public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = NULL)
 	{
 		$time = time();
 		$age = (int)$time - $secondsTillReset;
@@ -75,15 +76,21 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$constraintsRestrictedEntries = array(
+			$query->lessThan('tstamp', $restrictionTime),
+			$query->greaterThanOrEqual('failures', $maxFailures),
+		);
+		$constraintsResettableEntries = array(
+			$query->lessThan('crdate', $age),
+			$query->lessThan('failures', $maxFailures),
+		);
+		if(NULL !== $identifier) {
+			$constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
+			$constraintsResettableEntries[] = $query->equals('identifier', $identifier);
+		}
 		$query->matching($query->logicalOr(
-			$query->logicalAnd(array(
-				$query->lessThan('tstamp', $restrictionTime),
-				$query->greaterThanOrEqual('failures', $maxFailures),
-			)),
-			$query->logicalAnd(array(
-				$query->lessThan('crdate', $age),
-				$query->lessThan('failures', $maxFailures),
-			))
+			$query->logicalAnd($constraintsRestrictedEntries),
+			$query->logicalAnd($constraintsResettableEntries)
 		));
 		foreach ($query->execute() as $object) {
 			$this->removedObjects->attach($object);

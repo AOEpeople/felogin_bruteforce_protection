@@ -90,6 +90,19 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 	}
 
 	/**
+	 * @return void
+	 */
+	public function cleanUpEntryForCurrentClient() {
+		$this->getEntryRepository()->cleanUp(
+			$this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_SECONDS_TILL_RESET),
+			$this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_MAX_FAILURES),
+			$this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_RESTRICTION_TIME),
+			$this->getIdentifier()
+		);
+		$this->getPersistenceManager()->persistAll();
+	}
+
+	/**
 	 * Ensure chain breaking if client is already banned!
 	 * Simulate an invalid user and stop the chain by setting the "fetchAllUsers" configuration to "FALSE";
 	 *

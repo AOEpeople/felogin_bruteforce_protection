@@ -43,6 +43,7 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 	{
 		$userAuthObject = $params['pObj'];
 		if ($userAuthObject->loginType === 'FE') {
+			$this->getService()->cleanUpEntryForCurrentClient();
 			if ($userAuthObject->loginFailure == 0) {
 				$this->getService()->resetEntryForCurrentClient();
 			}
