@@ -137,7 +137,11 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth
 			$entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry &&
 			$entry->getFailures() >= $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_MAX_FAILURES)
 		) {
-			return TRUE;
+			if ($entry->getCrdate() < time() - $this->getConfiguration()->get(Tx_FeloginBruteforceProtection_System_Configuration::CONF_RESTRICTION_TIME)) {
+				$this->resetEntryForCurrentClient();
+			} else {
+				return TRUE;
+			}
 		}
 		return FALSE;
 	}
