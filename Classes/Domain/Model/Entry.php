@@ -25,11 +25,13 @@
  ***************************************************************/
 
 /**
- * @package felogin_bruteforce_protection
+ * @package Tx_FeloginBruteforceProtection
+ * @subpackage Domain_Model_Entry
+ * @author Kevin Schu <kevin.schu@aoemedia.de>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_FeloginBruteforceProtection_Domain_Model_Entry extends Tx_Extbase_DomainObject_AbstractEntity
-{
+class Tx_FeloginBruteforceProtection_Domain_Model_Entry extends Tx_Extbase_DomainObject_AbstractEntity {
+
 	/**
 	 * @var string
 	 */
@@ -55,40 +57,35 @@ class Tx_FeloginBruteforceProtection_Domain_Model_Entry extends Tx_Extbase_Domai
 	/**
 	 * @param string $crdate
 	 */
-	public function setCrdate($crdate)
-	{
+	public function setCrdate($crdate) {
 		$this->crdate = $crdate;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCrdate()
-	{
+	public function getCrdate() {
 		return $this->crdate;
 	}
 
 	/**
 	 * @param string $tstamp
 	 */
-	public function setTstamp($tstamp)
-	{
+	public function setTstamp($tstamp) {
 		$this->tstamp = $tstamp;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getTstamp()
-	{
+	public function getTstamp() {
 		return $this->tstamp;
 	}
 
 	/**
 	 * @return string $identifier
 	 */
-	public function getIdentifier()
-	{
+	public function getIdentifier() {
 		return $this->identifier;
 	}
 
@@ -96,16 +93,14 @@ class Tx_FeloginBruteforceProtection_Domain_Model_Entry extends Tx_Extbase_Domai
 	 * @param string $identifier
 	 * @return void
 	 */
-	public function setIdentifier($identifier)
-	{
+	public function setIdentifier($identifier) {
 		$this->identifier = $identifier;
 	}
 
 	/**
 	 * @return integer $failures
 	 */
-	public function getFailures()
-	{
+	public function getFailures() {
 		return $this->failures;
 	}
 
@@ -113,17 +108,14 @@ class Tx_FeloginBruteforceProtection_Domain_Model_Entry extends Tx_Extbase_Domai
 	 * @param integer $failures
 	 * @return void
 	 */
-	public function setFailures($failures)
-	{
+	public function setFailures($failures) {
 		$this->failures = $failures;
 	}
 
 	/**
 	 * @return void
 	 */
-	public function increaseFailures()
-	{
-		$increased = (int)$this->getFailures() + 1;
-		$this->setFailures($increased);
+	public function increaseFailures() {
+		$this->setFailures($this->getFailures() + 1);
 	}
 }

@@ -25,7 +25,10 @@
  ***************************************************************/
 
 /**
- * @package felogin_bruteforce_protection
+ * @package Tx_FeloginBruteforceProtection
+ * @subpackage System
+ * @author Kevin Schu <kevin.schu@aoemedia.de>
+ * @author Timo Fuchs <timo.fuchs@aoemedia.de>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Tx_FeloginBruteforceProtection_System_Configuration
@@ -64,6 +67,45 @@ class Tx_FeloginBruteforceProtection_System_Configuration
 		if (is_array($conf)) {
 			$this->configuration = $conf;
 		}
+	}
+
+	/**
+	 * Tells if the protection is enabled.
+	 *
+	 * @return boolean
+	 */
+	public function isEnabled() {
+		if ('1' === $this->get(self::CONF_DISABLED)) {
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Returns the maximum number of allowed failures for an ip.
+	 *
+	 * @return integer
+	 */
+	public function getMaximumNumerOfFailures() {
+		return (integer) $this->get(self::CONF_MAX_FAILURES);
+	}
+
+	/**
+	 * Returns the number of seconds of the restriction time.
+	 *
+	 * @return integer
+	 */
+	public function getRestrictionTime() {
+		return (integer) $this->get(self::CONF_RESTRICTION_TIME);
+	}
+
+	/**
+	 * Returns the number of seconds after an entry is resetted.
+	 *
+	 * @return integer
+	 */
+	public function getResetTime() {
+		return (integer) $this->get(self::CONF_SECONDS_TILL_RESET);
 	}
 
 	/**

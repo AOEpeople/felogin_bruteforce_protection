@@ -25,49 +25,98 @@
  ***************************************************************/
 
 /**
- * @package felogin_bruteforce_protection
+ * @package Tx_FeloginBruteforceProtection
+ * @subpackage Hooks_UserAuth
+ * @author Kevin Schu <kevin.schu@aoemedia.de>
+ * @author Timo Fuchs <timo.fuchs@aoemedia.de>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 {
 	/**
-	 * @var Tx_FeloginBruteforceProtection_Service_AuthUser
+	 * @var Tx_FeloginBruteforceProtection_Domain_Service_Restriction
 	 */
-	private $service;
+	private $restrictionService;
 
 	/**
-	 * @param $params
+	 * @var Tx_FeloginBruteforceProtection_System_Configuration
+	 */
+	private $configuration;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		if (FALSE === ($GLOBALS['TSFE'] instanceof tslib_fe)) {
+			$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 2, 0);
+		}
+		if (FALSE === ($GLOBALS['TSFE']->sys_page instanceof t3lib_pageSelect)) {
+			$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		}
+	}
+
+	/**
+	 * @param array $params
 	 * @return void
 	 */
-	public function handlePostUserLookUp(&$params)
-	{
+	public function handlePostUserLookUp(&$params) {
 		$userAuthObject = $params['pObj'];
 		if ($userAuthObject->loginType === 'FE') {
 			if ($userAuthObject->loginFailure == 0) {
-				$this->getService()->resetEntryForCurrentClient();
+				//$this->getRestrictionService()->removeEntry();
 			}
-			if (TRUE === $this->getService()->isProtectionEnabled()) {
+			if (TRUE === $this->getConfiguration()->isEnabled()) {
 				if ($userAuthObject->loginFailure == 1) {
-					$this->getService()->rememberFailedLogin();
+					$this->getRestrictionService()->incrementFailureCount();
 				}
-				$this->getService()->validate($userAuthObject);
+				$this->updateGlobals($userAuthObject);
 			}
 		}
 	}
 
 	/**
-	 * @return Tx_FeloginBruteforceProtection_Service_AuthUser
+	 * @param $userAuthObject
+	 * @return boolean
 	 */
-	private function getService()
-	{
-		if (FALSE === ($this->service instanceof Tx_FeloginBruteforceProtection_Service_AuthUser)) {
-			/** @var $objectManager Tx_Extbase_Object_ObjectManager */
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			/** @var $service Tx_FeloginBruteforceProtection_Service_AuthUser */
-			$service = $objectManager->get('Tx_FeloginBruteforceProtection_Service_AuthUser');
-			$this->service = $service;
+	public function updateGlobals(&$userAuthObject) {
+		$GLOBALS['felogin_bruteforce_protection']['restricted'] = FALSE;
+		if ($this->getRestrictionService()->isClientRestricted()) {
+			$userAuthObject->loginFailure                                    = 1;
+			$GLOBALS['felogin_bruteforce_protection']['restricted']          = TRUE;
+			$GLOBALS['felogin_bruteforce_protection']['restriction_message'] = $this->getRestrictionMessage();
+			return FALSE;
 		}
-		return $this->service;
+		return TRUE;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getRestrictionMessage() {
+		$time = (integer) ($this->getConfiguration()->getRestrictionTime() / 60);
+		return Tx_Extbase_Utility_Localization::translate('restriction_message', 'felogin_bruteforce_protection', array(
+			$time, $time
+		));
+	}
+
+	/**
+	 * @return Tx_FeloginBruteforceProtection_Domain_Service_Restriction
+	 */
+	private function getRestrictionService() {
+		if(FALSE === isset($this->restrictionService)) {
+			$this->restrictionService = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager')->get('Tx_FeloginBruteforceProtection_Domain_Service_Restriction');
+		}
+		return $this->restrictionService;
+	}
+
+	/**
+	 * @return Tx_FeloginBruteforceProtection_System_Configuration
+	 */
+	private function getConfiguration() {
+		if (FALSE === isset($this->configuration)) {
+			$this->configuration = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager')->get('Tx_FeloginBruteforceProtection_System_Configuration');
+		}
+		return $this->configuration;
 	}
 }
 

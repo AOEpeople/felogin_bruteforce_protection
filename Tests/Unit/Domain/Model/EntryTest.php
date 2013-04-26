@@ -47,7 +47,7 @@ class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_T
 	public function tearDown() {
 		unset ( $this->fixture );
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -55,14 +55,7 @@ class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_T
 		$this->fixture->setIdentifier ( 'Conceived at T3CON10' );
 		$this->assertSame ( 'Conceived at T3CON10', $this->fixture->getIdentifier () );
 	}
-	
-	/**
-	 * @test
-	 */
-	public function getFailuresReturnsInitialValueForInteger() {
-		$this->assertSame ( 0, $this->fixture->getFailures () );
-	}
-	
+
 	/**
 	 * @test
 	 */
