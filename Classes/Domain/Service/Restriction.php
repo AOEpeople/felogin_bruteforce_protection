@@ -190,10 +190,12 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction {
 	 * @return boolean
 	 */
 	private function isRestricted(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry) {
-		return (
-			$this->hasMaximumNumberOfFailuresReached($entry) &&
-			FALSE === $this->isResetTimeOver($entry)
-		);
+		if($this->hasMaximumNumberOfFailuresReached($entry)){
+			if(FALSE === $this->isRestrictionTimeReached($entry)){
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	/**
@@ -226,7 +228,7 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction {
 	private function isOutdated(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry) {
 		return (
 			($this->hasMaximumNumberOfFailuresReached($entry) && $this->isRestrictionTimeReached($entry)) ||
-			$this->isResetTimeOver($entry)
+			(FALSE === $this->hasMaximumNumberOfFailuresReached($entry) && $this->isResetTimeOver($entry))
 		);
 	}
 

@@ -85,7 +85,6 @@ class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth {
 	 */
 	public function getUser() {
 		if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
-			//$this->getRestrictionService()->setForceRestriction(TRUE);
 			$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'][$this->t3libUserAuth->loginType . '_fetchAllUsers'] = FALSE;
 			return array('uid' => 0);
 		}

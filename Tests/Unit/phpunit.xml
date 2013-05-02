@@ -1,0 +1,7 @@
+<phpunit>
+	<testsuites>
+		<testsuite name="felogin_bruteforce_protection">
+			<directory suffix="Test.php">./</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
