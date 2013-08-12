@@ -61,6 +61,9 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp {
 	 */
 	public function handlePostUserLookUp(&$params) {
 		$userAuthObject = $params ['pObj'];
+		if ($userAuthObject->loginType === 'FE' && $this->getConfiguration ()->isEnabled () && $userAuthObject->loginFailure === FALSE) {
+			$this->getRestrictionService ()->removeEntry ();
+		}
 		if ($userAuthObject->loginType !== 'FE' || FALSE === $this->getConfiguration ()->isEnabled () || $userAuthObject->loginFailure === FALSE) {
 			return;
 		}
