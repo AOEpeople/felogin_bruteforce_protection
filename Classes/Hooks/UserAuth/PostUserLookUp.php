@@ -60,18 +60,18 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp {
 	 * @return void
 	 */
 	public function handlePostUserLookUp(&$params) {
+		if(FALSE === $this->getConfiguration ()->isEnabled ()) {
+			return;
+		}
+
 		$userAuthObject = $params ['pObj'];
-		if ($userAuthObject->loginType === 'FE' && $this->getConfiguration ()->isEnabled () && $userAuthObject->loginFailure === FALSE) {
+		if ($this->hasFeUserLoggedIn($userAuthObject)) {
 			$this->getRestrictionService ()->removeEntry ();
 		}
-		if ($userAuthObject->loginType !== 'FE' || FALSE === $this->getConfiguration ()->isEnabled () || $userAuthObject->loginFailure === FALSE) {
-			return;
+		if($this->hasFeUserLogInFailed($userAuthObject)) {
+			$this->getRestrictionService ()->incrementFailureCount ();
+			$this->updateGlobals ( $userAuthObject );
 		}
-		if (isset ( $userAuthObject->svConfig ['loginNotPossible'] ) && $userAuthObject->svConfig ['loginNotPossible'] === TRUE) {
-			return;
-		}
-		$this->getRestrictionService ()->incrementFailureCount ();
-		$this->updateGlobals ( $userAuthObject );
 	}
 	
 	/**
@@ -115,6 +115,31 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp {
 			$this->configuration = t3lib_div::makeInstance ( 'Tx_Extbase_Object_ObjectManager' )->get ( 'Tx_FeloginBruteforceProtection_System_Configuration' );
 		}
 		return $this->configuration;
+	}
+	/**
+	 * check, if FE-user has logged in in this request
+	 * 
+	 * @param t3lib_userAuth $userAuthObject
+	 */
+	private function hasFeUserLoggedIn(t3lib_userAuth $userAuthObject) {
+		if ($userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === FALSE && is_array($userAuthObject->user) && $userAuthObject->loginSessionStarted === TRUE) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+	/**
+	 * check, if login-action of FE-user failed
+	 * 
+	 * @param t3lib_userAuth $userAuthObject
+	 */
+	private function hasFeUserLogInFailed(t3lib_userAuth $userAuthObject) {
+		if ($userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === TRUE && $userAuthObject->user === FALSE) {
+			if (isset ( $userAuthObject->svConfig ['loginNotPossible'] ) && $userAuthObject->svConfig ['loginNotPossible'] === TRUE) {
+				return FALSE;
+			}
+			return TRUE;
+		}
+		return FALSE;
 	}
 }
 
