@@ -67,8 +67,7 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp {
 		$userAuthObject = $params ['pObj'];
 		if ($this->hasFeUserLoggedIn($userAuthObject)) {
 			$this->getRestrictionService ()->removeEntry ();
-		}
-		if($this->hasFeUserLogInFailed($userAuthObject)) {
+		} elseif($this->hasFeUserLogInFailed($userAuthObject)) {
 			$this->getRestrictionService ()->incrementFailureCount ();
 			$this->updateGlobals ( $userAuthObject );
 		}
