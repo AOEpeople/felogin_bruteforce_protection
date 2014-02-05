@@ -82,6 +82,7 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp {
 		if ($this->getRestrictionService ()->isClientRestricted ()) {
 			$userAuthObject->loginFailure = 1;
 			$GLOBALS ['felogin_bruteforce_protection'] ['restricted'] = TRUE;
+			$GLOBALS ['felogin_bruteforce_protection'] ['restriction_time'] = $this->getConfiguration ()->getRestrictionTime ();
 			$GLOBALS ['felogin_bruteforce_protection'] ['restriction_message'] = $this->getRestrictionMessage ();
 			return FALSE;
 		}

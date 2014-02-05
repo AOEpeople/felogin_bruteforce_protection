@@ -10,7 +10,7 @@
 			<label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">identifier</label>
 			<label index="tx_feloginbruteforceprotection_domain_model_entry.failures">failures</label>
 
-			<label index="restriction_message">Account vorübergehend gesperrt. Sie haben mehrfach Ihr Passwort falsch eingegeben. Aus Sicherheitsgründen wurden Sie für %s Minuten gesperrt. Bitte versuchen Sie es spätestens in %s Minuten erneut. Falls Sie Ihr Passwort vergessen haben, können Sie unter "Passwort vergessen" ein neues Passwort anfordern.</label>
+			<label index="restriction_message">Account vorübergehend gesperrt. Sie haben mehrfach Ihr Passwort falsch eingegeben. Aus Sicherheitsgründen wurden Sie für %s Minuten gesperrt. Bitte versuchen Sie es frühestens in %s Minuten erneut. Falls Sie Ihr Passwort vergessen haben, können Sie unter "Passwort vergessen" ein neues Passwort anfordern.</label>
 			<label index="scheduler_task_cleanupentries_title">Clean Up</label>
 			<label index="scheduler_task_cleanupentries_description">cleans up the entries which are outdated</label>
 		</languageKey>
