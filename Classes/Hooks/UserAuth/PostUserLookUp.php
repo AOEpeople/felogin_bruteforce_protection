@@ -137,11 +137,6 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp {
 			if (isset ( $userAuthObject->svConfig ['loginNotPossible'] ) && $userAuthObject->svConfig ['loginNotPossible'] === TRUE) {
 				return FALSE;
 			}
-
-			//@TODO: Remove this debug Code!
-			$loginData = $userAuthObject->getLoginFormData();
-			t3lib_div::devLog('Login Failed! '.date("d.m H:i").' Benutzername:'.$loginData['uname'], 'felogin_bruteforce_protection');
-
 			return TRUE;
 		}
 		return FALSE;
