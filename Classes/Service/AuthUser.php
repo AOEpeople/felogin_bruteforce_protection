@@ -1,9 +1,8 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Kevin Schu <kevin.schu@aoemedia.de>, AOE media GmbH
+ *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
  *
  *  All rights reserved
  *
@@ -23,8 +22,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once t3lib_extMgm::extPath('sv', 'class.tx_sv_auth.php');
 
 /**
  * @package Tx_FeloginBruteforceProtection
