@@ -41,7 +41,7 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 		// don't add the pid constraint
 		$defaultQuerySettings->setRespectStoragePage(FALSE);
 		// don't add fields from enablecolumns constraint
-		$defaultQuerySettings->setRespectEnableFields(FALSE);
+		$defaultQuerySettings->setIgnoreEnableFields(TRUE)->setIncludeDeleted(TRUE);
 		// don't add sys_language_uid constraint
 		$defaultQuerySettings->setRespectSysLanguage(FALSE);
 		$this->setDefaultQuerySettings($defaultQuerySettings);
@@ -55,7 +55,7 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$query->getQuerySettings()->setIgnoreEnableFields(TRUE)->setIncludeDeleted(TRUE);
 		$query->matching($query->equals('uid', $uid));
 		return $query->execute()->getFirst();
 	}
@@ -74,7 +74,7 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 		$query = $this->createQuery();
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$query->getQuerySettings()->setIgnoreEnableFields(TRUE)->setIncludeDeleted(TRUE);
 		$constraintsRestrictedEntries = array(
 			$query->lessThan('tstamp', $restrictionTime),
 			$query->greaterThanOrEqual('failures', $maxFailures),
