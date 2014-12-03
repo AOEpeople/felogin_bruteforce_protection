@@ -11,6 +11,7 @@ class Tx_FeloginBruteforceProtection_Domain_Service_RestrictionTest extends Tx_E
 	 * @var Tx_FeloginBruteforceProtection_Domain_Service_Restriction
 	 */
 	private $restriction;
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
@@ -18,8 +19,6 @@ class Tx_FeloginBruteforceProtection_Domain_Service_RestrictionTest extends Tx_E
 	public function setUp() {
 		$this->restriction = new Tx_FeloginBruteforceProtection_Domain_Service_Restriction ();
 		$this->restriction->injectPersistenceManager($this->getMock('Tx_Extbase_Persistence_Manager'));
-		
-		
 	}
 	/**
 	 * (non-PHPdoc)

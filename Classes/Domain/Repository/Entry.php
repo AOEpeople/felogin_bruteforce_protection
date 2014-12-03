@@ -32,6 +32,15 @@
  */
 class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_Persistence_Repository {
 
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $objectManager = t3lib_div::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        parent::__construct($objectManager);
+    }
+
 	/**
 	 * @return void
 	 */
@@ -92,8 +101,8 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
 			$query->logicalAnd($constraintsResettableEntries)
 		));
 		foreach ($query->execute() as $object) {
-			$this->removedObjects->attach($object);
-			$this->addedObjects->detach($object);
+			$this->remove($object);
+			$this->add($object);
 		}
 	}
 }
