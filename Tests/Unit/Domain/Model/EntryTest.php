@@ -36,32 +36,39 @@
  *
  * @author Kevin Schu <kevin.schu@aoemedia.de>
  */
-class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
-	/**
-	 * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
-	 */
-	protected $fixture;
-	public function setUp() {
-		$this->fixture = new Tx_FeloginBruteforceProtection_Domain_Model_Entry ();
-	}
-	public function tearDown() {
-		unset ( $this->fixture );
-	}
+class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_Tests_Unit_BaseTestCase
+{
+    /**
+     * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
+     */
+    protected $fixture;
 
-	/**
-	 * @test
-	 */
-	public function setIdentifierForStringSetsIdentifier() {
-		$this->fixture->setIdentifier ( 'Conceived at T3CON10' );
-		$this->assertSame ( 'Conceived at T3CON10', $this->fixture->getIdentifier () );
-	}
+    public function setUp()
+    {
+        $this->fixture = new Aoe\FeloginBruteforceProtection\Domain\Model\Entry();
+    }
 
-	/**
-	 * @test
-	 */
-	public function setFailuresForIntegerSetsFailures() {
-		$this->fixture->setFailures ( 12 );
-		$this->assertSame ( 12, $this->fixture->getFailures () );
-	}
+    public function tearDown()
+    {
+        unset ($this->fixture);
+    }
+
+    /**
+     * @test
+     */
+    public function setIdentifierForStringSetsIdentifier()
+    {
+        $this->fixture->setIdentifier('Conceived at T3CON10');
+        $this->assertSame('Conceived at T3CON10', $this->fixture->getIdentifier());
+    }
+
+    /**
+     * @test
+     */
+    public function setFailuresForIntegerSetsFailures()
+    {
+        $this->fixture->setFailures(12);
+        $this->assertSame(12, $this->fixture->getFailures());
+    }
 
 }

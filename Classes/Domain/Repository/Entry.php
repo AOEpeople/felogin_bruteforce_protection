@@ -30,7 +30,8 @@
  * @author Kevin Schu <kevin.schu@aoemedia.de>
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_Persistence_Repository {
+class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_Persistence_Repository
+{
 
     /**
      *
@@ -41,68 +42,73 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
         parent::__construct($objectManager);
     }
 
-	/**
-	 * @return void
-	 */
-	public function initializeObject() {
-		/** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
-		$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
-		// don't add the pid constraint
-		$defaultQuerySettings->setRespectStoragePage(FALSE);
-		// don't add fields from enablecolumns constraint
-		$defaultQuerySettings->setIgnoreEnableFields(TRUE)->setIncludeDeleted(TRUE);
-		// don't add sys_language_uid constraint
-		$defaultQuerySettings->setRespectSysLanguage(FALSE);
-		$this->setDefaultQuerySettings($defaultQuerySettings);
-	}
+    /**
+     * @return void
+     */
+    public function initializeObject()
+    {
+        /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
+        $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+        // don't add the pid constraint
+        $defaultQuerySettings->setRespectStoragePage(false);
+        // don't add fields from enablecolumns constraint
+        $defaultQuerySettings->setIgnoreEnableFields(true)->setIncludeDeleted(true);
+        // don't add sys_language_uid constraint
+        $defaultQuerySettings->setRespectSysLanguage(false);
+        $this->setDefaultQuerySettings($defaultQuerySettings);
+    }
 
-	/**
-	 * @param int $uid
-	 * @return object
-	 */
-	public function findByUid($uid) {
-		$query = $this->createQuery();
-		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->getQuerySettings()->setIgnoreEnableFields(TRUE)->setIncludeDeleted(TRUE);
-		$query->matching($query->equals('uid', $uid));
-		return $query->execute()->getFirst();
-	}
+    /**
+     * @param int $uid
+     * @return object
+     */
+    public function findByUid($uid)
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
+        $query->matching($query->equals('uid', $uid));
+        return $query->execute()->getFirst();
+    }
 
-	/**
-	 * @param $secondsTillReset
-	 * @param $maxFailures
-	 * @param $restrictionTime
-	 * @param $identifier
-	 * @return void
-	 */
-	public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = NULL) {
-		$time = time();
-		$age = (int)$time - $secondsTillReset;
-		$restrictionTime = (int)$time - $restrictionTime;
-		$query = $this->createQuery();
-		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$query->getQuerySettings()->setIgnoreEnableFields(TRUE)->setIncludeDeleted(TRUE);
-		$constraintsRestrictedEntries = array(
-			$query->lessThan('tstamp', $restrictionTime),
-			$query->greaterThanOrEqual('failures', $maxFailures),
-		);
-		$constraintsResettableEntries = array(
-			$query->lessThan('crdate', $age),
-			$query->lessThan('failures', $maxFailures),
-		);
-		if(NULL !== $identifier) {
-			$constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
-			$constraintsResettableEntries[] = $query->equals('identifier', $identifier);
-		}
-		$query->matching($query->logicalOr(
-			$query->logicalAnd($constraintsRestrictedEntries),
-			$query->logicalAnd($constraintsResettableEntries)
-		));
-		foreach ($query->execute() as $object) {
-			$this->remove($object);
-			$this->add($object);
-		}
-	}
+    /**
+     * @param $secondsTillReset
+     * @param $maxFailures
+     * @param $restrictionTime
+     * @param $identifier
+     * @return void
+     */
+    public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null)
+    {
+        $time = time();
+        $age = (int)$time - $secondsTillReset;
+        $restrictionTime = (int)$time - $restrictionTime;
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
+        $constraintsRestrictedEntries = array(
+            $query->lessThan('tstamp', $restrictionTime),
+            $query->greaterThanOrEqual('failures', $maxFailures),
+        );
+        $constraintsResettableEntries = array(
+            $query->lessThan('crdate', $age),
+            $query->lessThan('failures', $maxFailures),
+        );
+        if (null !== $identifier) {
+            $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
+            $constraintsResettableEntries[] = $query->equals('identifier', $identifier);
+        }
+        $query->matching(
+            $query->logicalOr(
+                $query->logicalAnd($constraintsRestrictedEntries),
+                $query->logicalAnd($constraintsResettableEntries)
+            )
+        );
+        foreach ($query->execute() as $object) {
+            $this->remove($object);
+            $this->add($object);
+        }
+    }
 }

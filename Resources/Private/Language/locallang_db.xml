@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'felogin_bruteforce_protection'
-		</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for database tables/fields belonging to extension 'felogin_bruteforce_protection'
+        </description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
 
-			<label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
-			<label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">Identifier</label>
-			<label index="tx_feloginbruteforceprotection_domain_model_entry.failures">Failures</label>
+            <label index="tx_feloginbruteforceprotection_domain_model_entry">Entry</label>
+            <label index="tx_feloginbruteforceprotection_domain_model_entry.identifier">Identifier</label>
+            <label index="tx_feloginbruteforceprotection_domain_model_entry.failures">Failures</label>
 
-		</languageKey>
-	</data>
+        </languageKey>
+    </data>
 </T3locallang>

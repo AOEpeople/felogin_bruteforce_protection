@@ -1,144 +1,150 @@
 <?php
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+namespace Aoe\FeloginBruteforceProtection\Service;
+
+    /***************************************************************
+     *  Copyright notice
+     *
+     *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
+     *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+     *
+     *  All rights reserved
+     *
+     *  This script is part of the TYPO3 project. The TYPO3 project is
+     *  free software; you can redistribute it and/or modify
+     *  it under the terms of the GNU General Public License as published by
+     *  the Free Software Foundation; either version 3 of the License, or
+     *  (at your option) any later version.
+     *
+     *  The GNU General Public License can be found at
+     *  http://www.gnu.org/copyleft/gpl.html.
+     *
+     *  This script is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     *  GNU General Public License for more details.
+     *
+     *  This copyright notice MUST APPEAR in all copies of the script!
+     ***************************************************************/
 
 /**
- * @package Tx_FeloginBruteforceProtection
- * @subpackage Service
- * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @author Timo Fuchs <timo.fuchs@aoemedia.de>
+ * @author Kevin Schu <kevin.schu@aoe.com>
+ * @author Timo Fuchs <timo.fuchs@aoe.com>
+ * @author Andre Wuttig <wuttig@portrino.de>
+ *
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ *
+ * Class AuthUser
+ *
+ * @package Aoe\FeloginBruteforceProtection\\Service
  */
-class Tx_FeloginBruteforceProtection_Service_AuthUser extends tx_sv_auth {
+class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
+{
 
-	/**
-	 * @var Tx_FeloginBruteforceProtection_System_Configuration
-	 */
-	private $configuration;
+    /**
+     * @var \Aoe\FeloginBruteforceProtection\System\Configuration
+     */
+    protected $configuration;
 
-	/**
-	 * @var Tx_Extbase_Object_ObjectManager
-	 */
-	private $objectManager;
+    /**
+     * Object manager
+     *
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    protected $objectManager;
 
-	/**
-	 * @var Tx_FeloginBruteforceProtection_Domain_Service_Restriction
-	 */
-	private $restrictionService;
+    /**
+     * @var \Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService
+     */
+    protected $restrictionService;
 
-	/**
-	 * @var t3lib_userauth
-	 */
-	private $t3libUserAuth;
+    /**
+     * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
+     */
+    protected $frontendUserAuthentication;
 
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		if (FALSE === ($GLOBALS['TSFE'] instanceof tslib_fe)) {
-			$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 2, 0);
-		}
-		if (FALSE === ($GLOBALS['TSFE']->sys_page instanceof t3lib_pageSelect)) {
-			$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-		}
-	}
+    /**
+     * Initialize authentication service
+     *
+     * @param string $mode Subtype of the service which is used to call the service.
+     * @param array $loginData Submitted login form data
+     * @param array $authInfo Information array. Holds submitted form data etc.
+     * @param object $pObj Parent object
+     * @return void
+     * @todo Define visibility
+     */
+    public function initAuth($mode, $loginData, $authInfo, $pObj)
+    {
+        $this->frontendUserAuthentication = $pObj;
+    }
 
-	/**
-	 * @param $subType
-	 * @param $loginData
-	 * @param $authInfo
-	 * @param $t3libUserAuth
-	 */
-	public function initAuth(&$subType, &$loginData, &$authInfo, &$t3libUserAuth) {
-		$this->t3libUserAuth = $t3libUserAuth;
-	}
+    /**
+     * Ensure chain breaking if client is already banned!
+     * Simulate an invalid user and stop the chain by setting the "fetchAllUsers" configuration to "FALSE";
+     *
+     * @return bool|array
+     */
+    public function getUser()
+    {
+        if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
+            $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'][$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
+            return array('uid' => 0);
+        }
+        return parent::getUser();
+    }
 
-	/**
-	 * Ensure chain breaking if client is already banned!
-	 * Simulate an invalid user and stop the chain by setting the "fetchAllUsers" configuration to "FALSE";
-	 *
-	 * @return bool|array
-	 */
-	public function getUser() {
-		if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
-			$GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'][$this->t3libUserAuth->loginType . '_fetchAllUsers'] = FALSE;
-			return array('uid' => 0);
-		}
-		return parent::getUser();
-	}
+    /**
+     * Ensure chain breaking if client is already banned!
+     *
+     * @param   mixed $userData Data of user.
+     * @return  integer     Chain result (<0: break chain; 100: use next chain service; 200: success)
+     */
+    public function authUser($userData)
+    {
+        if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
+            return -1;
+        }
+        return 100;
+    }
 
-	/**
-	 * Ensure chain breaking if client is already banned!
-	 *
-	 * @param   mixed $userData Data of user.
-	 * @return  integer     Chain result (<0: break chain; 100: use next chain service; 200: success)
-	 */
-	public function authUser($userData) {
-		if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
-			return -1;
-		}
-		return 100;
-	}
+    /**
+     * @return bool
+     */
+    public function isProtectionEnabled()
+    {
+        return $this->getConfiguration()->isEnabled();
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isProtectionEnabled() {
-		return $this->getConfiguration()->isEnabled();
-	}
+    /**
+     * @return \Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService
+     */
+    private function getRestrictionService()
+    {
+        if (false === isset ($this->restrictionService)) {
+            $this->restrictionService = $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
+        }
+        return $this->restrictionService;
+    }
 
-	/**
-	 * @return Tx_FeloginBruteforceProtection_System_Configuration
-	 */
-	private function getConfiguration() {
-		if (FALSE === ($this->configuration instanceof Tx_FeloginBruteforceProtection_System_Configuration)) {
-			$this->configuration = $this->getObjectManager()->create('Tx_FeloginBruteforceProtection_System_Configuration');
-		}
-		return $this->configuration;
-	}
+    /**
+     * @return \Aoe\FeloginBruteforceProtection\System\Configuration
+     */
+    protected function getConfiguration()
+    {
+        if (false === isset ($this->configuration)) {
+            $this->configuration = $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+        }
+        return $this->configuration;
+    }
 
-	/**
-	 * @return Tx_Extbase_Object_ObjectManager
-	 */
-	private function getObjectManager() {
-		if (FALSE === ($this->objectManager instanceof Tx_Extbase_Object_ObjectManager)) {
-			$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		}
-		return $this->objectManager;
-	}
+    /**
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    private function getObjectManager()
+    {
+        if (false === isset ($this->objectManager)) {
+            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        }
+        return $this->objectManager;
+    }
 
-	/**
-	 * @return Tx_FeloginBruteforceProtection_Domain_Service_Restriction
-	 */
-	private function getRestrictionService() {
-		if (FALSE === isset($this->restrictionService)) {
-			$this->restrictionService = $this->getObjectManager()->get('Tx_FeloginBruteforceProtection_Domain_Service_Restriction');
-		}
-		return $this->restrictionService;
-	}
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Service/AuthUser.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/felogin_bruteforce_protection/Classes/Service/AuthUser.php']);
 }
