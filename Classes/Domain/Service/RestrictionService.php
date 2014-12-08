@@ -27,7 +27,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
      ***************************************************************/
 
 /**
- * Class Restriction
  *
  * @package Aoe\FeloginBruteforceProtection\\Domain\Service
  *
@@ -35,7 +34,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  * @author Timo Fuchs <timo.fuchs@aoe.com>
  * @author Andre Wuttig <wuttig@portrino.de>
  *
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class RestrictionService
 {
@@ -146,7 +144,7 @@ class RestrictionService
     private function createEntry()
     {
         /** @var $entry \Aoe\FeloginBruteforceProtection\Domain\Model\Entry */
-        $this->entry = $this->objectManager->get('Aoe\FeloginBruteforceProtection\\Domain\Model\Entry');
+        $this->entry = $this->objectManager->get('Aoe\FeloginBruteforceProtection\Domain\Model\Entry');
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
         $this->entry->setTstamp(time());

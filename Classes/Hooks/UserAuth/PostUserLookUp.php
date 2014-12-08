@@ -1,5 +1,5 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Hook\UserAuth;
+namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 
 /***************************************************************
  * Copyright notice

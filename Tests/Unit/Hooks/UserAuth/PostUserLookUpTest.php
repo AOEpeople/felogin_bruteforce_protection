@@ -1,4 +1,5 @@
 <?php
+namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
 
 /**
  * Test case for class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp.
@@ -7,10 +8,10 @@
  * @subpackage brute force protection
  *
  */
-class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUpTest extends Tx_Extbase_Tests_Unit_BaseTestCase
+class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var Aoe\FeloginBruteforceProtection\Hook\UserAuth\PostUserLookUp
+     * @var \Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp
      */
     private $postUserLookUp;
 
@@ -20,10 +21,10 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUpTest extends T
      */
     public function setUp()
     {
-        $configuration = $this->getMock('\Aoe\FeloginBruteforceProtection\System\Configuration');
+        $configuration = $this->getMock('\\Aoe\\FeloginBruteforceProtection\\System\\Configuration');
         $configuration->expects($this->any())->method('getRootPage')->will($this->returnValue(0));
 
-        $this->postUserLookUp = $this->getMock('Aoe\FeloginBruteforceProtection\Hook\UserAuth\PostUserLookUp');
+        $this->postUserLookUp = $this->getMock('\\Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp');
         $this->postUserLookUp->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
     }
 

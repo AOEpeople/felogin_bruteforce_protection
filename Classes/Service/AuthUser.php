@@ -27,15 +27,12 @@ namespace Aoe\FeloginBruteforceProtection\Service;
      ***************************************************************/
 
 /**
+ * @package Aoe\FeloginBruteforceProtection\\Service
+ *
  * @author Kevin Schu <kevin.schu@aoe.com>
  * @author Timo Fuchs <timo.fuchs@aoe.com>
  * @author Andre Wuttig <wuttig@portrino.de>
  *
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- * Class AuthUser
- *
- * @package Aoe\FeloginBruteforceProtection\\Service
  */
 class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
 {

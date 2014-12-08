@@ -1,4 +1,5 @@
 <?php
+namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Model;
 
 /***************************************************************
  * Copyright notice
@@ -24,28 +25,21 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
+
 /**
- * Test case for class Tx_FeloginBruteforceProtection_Domain_Model_Entry.
- *
- * @version $Id$
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- * @package TYPO3
- * @subpackage brute force protection
- *
- * @author Kevin Schu <kevin.schu@aoemedia.de>
+ * @package Aoe\FeloginBruteforceProtection\Tests\Domain\Model
  */
-class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_Tests_Unit_BaseTestCase
+class EntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
+     * @var Entry
      */
     protected $fixture;
 
     public function setUp()
     {
-        $this->fixture = new Aoe\FeloginBruteforceProtection\Domain\Model\Entry();
+        $this->fixture = new Entry();
     }
 
     public function tearDown()
@@ -70,5 +64,4 @@ class Tx_FeloginBruteforceProtection_Domain_Model_EntryTest extends Tx_Extbase_T
         $this->fixture->setFailures(12);
         $this->assertSame(12, $this->fixture->getFailures());
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
 
 /***************************************************************
  *  Copyright notice
@@ -29,15 +30,15 @@
  * @subpackage Domain_Repository
  * @author Kevin Schu <kevin.schu@aoemedia.de>
  */
-class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_Persistence_Repository
+class Entry extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
 
     /**
-     *
+     * initialize
      */
     public function __construct()
     {
-        $objectManager = t3lib_div::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         parent::__construct($objectManager);
     }
 
@@ -46,8 +47,8 @@ class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_
      */
     public function initializeObject()
     {
-        /** @var $defaultQuerySettings Tx_Extbase_Persistence_Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
+        $defaultQuerySettings = $this->objectManager->get('\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings');
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
         // don't add fields from enablecolumns constraint

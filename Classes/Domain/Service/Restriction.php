@@ -1,4 +1,5 @@
 <?php
+namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
  *  Copyright notice
@@ -24,16 +25,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
+use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
+
 /**
- * @package Tx_FeloginBruteforceProtection
- * @subpackage Domain_Service
+ * @package Aoe\FeloginBruteforceProtection\Domain\Service
+ *
  * @author Kevin Schu <kevin.schu@aoemedia.de>
  * @author Timo Fuchs <timo.fuchs@aoemedia.de>
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
+class Restriction
 {
-
     /**
      * @var boolean
      */
@@ -50,22 +52,22 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     private $configuration;
 
     /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Repository_Entry
+     * @var  EntryRepository
      */
     private $entryRepository;
 
     /**
-     * @var Tx_Extbase_Persistence_Manager
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
      */
     private $persistenceManager;
 
     /**
-     * @var Tx_Extbase_Object_ObjectManager
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
      */
     private $objectManager;
 
     /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Model_EntryTest
+     * @var Entry
      */
     private $entry;
 
@@ -93,28 +95,28 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_Domain_Repository_Entry $entryRepository
+     * @param \Aoe\FeloginBruteforceProtection\Domain\Repository\Entry $entryRepository
      * @return void
      */
-    public function injectEntryRepository(Tx_FeloginBruteforceProtection_Domain_Repository_Entry $entryRepository)
+    public function injectEntryRepository(\Aoe\FeloginBruteforceProtection\Domain\Repository\Entry $entryRepository)
     {
         $this->entryRepository = $entryRepository;
     }
 
     /**
-     * @param Tx_Extbase_Persistence_Manager $persistenceManager
+     * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager
      * @return void
      */
-    public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager)
+    public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
     }
 
     /**
-     * @param Tx_Extbase_Object_ObjectManager $objectManager
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
      * @return void
      */
-    public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager)
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -170,8 +172,8 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
      */
     private function createEntry()
     {
-        /** @var $entry Tx_FeloginBruteforceProtection_Domain_Model_Entry */
-        $this->entry = $this->objectManager->get('Tx_FeloginBruteforceProtection_Domain_Model_Entry');
+        /** @var $entry Entry */
+        $this->entry = $this->objectManager->get('Aoe\\FeloginBruteforceProtection\\Domain\\Model\\Entry');
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
         $this->entry->setTstamp(time());
@@ -197,10 +199,10 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isRestricted(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry)
+    private function isRestricted(Entry $entry)
     {
         if ($this->hasMaximumNumberOfFailuresReached($entry)) {
             if (false === $this->isRestrictionTimeReached($entry)) {
@@ -215,17 +217,17 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
      */
     private function hasEntry()
     {
-        return ($this->getEntry() instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry);
+        return ($this->getEntry() instanceof Entry);
     }
 
     /**
-     * @return Tx_FeloginBruteforceProtection_Domain_Model_Entry|NULL
+     * @return Entry|NULL
      */
     private function getEntry()
     {
         if (false === isset($this->entry)) {
             $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
-            if ($entry instanceof Tx_FeloginBruteforceProtection_Domain_Model_Entry) {
+            if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {
                     $this->removeEntry();
@@ -236,10 +238,10 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isOutdated(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry)
+    private function isOutdated(Entry $entry)
     {
         return (
             ($this->hasMaximumNumberOfFailuresReached($entry) && $this->isRestrictionTimeReached($entry)) ||
@@ -248,28 +250,28 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isResetTimeOver(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry)
+    private function isResetTimeOver(Entry $entry)
     {
         return ($entry->getCrdate() < time() - $this->configuration->getResetTime());
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function hasMaximumNumberOfFailuresReached(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry)
+    private function hasMaximumNumberOfFailuresReached(Entry $entry)
     {
         return ($entry->getFailures() >= $this->configuration->getMaximumNumerOfFailures());
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isRestrictionTimeReached(Tx_FeloginBruteforceProtection_Domain_Model_Entry $entry)
+    private function isRestrictionTimeReached(Entry $entry)
     {
         return ($entry->getTstamp() < time() - $this->configuration->getRestrictionTime());
     }

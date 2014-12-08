@@ -26,6 +26,8 @@ namespace Aoe\FeloginBruteforceProtection\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \Aoe\FeloginBruteforceProtection\System;
+
 /**
  * @package Aoe\FeloginBruteforceProtection\Command
  *
@@ -64,9 +66,9 @@ class CleanUpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
     public function cleanupCommand()
     {
         $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(
-            $this->configuration->get(\Aoe\FeloginBruteforceProtection\System\Configuration::CONF_SECONDS_TILL_RESET),
-            $this->configuration->get(\Aoe\FeloginBruteforceProtection\System\Configuration::CONF_MAX_FAILURES),
-            $this->configuration->get(\Aoe\FeloginBruteforceProtection\System\Configuration::CONF_RESTRICTION_TIME)
+            $this->configuration->get(System\Configuration::CONF_SECONDS_TILL_RESET),
+            $this->configuration->get(System\Configuration::CONF_MAX_FAILURES),
+            $this->configuration->get(System\Configuration::CONF_RESTRICTION_TIME)
         );
 
         foreach ($entriesToCleanUp as $entryToCleanUp) {
