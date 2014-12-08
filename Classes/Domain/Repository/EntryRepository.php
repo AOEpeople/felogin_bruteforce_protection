@@ -59,8 +59,8 @@ class EntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param $secondsTillReset
      * @param $maxFailures
      * @param $restrictionTime
-     * @param $identifier
-     * @return void
+     * @param null $identifier
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
     public function findEntriesToCleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null)
     {

@@ -28,7 +28,6 @@
  * @package Tx_FeloginBruteforceProtection
  * @subpackage Domain_Repository
  * @author Kevin Schu <kevin.schu@aoemedia.de>
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Tx_FeloginBruteforceProtection_Domain_Repository_Entry extends Tx_Extbase_Persistence_Repository
 {

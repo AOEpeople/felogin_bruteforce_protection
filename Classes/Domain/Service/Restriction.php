@@ -45,7 +45,7 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     private $clientIdentifier;
 
     /**
-     * @var Tx_FeloginBruteforceProtection_System_Configuration
+     * @var \Aoe\FeloginBruteforceProtection\System\Configuration
      */
     private $configuration;
 
@@ -65,7 +65,7 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     private $objectManager;
 
     /**
-     * @var Tx_FeloginBruteforceProtection_Domain_Model_Entry
+     * @var Tx_FeloginBruteforceProtection_Domain_Model_EntryTest
      */
     private $entry;
 
@@ -84,10 +84,10 @@ class Tx_FeloginBruteforceProtection_Domain_Service_Restriction
     }
 
     /**
-     * @param Tx_FeloginBruteforceProtection_System_Configuration $configuration
+     * @param \Aoe\FeloginBruteforceProtection\System\Configuration $configuration
      * @return void
      */
-    public function injectConfiguration(Tx_FeloginBruteforceProtection_System_Configuration $configuration)
+    public function injectConfiguration(\Aoe\FeloginBruteforceProtection\System\Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

@@ -27,14 +27,12 @@ namespace Aoe\FeloginBruteforceProtection\Command;
  ***************************************************************/
 
 /**
- * Class CleanUpCommandController
- *
  * @package Aoe\FeloginBruteforceProtection\Command
  *
  * @author Andre Wuttig <wuttig@portrino.de>
  */
-class CleanUpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
-
+class CleanUpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      * @inject
@@ -59,18 +57,22 @@ class CleanUpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
      */
     protected $configuration;
 
-    public function cleanupCommand() {
+    /**
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @return void
+     */
+    public function cleanupCommand()
+    {
         $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(
             $this->configuration->get(\Aoe\FeloginBruteforceProtection\System\Configuration::CONF_SECONDS_TILL_RESET),
             $this->configuration->get(\Aoe\FeloginBruteforceProtection\System\Configuration::CONF_MAX_FAILURES),
             $this->configuration->get(\Aoe\FeloginBruteforceProtection\System\Configuration::CONF_RESTRICTION_TIME)
         );
 
-        foreach($entriesToCleanUp as $entryToCleanUp) {
+        foreach ($entriesToCleanUp as $entryToCleanUp) {
             $this->entryRepository->remove($entryToCleanUp);
         }
 
         $this->persistenceManager->persistAll();
     }
-
 }

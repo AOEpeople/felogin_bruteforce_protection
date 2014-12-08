@@ -67,7 +67,13 @@ class Tx_FeloginBruteforceProtection_Domain_Service_RestrictionTest extends \TYP
      */
     public function isClientRestrictedWithFailures()
     {
-        $configuration = $this->getMock('Aoe\FeloginBruteforceProtection\System\Configuration', array(), array(), '', false);
+        $configuration = $this->getMock(
+            'Aoe\FeloginBruteforceProtection\System\Configuration',
+            array(),
+            array(),
+            '',
+            false
+        );
         $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
@@ -93,7 +99,13 @@ class Tx_FeloginBruteforceProtection_Domain_Service_RestrictionTest extends \TYP
      */
     public function isClientRestrictedWithFailuresAndTimeout()
     {
-        $configuration = $this->getMock('Aoe\FeloginBruteforceProtection\System\Configuration', array(), array(), '', false);
+        $configuration = $this->getMock(
+            'Aoe\FeloginBruteforceProtection\System\Configuration',
+            array(),
+            array(),
+            '',
+            false
+        );
         $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
@@ -119,7 +131,13 @@ class Tx_FeloginBruteforceProtection_Domain_Service_RestrictionTest extends \TYP
      */
     public function isClientRestrictedWithLessFailures()
     {
-        $configuration = $this->getMock('Aoe\FeloginBruteforceProtection\System\Configuration', array(), array(), '', false);
+        $configuration = $this->getMock(
+            'Aoe\FeloginBruteforceProtection\System\Configuration',
+            array(),
+            array(),
+            '',
+            false
+        );
         $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));

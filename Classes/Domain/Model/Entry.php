@@ -38,7 +38,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Model;
  */
 class Entry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * @var string
      */
