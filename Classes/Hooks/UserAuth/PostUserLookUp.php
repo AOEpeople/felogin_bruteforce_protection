@@ -1,5 +1,4 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 
 /***************************************************************
  * Copyright notice
@@ -37,7 +36,7 @@ use TYPO3\CMS\Frontend as Frontend;
  * @author Andre Wuttig <wuttig@portrino.de>
  * @author Stefan Masztalerz <stefan.masztalerz@aoe.com>
  */
-class PostUserLookUp
+class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
