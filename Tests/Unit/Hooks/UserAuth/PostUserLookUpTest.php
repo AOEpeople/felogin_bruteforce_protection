@@ -11,7 +11,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
 class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var \Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp
+     * @var Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
      */
     private $postUserLookUp;
 
@@ -21,11 +21,9 @@ class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setUp()
     {
-        $configuration = $this->getMock('\\Aoe\\FeloginBruteforceProtection\\System\\Configuration');
-        $configuration->expects($this->any())->method('getRootPage')->will($this->returnValue(0));
-
-        $this->postUserLookUp = $this->getMock('\\Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp');
-        $this->postUserLookUp->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+        $this->postUserLookUp = $this->getMockBuilder('Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp')
+                                     ->disableOriginalConstructor()
+                                     ->getMock();
     }
 
     /**
@@ -43,7 +41,7 @@ class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function handlePostUserLookUpWithBackendLogin()
     {
-        $feUserAuth = $this->getMock('\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
+        $feUserAuth = $this->getMock('\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
         $feUserAuth->loginType = 'BE';
         $params = array();
         $params['pObj'] = $feUserAuth;
