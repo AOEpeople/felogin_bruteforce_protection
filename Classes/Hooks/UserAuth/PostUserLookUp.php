@@ -219,3 +219,4 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
         return $this->objectManager;
     }
 }
+

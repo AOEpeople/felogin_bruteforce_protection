@@ -16,19 +16,19 @@ $TCA['tx_feloginbruteforceprotection_domain_model_entry'] = array(
         '1' => array('showitem' => ''),
     ),
     'columns' => array(
-        'tstamp' => Array(
+        'tstamp' => array(
             'exclude' => 1,
             'label' => 'Update date',
-            'config' => Array(
+            'config' => array(
                 'type' => 'none',
                 'format' => 'date',
                 'eval' => 'date',
             )
         ),
-        'crdate' => Array(
+        'crdate' => array(
             'exclude' => 1,
             'label' => 'Creation date',
-            'config' => Array(
+            'config' => array(
                 'type' => 'none',
                 'format' => 'date',
                 'eval' => 'date',
