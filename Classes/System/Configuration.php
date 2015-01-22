@@ -56,6 +56,16 @@ class Configuration
     const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
 
     /**
+     * @var string
+     */
+    const LOGGING_ENABLED = 'logging_enabled';
+
+    /**
+     * @var string
+     */
+    const LOGGING_LEVEL = 'logging_level';
+
+    /**
      * @var array
      */
     private $configuration = array();
@@ -112,6 +122,22 @@ class Configuration
     public function getResetTime()
     {
         return (integer)$this->get(self::CONF_SECONDS_TILL_RESET);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoggingEnabled()
+    {
+        return (boolean)$this->get(self::LOGGING_ENABLED) == 1;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLogLevel()
+    {
+        return (integer)$this->get(self::LOGGING_LEVEL);
     }
 
     /**

@@ -186,7 +186,7 @@ class RestrictionService
     /**
      * @return boolean
      */
-    private function hasEntry()
+    public function hasEntry()
     {
         return ($this->getEntry() instanceof \Aoe\FeloginBruteforceProtection\Domain\Model\Entry);
     }
@@ -194,7 +194,7 @@ class RestrictionService
     /**
      * @return \Aoe\FeloginBruteforceProtection\Domain\Model\Entry|NULL
      */
-    private function getEntry()
+    public function getEntry()
     {
         if (false === isset($this->entry)) {
             $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());

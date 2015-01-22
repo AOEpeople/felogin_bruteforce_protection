@@ -27,6 +27,7 @@
 use TYPO3\CMS\Core as Core;
 use TYPO3\CMS\Extbase\Utility as Utility;
 use TYPO3\CMS\Frontend as Frontend;
+use Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\\Hook\UserAuth
@@ -54,6 +55,11 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
     protected $restrictionService;
 
     /**
+     * @var Logger\LoggerService
+     */
+    protected $loggerService;
+
+    /**
      * @param array $params
      * @return void
      */
@@ -72,10 +78,43 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 
         if ($this->hasFeUserLoggedIn($frontendUserAuthentication)) {
             $this->getRestrictionService()->removeEntry();
+            $this->log('Bruteforce Counter removed', Logger\LoggerInterface::SEVERITY_INFO);
         } elseif ($this->hasFeUserLogInFailed($frontendUserAuthentication)) {
             $this->getRestrictionService()->incrementFailureCount();
             $this->updateGlobals($frontendUserAuthentication);
+
+            if ($this->getRestrictionService()->isClientRestricted()) {
+                $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_WARNING);
+            } else {
+                $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_NOTICE);
+            }
         }
+    }
+
+    /**
+     * @param $message
+     * @param $severity
+     */
+    private function log($message, $severity)
+    {
+        $failureCount=0;
+        if ($this->getRestrictionService()->hasEntry()) {
+            $failureCount=$this->getRestrictionService()->getEntry()->getFailures();
+        }
+        if ($this->getRestrictionService()->isClientRestricted()) {
+            $restricted = 'Yes';
+        } else {
+            $restricted = 'No';
+        }
+        $additionalData = array(
+            'FAILURE_COUNT' => $failureCount,
+            'RESTRICTED' => $restricted,
+            'REMOTE_ADDR' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+            'REQUEST_URI' => t3lib_div::getIndpEnv('REQUEST_URI'),
+            'HTTP_USER_AGENT' => t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+        );
+
+        $this->getLoggerService()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }
 
     /**
@@ -134,6 +173,17 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return Logger\LoggerService
+     */
+    private function getLoggerService()
+    {
+        if (!isset($this->loggerService)) {
+            $this->loggerService = new Logger\LoggerService();
+        }
+        return $this->loggerService;
     }
 
     /**
