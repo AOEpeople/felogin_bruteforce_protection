@@ -8,7 +8,8 @@ if (TYPO3_MODE == 'BE') {
     if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) == false) {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = array();
     }
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Aoe\\FeloginBruteforceProtection\\Command\\CleanUpCommandController';
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] =
+        'Aoe\\FeloginBruteforceProtection\\Command\\CleanUpCommandController';
 }
 
 if (TYPO3_MODE == 'FE') {
