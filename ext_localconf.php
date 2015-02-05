@@ -20,7 +20,8 @@ if (TYPO3_MODE == 'FE') {
         '/Classes/Hooks/UserAuth/PostUserLookUp.php:Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp->handlePostUserLookUp';
     // postProcContent hook for fe_login
     #$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'][] =
-    #    'EXT:' . $_EXTKEY . '/Classes/Hooks/FeLogin/PostProcContent.php:Aoe\\FeloginBruteforceProtection\\Hook\\FeLogin\\PostProcContent->handlePostProcContent';
+    #    'EXT:' . $_EXTKEY .
+    # '/Classes/Hooks/FeLogin/PostProcContent.php:Aoe\\FeloginBruteforceProtection\\Hook\\FeLogin\\PostProcContent->handlePostProcContent';
 
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
         $_EXTKEY,
