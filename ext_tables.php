@@ -5,7 +5,8 @@ if (!defined('TYPO3_MODE')) {
 
 $TCA['tx_feloginbruteforceprotection_domain_model_entry'] = array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml:tx_feloginbruteforceprotection_domain_model_entry',
+        'title' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml' .
+            ':tx_feloginbruteforceprotection_domain_model_entry',
         'label' => 'identifier',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',

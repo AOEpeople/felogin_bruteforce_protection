@@ -36,7 +36,8 @@ $TCA['tx_feloginbruteforceprotection_domain_model_entry'] = array(
         ),
         'identifier' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml:tx_feloginbruteforceprotection_domain_model_entry.identifier',
+            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml' .
+                ':tx_feloginbruteforceprotection_domain_model_entry.identifier',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -45,7 +46,8 @@ $TCA['tx_feloginbruteforceprotection_domain_model_entry'] = array(
         ),
         'failures' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml:tx_feloginbruteforceprotection_domain_model_entry.failures',
+            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml' .
+                ':tx_feloginbruteforceprotection_domain_model_entry.failures',
             'config' => array(
                 'type' => 'input',
                 'size' => 4,

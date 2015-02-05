@@ -47,4 +47,5 @@ class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);
     }
+
 }

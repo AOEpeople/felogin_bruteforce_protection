@@ -6,15 +6,15 @@ if (!defined('TYPO3_MODE')) {
 
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml:tx_feloginbruteforceprotection_domain_model_entry',
+        'title' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml' .
+            ':tx_feloginbruteforceprotection_domain_model_entry',
         'label' => 'identifier',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'dividers2tabs' => true,
         'searchFields' => 'identifier, failures,',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath(
-                'felogin_bruteforce_protection'
-            ) . 'Resources/Public/Icons/TCA/tx_feloginbruteforceprotection_domain_model_entry.gif'
+        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('felogin_bruteforce_protection') .
+            'Resources/Public/Icons/TCA/tx_feloginbruteforceprotection_domain_model_entry.gif'
     ),
     'interface' => array(
         'showRecordFieldList' => 'identifier,failures',
@@ -26,19 +26,19 @@ return array(
         '1' => array('showitem' => ''),
     ),
     'columns' => array(
-        'tstamp' => Array(
+        'tstamp' => array(
             'exclude' => 1,
             'label' => 'Update date',
-            'config' => Array(
+            'config' => array(
                 'type' => 'none',
                 'format' => 'date',
                 'eval' => 'date',
             )
         ),
-        'crdate' => Array(
+        'crdate' => array(
             'exclude' => 1,
             'label' => 'Creation date',
-            'config' => Array(
+            'config' => array(
                 'type' => 'none',
                 'format' => 'date',
                 'eval' => 'date',
@@ -46,7 +46,8 @@ return array(
         ),
         'identifier' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml:tx_feloginbruteforceprotection_domain_model_entry.identifier',
+            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml' .
+                ':tx_feloginbruteforceprotection_domain_model_entry.identifier',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
@@ -55,7 +56,8 @@ return array(
         ),
         'failures' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml:tx_feloginbruteforceprotection_domain_model_entry.failures',
+            'label' => 'LLL:EXT:felogin_bruteforce_protection/Resources/Private/Language/locallang_db.xml' .
+                ':tx_feloginbruteforceprotection_domain_model_entry.failures',
             'config' => array(
                 'type' => 'input',
                 'size' => 4,
