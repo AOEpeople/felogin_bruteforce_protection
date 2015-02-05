@@ -26,7 +26,11 @@
 
 use TYPO3\CMS\Core as Core;
 use TYPO3\CMS\Extbase\Utility as Utility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend as Frontend;
+use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use Aoe\FeloginBruteforceProtection\Service\Logger;
+use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
 use Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /**
@@ -40,7 +44,7 @@ use Aoe\FeloginBruteforceProtection\Service\Logger;
 class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
 
@@ -60,6 +64,16 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
     protected $loggerService;
 
     /**
+     * @var Logger\Logger
+     */
+    protected $logger;
+
+    /**
+     * @var FeLoginBruteForceApi
+     */
+    protected $feLoginBruteForceApi;
+
+    /**
      * @param array $params
      * @return void
      */
@@ -68,11 +82,11 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUserAuthentication */
         $frontendUserAuthentication = $params['pObj'];
 
-        if (false === $frontendUserAuthentication instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication) {
+        if (!$frontendUserAuthentication instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication) {
             return;
         }
 
-        if (false === $this->getConfiguration()->isEnabled()) {
+        if (!$this->getConfiguration()->isEnabled()) {
             return;
         }
 
@@ -87,6 +101,19 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
                 $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_WARNING);
             } else {
                 $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_NOTICE);
+            }
+
+            if ($this->getFeLoginBruteForceApi()->shouldCountWithinThisRequest()) {
+                if ($this->getRestrictionService()->isClientRestricted()) {
+                    $this->log('Bruteforce Protection Locked', Logger\LoggerInterface::SEVERITY_WARNING);
+                } else {
+                    $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_NOTICE);
+                }
+            } else {
+                $this->log(
+                    'Bruteforce Counter would increase, but is prohibited by API',
+                    Logger\LoggerInterface::SEVERITY_NOTICE
+                );
             }
         }
     }
@@ -118,17 +145,47 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
     }
 
     /**
+     * @param $message
+     * @param $severity
+     */
+    private function log($message, $severity)
+    {
+        $failureCount=0;
+        if ($this->getRestrictionService()->hasEntry()) {
+            $failureCount=$this->getRestrictionService()->getEntry()->getFailures();
+        }
+        if ($this->getRestrictionService()->isClientRestricted()) {
+            $restricted = 'Yes';
+        } else {
+            $restricted = 'No';
+        }
+        $additionalData = array(
+            'FAILURE_COUNT' => $failureCount,
+            'RESTRICTED' => $restricted,
+            'REMOTE_ADDR' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+            'REQUEST_URI' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+            'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
+        );
+
+        $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
+    }
+
+    /**
      * @param $userAuthObject
      * @return boolean
      */
     private function updateGlobals(&$userAuthObject)
     {
-        $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] = false;
+        $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
+            false;
         if ($this->getRestrictionService()->isClientRestricted()) {
             $userAuthObject->loginFailure = 1;
-            $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] = true;
-            $GLOBALS ['felogin_bruteforce_protection'] ['restriction_time'] = $this->getConfiguration()->getRestrictionTime();
-            $GLOBALS ['felogin_bruteforce_protection'] ['restriction_message'] = $this->getRestrictionMessage();
+            $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
+                true;
+            $GLOBALS ['felogin_bruteforce_protection'] ['restriction_time'] =
+                $this->getConfiguration()->getRestrictionTime();
+            $GLOBALS ['felogin_bruteforce_protection'] ['restriction_message'] =
+                $this->getRestrictionMessage();
             return false;
         }
         return true;
@@ -187,12 +244,24 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
     }
 
     /**
+     * @return Logger\Logger
+     */
+    private function getLogger()
+    {
+        if (!isset($this->logger)) {
+            $this->logger = new Logger\Logger();
+        }
+        return $this->logger;
+    }
+
+    /**
      * @return \Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService
      */
     private function getRestrictionService()
     {
         if (false === isset ($this->restrictionService)) {
-            $this->restrictionService = $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
+            $this->restrictionService = $this->getObjectManager()
+                ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
         }
         return $this->restrictionService;
     }
@@ -203,7 +272,8 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
     protected function getConfiguration()
     {
         if (false === isset ($this->configuration)) {
-            $this->configuration = $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+            $this->configuration = $this->getObjectManager()
+                ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
         }
         return $this->configuration;
     }
@@ -217,6 +287,19 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
             $this->objectManager = Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         }
         return $this->objectManager;
+    }
+
+    /**
+     * @return FeLoginBruteForceApi
+     */
+    protected function getFeLoginBruteForceApi()
+    {
+        if (!isset ($this->feLoginBruteForceApi)) {
+            $this->feLoginBruteForceApi = $this->getObjectManager()->get(
+                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
+            );
+        }
+        return $this->feLoginBruteForceApi;
     }
 }
 

@@ -235,7 +235,7 @@ class RestrictionService
      */
     private function hasMaximumNumberOfFailuresReached(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
     {
-        return ($entry->getFailures() >= $this->configuration->getMaximumNumerOfFailures());
+        return ($entry->getFailures() >= $this->configuration->getMaximumNumberOfFailures());
     }
 
     /**

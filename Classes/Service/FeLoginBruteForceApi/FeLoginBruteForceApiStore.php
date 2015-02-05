@@ -1,8 +1,8 @@
 <?php
 
-namespace Aoe\FeloginBruteforceProtection\Service\Logger;
+namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\SingletonInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -29,31 +29,35 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  ***************************************************************/
 
 /**
- * Class DevLogger
- * @package Aoe\FeloginBruteforceProtection\Service\Logger
+ * Class FeLoginBruteForceApiStore
+ * This Class is a singleton which is able to store Property Values during a Request, when an Api Call to the
+ * BruteForceProtection extension makes this necessary
+ * @package Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi
  */
-class DevLogger implements LoggerInterface
+class FeLoginBruteForceApiStore implements SingletonInterface
 {
+    /** @var array */
+    private $propertyStore = array();
+
     /**
-     * @param $message, The Message to log
-     * @param int $severity type and severity of log entry
-     * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
-     * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
-     *                                to find
+     * @param $propertyName
+     * @param $propertyValue
      * @return void
      */
-    public function log(
-        $message,
-        $severity = self::SEVERITY_NOTICE,
-        $additionalData = null,
-        $packageKey = null
-    ) {
-        if (!isset($packageKey)) {
-            $packageKey = '';
+    public function setProperty($propertyName, $propertyValue)
+    {
+        $this->propertyStore[$propertyName] = $propertyValue;
+    }
+
+    /**
+     * @param $propertyName
+     * @return null
+     */
+    public function getProperty($propertyName)
+    {
+        if (array_key_exists($propertyName, $this->propertyStore)) {
+            return $this->propertyStore[$propertyName];
         }
-        if (!isset($additionalData)) {
-            $additionalData = false;
-        }
-        GeneralUtility::devLog($message, $packageKey, $severity, $additionalData);
+        return null;
     }
 }

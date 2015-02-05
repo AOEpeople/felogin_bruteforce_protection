@@ -65,7 +65,7 @@ class RestrictionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function isClientRestricted()
     {
         $configuration = $this->getMock('Aoe\FeloginBruteforceProtection\System\Configuration');
-        $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
+        $configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
         $entryRepository = $this->getMock(
@@ -96,7 +96,7 @@ class RestrictionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
+        $configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
         $entry = $this->getMock('Aoe\FeloginBruteforceProtection\Domain\Model\Entry', array(), array(), '', false);
@@ -128,7 +128,7 @@ class RestrictionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
+        $configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
         $entry = $this->getMock('Aoe\FeloginBruteforceProtection\Domain\Model\Entry', array(), array(), '', false);
@@ -160,7 +160,7 @@ class RestrictionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
             '',
             false
         );
-        $configuration->expects($this->any())->method('getMaximumNumerOfFailures')->will($this->returnValue(10));
+        $configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
         $entry = $this->getMock('Aoe\FeloginBruteforceProtection\Domain\Model\Entry', array(), array(), '', false);

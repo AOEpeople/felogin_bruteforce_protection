@@ -264,7 +264,7 @@ class Restriction
      */
     private function hasMaximumNumberOfFailuresReached(Entry $entry)
     {
-        return ($entry->getFailures() >= $this->configuration->getMaximumNumerOfFailures());
+        return ($entry->getFailures() >= $this->configuration->getMaximumNumberOfFailures());
     }
 
     /**

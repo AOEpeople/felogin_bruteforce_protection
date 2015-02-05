@@ -83,7 +83,8 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
     public function getUser()
     {
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'][$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
+            $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']
+            [$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
             return array('uid' => 0);
         }
         return parent::getUser();
@@ -117,7 +118,8 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
     private function getRestrictionService()
     {
         if (false === isset ($this->restrictionService)) {
-            $this->restrictionService = $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
+            $this->restrictionService = $this->getObjectManager()
+                ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
         }
         return $this->restrictionService;
     }
@@ -128,7 +130,8 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
     protected function getConfiguration()
     {
         if (false === isset ($this->configuration)) {
-            $this->configuration = $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+            $this->configuration = $this->getObjectManager()
+                ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
         }
         return $this->configuration;
     }
@@ -139,9 +142,10 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
     private function getObjectManager()
     {
         if (false === isset ($this->objectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\CMS\Extbase\Object\ObjectManager'
+            );
         }
         return $this->objectManager;
     }
-
 }

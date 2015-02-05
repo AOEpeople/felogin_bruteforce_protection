@@ -99,7 +99,7 @@ class Configuration
      *
      * @return integer
      */
-    public function getMaximumNumerOfFailures()
+    public function getMaximumNumberOfFailures()
     {
         return (integer)$this->get(self::CONF_MAX_FAILURES);
     }
@@ -122,6 +122,22 @@ class Configuration
     public function getResetTime()
     {
         return (integer)$this->get(self::CONF_SECONDS_TILL_RESET);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoggingEnabled()
+    {
+        return (boolean)$this->get(self::LOGGING_ENABLED) == 1;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLogLevel()
+    {
+        return (integer)$this->get(self::LOGGING_LEVEL);
     }
 
     /**
