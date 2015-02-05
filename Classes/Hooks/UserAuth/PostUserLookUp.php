@@ -31,7 +31,6 @@ use TYPO3\CMS\Frontend as Frontend;
 use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use Aoe\FeloginBruteforceProtection\Service\Logger;
 use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
-use Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\\Hook\UserAuth
@@ -116,32 +115,6 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
                 );
             }
         }
-    }
-
-    /**
-     * @param $message
-     * @param $severity
-     */
-    private function log($message, $severity)
-    {
-        $failureCount=0;
-        if ($this->getRestrictionService()->hasEntry()) {
-            $failureCount=$this->getRestrictionService()->getEntry()->getFailures();
-        }
-        if ($this->getRestrictionService()->isClientRestricted()) {
-            $restricted = 'Yes';
-        } else {
-            $restricted = 'No';
-        }
-        $additionalData = array(
-            'FAILURE_COUNT' => $failureCount,
-            'RESTRICTED' => $restricted,
-            'REMOTE_ADDR' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-            'REQUEST_URI' => t3lib_div::getIndpEnv('REQUEST_URI'),
-            'HTTP_USER_AGENT' => t3lib_div::getIndpEnv('HTTP_USER_AGENT')
-        );
-
-        $this->getLoggerService()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }
 
     /**

@@ -141,22 +141,6 @@ class Configuration
     }
 
     /**
-     * @return boolean
-     */
-    public function isLoggingEnabled()
-    {
-        return (boolean)$this->get(self::LOGGING_ENABLED) == 1;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLogLevel()
-    {
-        return (integer)$this->get(self::LOGGING_LEVEL);
-    }
-
-    /**
      * @param string $key
      * @return mixed
      * @throws \InvalidArgumentException
