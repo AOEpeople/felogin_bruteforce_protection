@@ -1,42 +1,41 @@
 <?php
 namespace Aoe\FeloginBruteforceProtection\Service;
 
-    /***************************************************************
-     *  Copyright notice
-     *
-     *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
-     *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
-     *
-     *  All rights reserved
-     *
-     *  This script is part of the TYPO3 project. The TYPO3 project is
-     *  free software; you can redistribute it and/or modify
-     *  it under the terms of the GNU General Public License as published by
-     *  the Free Software Foundation; either version 3 of the License, or
-     *  (at your option) any later version.
-     *
-     *  The GNU General Public License can be found at
-     *  http://www.gnu.org/copyleft/gpl.html.
-     *
-     *  This script is distributed in the hope that it will be useful,
-     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     *  GNU General Public License for more details.
-     *
-     *  This copyright notice MUST APPEAR in all copies of the script!
-     ***************************************************************/
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
+ *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
- * @package Aoe\FeloginBruteforceProtection\\Service
+ * @package Aoe\FeloginBruteforceProtection\Service
  *
  * @author Kevin Schu <kevin.schu@aoe.com>
  * @author Timo Fuchs <timo.fuchs@aoe.com>
  * @author Andre Wuttig <wuttig@portrino.de>
- *
  */
 class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
 {
-
     /**
      * @var \Aoe\FeloginBruteforceProtection\System\Configuration
      */
@@ -58,6 +57,20 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
      * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     protected $frontendUserAuthentication;
+
+    /**
+     * Load extbase dependencies to use repositories and persistence.
+     */
+    public function init()
+    {
+        ExtensionManagementUtility::loadBaseTca(false);
+        if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
+            $GLOBALS['TSFE']->sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
+        }
+        if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->tmpl)) {
+            $GLOBALS['TSFE']->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tstemplate');
+        }
+    }
 
     /**
      * Initialize authentication service

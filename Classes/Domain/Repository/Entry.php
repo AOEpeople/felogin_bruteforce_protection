@@ -35,22 +35,6 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Entry extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
-    /**
-     * initialize
-     */
-    public function __construct()
-    {
-        if (false === is_array($GLOBALS['TCA'])){
-            CoreUtility\ExtensionManagementUtility::loadBaseTca(false);
-        }
-        if (false === $GLOBALS['TSFE']->sys_page instanceof TYPO3\CMS\Frontend\Page\PageRepository){
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-        }
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        parent::__construct($objectManager);
-    }
-
     /**
      * @return void
      */
