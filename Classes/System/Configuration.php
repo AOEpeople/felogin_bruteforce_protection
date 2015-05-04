@@ -66,6 +66,11 @@ class Configuration
     const LOGGING_LEVEL = 'logging_level';
 
     /**
+     * @var string
+     */
+    const EXCLUDED_IPS = 'exclude_ips';
+
+    /**
      * @var array
      */
     private $configuration = array();
@@ -138,6 +143,14 @@ class Configuration
     public function getLogLevel()
     {
         return (integer)$this->get(self::LOGGING_LEVEL);
+    }
+
+    /**
+     * @return array
+     */
+    public function getExcludedIps()
+    {
+        return explode(',', $this->get(self::EXCLUDED_IPS));
     }
 
     /**

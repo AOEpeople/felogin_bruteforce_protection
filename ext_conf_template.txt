@@ -15,3 +15,6 @@ logging_enabled = 0
 
 # cat=basic; type=int; label=Log everything greater equal this level (SEVERITY_INFO=0, SEVERITY_NOTICE=1, SEVERITY_WARNING=2, SEVERITY_ERROR=3)
 logging_level = 0
+
+# cat=basic; type=string; label=Exclude IP´s: Define a comma separated list of IP addresses that should be excluded from restriction.
+exclude_ips =

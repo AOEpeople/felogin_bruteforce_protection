@@ -107,6 +107,19 @@ class RestrictionService
     }
 
     /**
+     * If the current IP is matching against one specified in the configuration this will return true;
+     *
+     * @return boolean
+     */
+    public function isExcludeIp()
+    {
+        if (in_array($this->getClientIp(), $this->configuration->getExcludedIps())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @return void
      */
     public function removeEntry()
@@ -256,9 +269,21 @@ class RestrictionService
     {
         if (false === isset($this->clientIdentifier)) {
             $this->clientIdentifier = md5(
-                $_SERVER['REMOTE_ADDR'] . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+                $this->getClientIp() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
             );
         }
         return $this->clientIdentifier;
+    }
+
+    /**
+     * Return clients IP address.
+     *
+     * @todo implement X_FORWARDED support
+     *
+     * @return string
+     */
+    private function getClientIp()
+    {
+        return $_SERVER['REMOTE_ADDR'];
     }
 }

@@ -89,6 +89,14 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
             return;
         }
 
+        if ($this->getRestrictionService()->isExcludeIp()) {
+            $this->log(
+                'Client will be skipped due to configured exclude IP address.',
+                Logger\LoggerInterface::SEVERITY_NOTICE
+            );
+            return;
+        }
+
         if ($this->hasFeUserLoggedIn($frontendUserAuthentication)) {
             $this->getRestrictionService()->removeEntry();
             $this->log('Bruteforce Counter removed', Logger\LoggerInterface::SEVERITY_INFO);
@@ -123,9 +131,9 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
      */
     private function log($message, $severity)
     {
-        $failureCount=0;
+        $failureCount = 0;
         if ($this->getRestrictionService()->hasEntry()) {
-            $failureCount=$this->getRestrictionService()->getEntry()->getFailures();
+            $failureCount = $this->getRestrictionService()->getEntry()->getFailures();
         }
         if ($this->getRestrictionService()->isClientRestricted()) {
             $restricted = 'Yes';
