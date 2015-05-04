@@ -18,3 +18,6 @@ logging_level = 0
 
 # cat=basic; type=string; label=Exclude IP´s: Define a comma separated list of IP addresses that should be excluded from restriction.
 exclude_ips =
+
+# cat=basic; type=boolean; label=Use HTTP_X_FORWARDED_FOR for client ip evaluation.
+x_forwarded_for = 0

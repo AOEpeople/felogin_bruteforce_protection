@@ -278,12 +278,13 @@ class RestrictionService
     /**
      * Return clients IP address.
      *
-     * @todo implement X_FORWARDED support
-     *
      * @return string
      */
     private function getClientIp()
     {
+        if ($this->configuration->getXForwardedFor() && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
         return $_SERVER['REMOTE_ADDR'];
     }
 }

@@ -71,6 +71,11 @@ class Configuration
     const EXCLUDED_IPS = 'exclude_ips';
 
     /**
+     * @var string
+     */
+    const X_FORWARDED_FOR = 'x_forwarded_for';
+
+    /**
      * @var array
      */
     private $configuration = array();
@@ -151,6 +156,14 @@ class Configuration
     public function getExcludedIps()
     {
         return explode(',', $this->get(self::EXCLUDED_IPS));
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getXForwardedFor()
+    {
+        return (boolean)$this->get(self::X_FORWARDED_FOR);
     }
 
     /**
