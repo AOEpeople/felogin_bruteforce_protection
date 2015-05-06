@@ -1,6 +1,8 @@
 <?php
 namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
 
+use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
+
 /**
  * Test case for class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp.
  *
@@ -11,7 +13,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
 class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
     /**
-     * @var Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
+     * @var PostUserLookUp
      */
     private $postUserLookUp;
 
@@ -21,9 +23,10 @@ class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function setUp()
     {
-        $this->postUserLookUp = $this->getMockBuilder('Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp')
-                                     ->disableOriginalConstructor()
-                                     ->getMock();
+        $this->postUserLookUp = $this
+            ->getMockBuilder('Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -47,5 +50,4 @@ class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);
     }
-
 }
