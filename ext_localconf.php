@@ -17,7 +17,8 @@ if (TYPO3_MODE == 'FE') {
     $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'][$_EXTKEY] =
         'EXT:' .
         $_EXTKEY .
-        '/Classes/Hooks/UserAuth/PostUserLookUp.php:Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp->handlePostUserLookUp';
+        '/Classes/Hooks/UserAuth/PostUserLookUp.php:' .
+        '\\Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp->handlePostUserLookUp';
     // postProcContent hook for fe_login
     #$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'][] =
     #    'EXT:' . $_EXTKEY .

@@ -1,4 +1,5 @@
 <?php
+namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 
 /***************************************************************
  * Copyright notice
@@ -40,7 +41,7 @@ use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteFor
  * @author Andre Wuttig <wuttig@portrino.de>
  * @author Stefan Masztalerz <stefan.masztalerz@aoe.com>
  */
-class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
+class PostUserLookUp
 {
     /**
      * @var ObjectManagerInterface
@@ -282,5 +283,4 @@ class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp
         }
         return $this->feLoginBruteForceApi;
     }
-
 }

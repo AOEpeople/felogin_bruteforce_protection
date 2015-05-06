@@ -77,5 +77,4 @@ class CleanUpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Command
 
         $this->persistenceManager->persistAll();
     }
-
 }
