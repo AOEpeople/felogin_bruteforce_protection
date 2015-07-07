@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('TYPO3_MODE')) {
-    die ('Access denied.');
+    die('Access denied.');
 }
 
 $TCA['tx_feloginbruteforceprotection_domain_model_entry'] = array(

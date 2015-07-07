@@ -276,7 +276,7 @@ class PostUserLookUp
      */
     protected function getFeLoginBruteForceApi()
     {
-        if (!isset ($this->feLoginBruteForceApi)) {
+        if (!isset($this->feLoginBruteForceApi)) {
             $this->feLoginBruteForceApi = $this->getObjectManager()->get(
                 'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
             );
