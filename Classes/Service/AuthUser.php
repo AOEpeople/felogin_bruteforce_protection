@@ -130,7 +130,7 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
      */
     private function getRestrictionService()
     {
-        if (false === isset ($this->restrictionService)) {
+        if (false === isset($this->restrictionService)) {
             $this->restrictionService = $this->getObjectManager()
                 ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
         }
@@ -142,7 +142,7 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
      */
     protected function getConfiguration()
     {
-        if (false === isset ($this->configuration)) {
+        if (false === isset($this->configuration)) {
             $this->configuration = $this->getObjectManager()
                 ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
         }
@@ -154,7 +154,7 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
      */
     private function getObjectManager()
     {
-        if (false === isset ($this->objectManager)) {
+        if (false === isset($this->objectManager)) {
             $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\CMS\Extbase\Object\ObjectManager'
             );

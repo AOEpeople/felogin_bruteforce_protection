@@ -44,7 +44,7 @@ class EntryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function tearDown()
     {
-        unset ($this->fixture);
+        unset($this->fixture);
     }
 
     /**

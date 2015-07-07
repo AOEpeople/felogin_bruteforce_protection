@@ -94,7 +94,7 @@ class LoggerService
      */
     protected function getConfiguration()
     {
-        if (!isset ($this->configuration)) {
+        if (!isset($this->configuration)) {
             $this->configuration =
                 $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\System\Configuration');
         }
@@ -106,7 +106,7 @@ class LoggerService
      */
     protected function getObjectManager()
     {
-        if (false === isset ($this->objectManager)) {
+        if (false === isset($this->objectManager)) {
             $this->objectManager = Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         }
         return $this->objectManager;

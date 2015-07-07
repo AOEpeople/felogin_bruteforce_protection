@@ -35,7 +35,7 @@ class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function tearDown()
     {
-        unset ($this->postUserLookUp);
+        unset($this->postUserLookUp);
     }
 
     /**

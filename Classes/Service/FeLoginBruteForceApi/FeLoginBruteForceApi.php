@@ -76,7 +76,7 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
      */
     protected function getObjectManager()
     {
-        if (false === isset ($this->objectManager)) {
+        if (false === isset($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         }
         return $this->objectManager;
