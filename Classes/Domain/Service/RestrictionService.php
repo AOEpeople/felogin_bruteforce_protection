@@ -115,6 +115,14 @@ class RestrictionService
         if (in_array($this->getClientIp(), $this->configuration->getExcludedIps())) {
             return true;
         }
+        foreach ($this->configuration->getExcludedIps() as $excludedIp) {
+                // if CIDR notation is used within excluded IPs
+            if (strpos($excludedIp, '/') > 0) {
+                if (\Aoe\FeloginBruteforceProtection\Utility\CIDRUtility::cidr_match($this->getClientIp(), $excludedIp)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
