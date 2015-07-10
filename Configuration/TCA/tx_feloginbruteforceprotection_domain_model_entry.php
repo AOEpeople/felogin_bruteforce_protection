@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -13,7 +15,7 @@ return array(
         'crdate' => 'crdate',
         'dividers2tabs' => true,
         'searchFields' => 'identifier,failures,',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('felogin_bruteforce_protection') . 'Resources/Public/Icons/TCA/Entry.gif'
+        'iconfile' => ExtensionManagementUtility::extRelPath('felogin_bruteforce_protection') . 'Resources/Public/Icons/TCA/Entry.gif'
     ),
     'interface' => array(
         'showRecordFieldList' => 'identifier,failures',

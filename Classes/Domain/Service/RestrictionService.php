@@ -4,7 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH, <dev@aoe.com>
+ *  (c) 2015 AOE GmbH, <dev@aoe.com>
  *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
  *
  *  All rights reserved
@@ -25,6 +25,8 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
 
 /**
  *
@@ -116,9 +118,9 @@ class RestrictionService
             return true;
         }
         foreach ($this->configuration->getExcludedIps() as $excludedIp) {
-                // if CIDR notation is used within excluded IPs
-            if (strpos($excludedIp, '/') > 0) {
-                if (\Aoe\FeloginBruteforceProtection\Utility\CIDRUtility::cidr_match($this->getClientIp(), $excludedIp)) {
+            // CIDR notation is used within excluded IPs
+            if (true === $this->isCIDRNotationUsed($excludedIp)) {
+                if (CIDRUtility::matchCIDR($this->getClientIp(), $excludedIp)) {
                     return true;
                 }
             }
@@ -293,5 +295,16 @@ class RestrictionService
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
         return $_SERVER['REMOTE_ADDR'];
+    }
+
+    /**
+     * Check if the CIDR notation is used
+     *
+     * @param string $ip
+     * @return boolean
+     */
+    private function isCIDRNotationUsed($ip)
+    {
+        return (bool) strpos($ip, '/') > 0;
     }
 }

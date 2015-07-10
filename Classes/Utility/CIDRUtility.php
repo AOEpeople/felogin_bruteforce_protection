@@ -1,6 +1,7 @@
 <?php
 
 namespace Aoe\FeloginBruteforceProtection\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,12 +31,15 @@ namespace Aoe\FeloginBruteforceProtection\Utility;
  *
  * @package Aoe\FeloginBruteforceProtection\Utility
  */
-class CIDRUtility {
 
-    // is ip in subnet
-    // e.g. is 10.5.21.30 in 10.5.16.0/20 == true
-    //      is 192.168.50.2 in 192.168.30.0/23 == false
-    static function cidr_match($ip, $range)
+class CIDRUtility
+{
+    /**
+     * @param string $ip
+     * @param string $range
+     * @return boolean
+     */
+    public static function matchCIDR($ip, $range)
     {
         list ($subnet, $bits) = explode('/', $range);
         $ip = ip2long($ip);
