@@ -179,4 +179,41 @@ class RestrictionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->inject($this->restriction, 'configuration', $configuration);
         $this->assertFalse($this->restriction->isClientRestricted());
     }
+
+    /**
+     * @test
+     * @dataProvider dataProviderIsClientRestrictedWithExcludedIp
+     * @param string $clientIp
+     * @param array $excludedIPs
+     * @param boolean $shouldClientRestricted
+     */
+    public function isClientRestrictedWithExcludedIpWithoutCIRD($clientIp, array $excludedIPs, $shouldClientRestricted)
+    {
+        $configuration = $this->getMock(
+            'Aoe\FeloginBruteforceProtection\System\Configuration',
+            array(),
+            array(),
+            '',
+            false
+        );
+        $configuration->expects($this->any())->method('getExcludedIps')->will($this->returnValue($excludedIPs));
+        $this->inject($this->restriction, 'configuration', $configuration);
+
+        $_SERVER['REMOTE_ADDR'] = $clientIp;
+
+        $this->assertEquals($shouldClientRestricted, $this->restriction->isIpExcluded());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderIsClientRestrictedWithExcludedIp()
+    {
+        return array(
+            array('192.168.1.2', array('192.168.1.2'), true),
+            array('192.168.1.2', array('192.0.0.0/8'), true),
+            array('192.168.1.2', array('192.168.0.1'), false),
+            array('192.168.1.2', array('192.168.2.0/24'), false),
+        );
+    }
 }

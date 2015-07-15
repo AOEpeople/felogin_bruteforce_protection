@@ -108,7 +108,7 @@ class RestrictionService
     }
 
     /**
-     * If the current IP is matching against one specified in the configuration this will return true;
+     * If the current IP is matching against one specified in the configuration this will return true
      *
      * @return boolean
      */
@@ -119,7 +119,7 @@ class RestrictionService
         }
         foreach ($this->configuration->getExcludedIps() as $excludedIp) {
             // CIDR notation is used within excluded IPs
-            if (true === $this->isCIDRNotationUsed($excludedIp)) {
+            if (CIDRUtility::isCIDR($excludedIp)) {
                 if (CIDRUtility::matchCIDR($this->getClientIp(), $excludedIp)) {
                     return true;
                 }
@@ -295,16 +295,5 @@ class RestrictionService
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
         return $_SERVER['REMOTE_ADDR'];
-    }
-
-    /**
-     * Check if the CIDR notation is used
-     *
-     * @param string $ip
-     * @return boolean
-     */
-    private function isCIDRNotationUsed($ip)
-    {
-        return (bool) strpos($ip, '/') > 0;
     }
 }
