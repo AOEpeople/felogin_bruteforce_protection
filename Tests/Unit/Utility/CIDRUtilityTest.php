@@ -29,17 +29,93 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
+     * @dataProvider dataProviderMatchIpInRange
+     * @param string $ip
+     * @param string $range
      */
-    public function shouldMatchIpInRage()
+    public function shouldMatchIpInRage($ip, $range)
     {
-        $this->assertTrue(CIDRUtility::matchCIDR('10.5.21.30', '10.5.16.0/20'));
+        $this->assertTrue(CIDRUtility::matchCIDR($ip, $range));
     }
 
     /**
      * @test
+     * @dataProvider dataProviderNotMatchIpInRange
+     * @param string $ip
+     * @param string $range
      */
-    public function shouldNotMatchIpInRange()
+    public function shouldNotMatchIpInRange($ip, $range)
     {
-        $this->assertFalse(CIDRUtility::matchCIDR('192.168.50.2', '192.168.30.0/23'));
+        $this->assertFalse(CIDRUtility::matchCIDR($ip, $range));
+    }
+
+    /**
+     * @test
+     * @dataProvider dataProviderValidateIpAsCIRD
+     * @param string $ip
+     */
+    public function shouldValidateIpAsCIRD($ip)
+    {
+        $this->assertTrue(CIDRUtility::isCIDR($ip));
+    }
+
+    /**
+     * @test
+     * @dataProvider dataProviderNotValidateIpAsCIRD
+     * @param string $ip
+     */
+    public function shouldNotValidateIpAsCIRD($ip)
+    {
+        $this->assertFalse(CIDRUtility::isCIDR($ip));
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderMatchIpInRange()
+    {
+        return array(
+            array('192.168.30.2', '192.0.0.0/8'),
+            array('192.168.30.2', '192.168.0.0/16'),
+            array('192.168.30.2', '192.168.30.0/24'),
+            array('192.168.30.2', '192.168.30.2/32')
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderNotMatchIpInRange()
+    {
+        return array(
+            array('197.190.30.2', '192.0.0.0/8'),
+            array('192.192.30.2', '192.168.0.0/16'),
+            array('192.168.32.2', '192.168.30.0/24'),
+            array('192.168.30.4', '192.168.30.2/32')
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderValidateIpAsCIRD()
+    {
+        return array(
+            array('192.0.0.0/8'),
+            array('192.168.0.0/16'),
+            array('192.168.30.0/24'),
+            array('192.168.30.2/32')
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderNotValidateIpAsCIRD()
+    {
+        return array(
+            array('192.0.0.0'),
+            array('teststring'),
+        );
     }
 }

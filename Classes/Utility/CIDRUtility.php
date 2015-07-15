@@ -6,6 +6,7 @@ namespace Aoe\FeloginBruteforceProtection\Utility;
  *  Copyright notice
  *
  *  (c) 2014 Andre Wuttig <wuttig@portrino.de>, portrino GmbH
+ *  (c) 2015 AOE GmbH, <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -47,5 +48,17 @@ class CIDRUtility
         $mask = -1 << (32 - $bits);
         $subnet &= $mask; # nb: in case the supplied subnet wasn't correctly aligned
         return ($ip & $mask) == $subnet;
+    }
+
+    /**
+     * Checks if an ip address corresponds to the CIDR format.
+     *
+     * @param string $ip
+     * @return boolean
+     */
+    public static function isCIDR($ip)
+    {
+        $pattern = "/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$/";
+        return (preg_match($pattern, $ip) > 0);
     }
 }
