@@ -112,7 +112,7 @@ class RestrictionService
      *
      * @return boolean
      */
-    public function isExcludeIp()
+    public function isIpExcluded()
     {
         if (in_array($this->getClientIp(), $this->configuration->getExcludedIps())) {
             return true;

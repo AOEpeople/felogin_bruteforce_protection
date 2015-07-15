@@ -90,7 +90,7 @@ class PostUserLookUp
             return;
         }
 
-        if ($this->getRestrictionService()->isExcludeIp()) {
+        if ($this->getRestrictionService()->isIpExcluded()) {
             $this->log(
                 'Client will be skipped due to configured exclude IP address.',
                 Logger\LoggerInterface::SEVERITY_NOTICE
