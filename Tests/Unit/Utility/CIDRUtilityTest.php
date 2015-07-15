@@ -1,4 +1,6 @@
 <?php
+namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
