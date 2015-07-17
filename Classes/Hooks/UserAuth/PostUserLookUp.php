@@ -4,8 +4,10 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 /***************************************************************
  * Copyright notice
  *
+ * (c) 2015 AOE GmbH, <dev@aoe.com>
  * (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
  * (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ *
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,10 +27,10 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core as Core;
-use TYPO3\CMS\Extbase\Utility as Utility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend as Frontend;
+use \TYPO3\CMS\Core as Core;
+use \TYPO3\CMS\Extbase\Utility as Utility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Frontend as Frontend;
 use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Service\Logger;
@@ -93,18 +95,19 @@ class PostUserLookUp
             return;
         }
 
-        if ($this->getRestrictionService()->isIpExcluded()) {
-            $this->log(
-                'Client will be skipped due to configured exclude IP address.',
-                Logger\LoggerInterface::SEVERITY_NOTICE
-            );
-            return;
-        }
-
         if ($this->hasFeUserLoggedIn($frontendUserAuthentication)) {
             $this->getRestrictionService()->removeEntry();
             $this->log('Bruteforce Counter removed', Logger\LoggerInterface::SEVERITY_INFO);
         } elseif ($this->hasFeUserLogInFailed($frontendUserAuthentication)) {
+
+            if ($this->getRestrictionService()->isIpExcluded()) {
+                $this->log(
+                    'The client will be skipped because the its IP address is excluded in the configuration.',
+                    Logger\LoggerInterface::SEVERITY_NOTICE
+                );
+                return;
+            }
+
             $this->getRestrictionService()->incrementFailureCount();
             $this->updateGlobals($frontendUserAuthentication);
 
