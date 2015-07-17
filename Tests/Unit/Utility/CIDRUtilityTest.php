@@ -103,6 +103,7 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
     public function dataProviderValidateIpAsCIRD()
     {
         return array(
+            array('1.1.1.1/8'),
             array('192.0.0.0/8'),
             array('192.168.0.0/16'),
             array('192.168.30.0/24'),
@@ -116,6 +117,9 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
     public function dataProviderNotValidateIpAsCIRD()
     {
         return array(
+            array('192.168.30.2/48'),
+            array('192.168.30.2/08'),
+            array('280.168.30.2/8'),
             array('192.0.0.0'),
             array('teststring'),
         );
