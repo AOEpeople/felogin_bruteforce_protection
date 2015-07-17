@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Utility as Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend as Frontend;
 use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Service\Logger;
 use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
 
@@ -82,11 +83,13 @@ class PostUserLookUp
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUserAuthentication */
         $frontendUserAuthentication = $params['pObj'];
 
-        if (!$frontendUserAuthentication instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication) {
+        // Continue only if the user is in front-end
+        if (false === $this->isUserInFrontEnd($frontendUserAuthentication)) {
             return;
         }
 
-        if (!$this->getConfiguration()->isEnabled()) {
+        // Continue only if the protection is enabled
+        if (false === $this->getConfiguration()->isEnabled()) {
             return;
         }
 
@@ -124,6 +127,17 @@ class PostUserLookUp
                 );
             }
         }
+    }
+
+    /**
+     * Check if the user is in front end
+     *
+     * @param AbstractUserAuthentication $userAuthentication
+     * @return bool
+     */
+    private function isUserInFrontEnd(AbstractUserAuthentication $userAuthentication)
+    {
+        return $userAuthentication instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
     }
 
     /**
