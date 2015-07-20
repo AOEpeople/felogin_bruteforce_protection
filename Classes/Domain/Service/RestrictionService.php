@@ -26,7 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
 
 /**
  *
@@ -43,6 +43,11 @@ class RestrictionService
      * @var boolean
      */
     protected static $preventFailureCount = false;
+
+    /**
+     * @var RestrictionIdentifierInterface
+     */
+    protected $restrictionIdentifier;
 
     /**
      * @var string
@@ -74,7 +79,7 @@ class RestrictionService
     protected $objectManager;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\Domain\Model\Entry
+     * @var Entry
      */
     protected $entry;
 
@@ -82,6 +87,14 @@ class RestrictionService
      * @var boolean
      */
     protected $clientRestricted;
+
+    /**
+     * @param RestrictionIdentifierInterface $restrictionIdentifier
+     */
+    public function setRestrictionIdentifier(RestrictionIdentifierInterface $restrictionIdentifier)
+    {
+        $this->restrictionIdentifier = $restrictionIdentifier;
+    }
 
     /**
      * @param boolean $preventFailureCount
@@ -108,27 +121,6 @@ class RestrictionService
     }
 
     /**
-     * If the current IP is matching against one specified in the configuration this will return true
-     *
-     * @return boolean
-     */
-    public function isIpExcluded()
-    {
-        if (in_array($this->getClientIp(), $this->configuration->getExcludedIps())) {
-            return true;
-        }
-        foreach ($this->configuration->getExcludedIps() as $excludedIp) {
-            // CIDR notation is used within excluded IPs
-            if (CIDRUtility::isCIDR($excludedIp)) {
-                if (CIDRUtility::matchCIDR($this->getClientIp(), $excludedIp)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * @return void
      */
     public function removeEntry()
@@ -144,7 +136,7 @@ class RestrictionService
     /**
      * @return void
      */
-    public function incrementFailureCount()
+    public function checkAndHandleRestriction()
     {
         if (self::$preventFailureCount) {
             return;
@@ -165,7 +157,7 @@ class RestrictionService
      */
     private function createEntry()
     {
-        /** @var $entry \Aoe\FeloginBruteforceProtection\Domain\Model\Entry */
+        /** @var $entry Entry */
         $this->entry = $this->objectManager->get('Aoe\FeloginBruteforceProtection\Domain\Model\Entry');
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
@@ -192,10 +184,10 @@ class RestrictionService
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isRestricted(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isRestricted(Entry $entry)
     {
         if ($this->hasMaximumNumberOfFailuresReached($entry)) {
             if (false === $this->isRestrictionTimeReached($entry)) {
@@ -210,17 +202,17 @@ class RestrictionService
      */
     public function hasEntry()
     {
-        return ($this->getEntry() instanceof \Aoe\FeloginBruteforceProtection\Domain\Model\Entry);
+        return ($this->getEntry() instanceof Entry);
     }
 
     /**
-     * @return \Aoe\FeloginBruteforceProtection\Domain\Model\Entry|NULL
+     * @return Entry|NULL
      */
     public function getEntry()
     {
         if (false === isset($this->entry)) {
             $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
-            if ($entry instanceof \Aoe\FeloginBruteforceProtection\Domain\Model\Entry) {
+            if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {
                     $this->removeEntry();
@@ -231,10 +223,10 @@ class RestrictionService
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isOutdated(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isOutdated(Entry $entry)
     {
         return (
             ($this->hasMaximumNumberOfFailuresReached($entry) && $this->isRestrictionTimeReached($entry)) ||
@@ -243,28 +235,28 @@ class RestrictionService
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isResetTimeOver(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isResetTimeOver(Entry $entry)
     {
         return ($entry->getCrdate() < time() - $this->configuration->getResetTime());
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function hasMaximumNumberOfFailuresReached(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function hasMaximumNumberOfFailuresReached(Entry $entry)
     {
         return ($entry->getFailures() >= $this->configuration->getMaximumNumberOfFailures());
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isRestrictionTimeReached(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isRestrictionTimeReached(Entry $entry)
     {
         return ($entry->getTstamp() < time() - $this->configuration->getRestrictionTime());
     }
@@ -278,22 +270,9 @@ class RestrictionService
     {
         if (false === isset($this->clientIdentifier)) {
             $this->clientIdentifier = md5(
-                $this->getClientIp() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+                $this->restrictionIdentifier->getIdentifierValue() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
             );
         }
         return $this->clientIdentifier;
-    }
-
-    /**
-     * Return clients IP address.
-     *
-     * @return string
-     */
-    private function getClientIp()
-    {
-        if ($this->configuration->getXForwardedFor() && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        return $_SERVER['REMOTE_ADDR'];
     }
 }

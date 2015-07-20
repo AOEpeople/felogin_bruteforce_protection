@@ -31,7 +31,7 @@ use JsonSchema\Exception\InvalidArgumentException;
 /**
  * Class Configuration
  *
- * @package Aoe\FeloginBruteforceProtection\\System
+ * @package Aoe\FeloginBruteforceProtection\System
  */
 class Configuration
 {
@@ -74,6 +74,11 @@ class Configuration
      * @var string
      */
     const X_FORWARDED_FOR = 'x_forwarded_for';
+
+    /**
+     * @var string
+     */
+    const CONF_IDENTIFICATION_IDENTIFIER = 'identification_identifier';
 
     /**
      * @var array
@@ -164,6 +169,14 @@ class Configuration
     public function getXForwardedFor()
     {
         return (boolean)$this->get(self::X_FORWARDED_FOR);
+    }
+
+    /**
+     * @return integer
+     **/
+    public function getIdentificationIdentifier()
+    {
+        return (integer)$this->get(self::CONF_IDENTIFICATION_IDENTIFIER);
     }
 
     /**

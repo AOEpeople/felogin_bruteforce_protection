@@ -25,7 +25,10 @@ namespace Aoe\FeloginBruteforceProtection\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Sv\AuthenticationService;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Service
@@ -34,7 +37,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @author Timo Fuchs <timo.fuchs@aoe.com>
  * @author Andre Wuttig <wuttig@portrino.de>
  */
-class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
+class AuthUser extends AuthenticationService
 {
     /**
      * @var \Aoe\FeloginBruteforceProtection\System\Configuration
@@ -65,10 +68,10 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
     {
         ExtensionManagementUtility::loadBaseTca(false);
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
-            $GLOBALS['TSFE']->sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('t3lib_pageSelect');
         }
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->tmpl)) {
-            $GLOBALS['TSFE']->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tstemplate');
+            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance('t3lib_tstemplate');
         }
     }
 
@@ -155,7 +158,7 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
     private function getObjectManager()
     {
         if (false === isset($this->objectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            $this->objectManager = GeneralUtility::makeInstance(
                 'TYPO3\CMS\Extbase\Object\ObjectManager'
             );
         }

@@ -26,14 +26,14 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility as CoreUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * @package Tx_FeloginBruteforceProtection
  * @subpackage Domain_Repository
  * @author Kevin Schu <kevin.schu@aoemedia.de>
  */
-class Entry extends \TYPO3\CMS\Extbase\Persistence\Repository
+class Entry extends Repository
 {
     /**
      * @return void

@@ -117,6 +117,7 @@ class Logger
     private function getLoggerImplementation()
     {
         if (!is_object($this->loggerImplementation)) {
+            /** @var LoggerInterface $loggerImplementation */
             $loggerImplementation = $this->getObjectManager()->get(
                 'Aoe\FeloginBruteforceProtection\Service\Logger\DevLogger'
             );

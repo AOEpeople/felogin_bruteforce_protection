@@ -4,7 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Command;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 AOE GmbH <dev@aoe.com>
+ *  (c) 2015 AOE GmbH <dev@aoe.com>
  *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
  *
  *  All rights reserved
@@ -27,13 +27,14 @@ namespace Aoe\FeloginBruteforceProtection\Command;
  ***************************************************************/
 
 use \Aoe\FeloginBruteforceProtection\System;
+use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Command
  *
  * @author Andre Wuttig <wuttig@portrino.de>
  */
-class CleanUpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+class CleanUpCommandController extends CommandController
 {
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
