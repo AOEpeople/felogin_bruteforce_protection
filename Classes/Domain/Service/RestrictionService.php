@@ -46,6 +46,7 @@ class RestrictionService
 
     /**
      * @var RestrictionIdentifierInterface
+     * @inject
      */
     protected $restrictionIdentifier;
 
@@ -91,7 +92,7 @@ class RestrictionService
     /**
      * @param RestrictionIdentifierInterface $restrictionIdentifier
      */
-    public function setRestrictionIdentifier(RestrictionIdentifierInterface $restrictionIdentifier)
+    public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
     {
         $this->restrictionIdentifier = $restrictionIdentifier;
     }
@@ -141,6 +142,7 @@ class RestrictionService
         if (self::$preventFailureCount) {
             return;
         }
+
         if (false === $this->hasEntry()) {
             $this->createEntry();
         }
@@ -263,7 +265,6 @@ class RestrictionService
 
     /**
      * Returns the client identifier based on the clients IP address.
-     *
      * @return string
      */
     private function getClientIdentifier()

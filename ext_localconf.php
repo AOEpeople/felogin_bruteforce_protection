@@ -24,6 +24,7 @@ if (TYPO3_MODE == 'FE') {
     #    'EXT:' . $_EXTKEY .
     # '/Classes/Hooks/FeLogin/PostProcContent.php:Aoe\\FeloginBruteforceProtection\\Hook\\FeLogin\\PostProcContent->handlePostProcContent';
 
+
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
         $_EXTKEY,
         'auth',
