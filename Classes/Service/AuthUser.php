@@ -29,6 +29,8 @@ namespace Aoe\FeloginBruteforceProtection\Service;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Sv\AuthenticationService;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Service
@@ -55,6 +57,11 @@ class AuthUser extends AuthenticationService
      * @var \Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService
      */
     protected $restrictionService;
+
+    /**
+     * @var RestrictionIdentifierInterface
+     */
+    protected $restrictionIdentifier;
 
     /**
      * @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
@@ -88,6 +95,17 @@ class AuthUser extends AuthenticationService
     public function initAuth($mode, $loginData, $authInfo, $pObj)
     {
         $this->frontendUserAuthentication = $pObj;
+
+        /**
+         * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
+         */
+        $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
+
+        $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+            $this->getConfiguration(),
+            $this->frontendUserAuthentication
+        );
+        $this->restrictionService = $this->initRestrictionService();
     }
 
     /**
@@ -133,10 +151,6 @@ class AuthUser extends AuthenticationService
      */
     private function getRestrictionService()
     {
-        if (false === isset($this->restrictionService)) {
-            $this->restrictionService = $this->getObjectManager()
-                ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
-        }
         return $this->restrictionService;
     }
 
@@ -163,5 +177,25 @@ class AuthUser extends AuthenticationService
             );
         }
         return $this->objectManager;
+    }
+
+    /**
+     * @return object
+     */
+    protected function getRestrictionIdentifierFabric()
+    {
+        return $this->getObjectManager()
+            ->get(
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+            );
+    }
+
+    protected function initRestrictionService()
+    {
+        return $this->getObjectManager()
+            ->get(
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService',
+                $this->restrictionIdentifier
+            );
     }
 }

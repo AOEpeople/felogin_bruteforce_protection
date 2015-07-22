@@ -25,8 +25,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility as CoreUtility;
-use TYPO3\CMS\Extbase\Persistence\Repository;
+use \TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * @package Tx_FeloginBruteforceProtection
@@ -44,7 +43,7 @@ class Entry extends Repository
         $defaultQuerySettings = $this->objectManager->get('\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings');
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
-        // don't add fields from enablecolumns constraint
+        // don't add fields from enable columns constraint
         $defaultQuerySettings->setIgnoreEnableFields(true)->setIncludeDeleted(true);
         // don't add sys_language_uid constraint
         $defaultQuerySettings->setRespectSysLanguage(false);

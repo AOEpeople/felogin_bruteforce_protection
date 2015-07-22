@@ -4,8 +4,10 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 /***************************************************************
  * Copyright notice
  *
+ * (c) 2015 AOE GmbH, <dev@aoe.com>
  * (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
  * (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ *
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,14 +27,16 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
-use TYPO3\CMS\Core as Core;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Service\Logger;
 use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\\Hook\UserAuth
@@ -90,31 +94,35 @@ class PostUserLookUp
      */
     public function handlePostUserLookUp(&$params)
     {
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUserAuthentication */
         $frontendUserAuthentication = $params['pObj'];
-        if (!$frontendUserAuthentication instanceof FrontendUserAuthentication) {
+
+        // Continue only if the user is in front-end
+        if (false === $this->isUserInFrontEnd($frontendUserAuthentication)) {
             return;
         } else {
             $this->setFrontendUserAuthentication($frontendUserAuthentication);
         }
 
+        // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
+            /**
+             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
+             */
+            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
 
-            $this->restrictionIdentifier = $this->getRestrictionIdentifierFabric();
-            $this->restrictionService = $this->getObjectManager()
-                ->get(
-                    'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService',
-                    $this->restrictionIdentifier
-                );
+            $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+                $this->getConfiguration(),
+                $frontendUserAuthentication
+            );
+            $this->restrictionService = $this->initRestrictionService();
 
             if ($this->restrictionIdentifier->checkPreconditions()) {
-
                 if ($this->hasFeUserLoggedIn($this->getFrontendUserAuthentication())) {
-
                     $this->getRestrictionService()->removeEntry();
                     $this->log('Bruteforce Counter removed', Logger\LoggerInterface::SEVERITY_INFO);
 
                 } elseif ($this->hasFeUserLogInFailed($this->getFrontendUserAuthentication())) {
-
                     $this->getRestrictionService()->checkAndHandleRestriction();
                     $this->updateGlobals($this->getFrontendUserAuthentication());
 
@@ -141,29 +149,16 @@ class PostUserLookUp
         }
     }
 
+
     /**
-     * Restriction identifier fabric method
-     * @return RestrictionIdentifierInterface
-     **/
-    protected function getRestrictionIdentifierFabric()
+     * Check if the user is in front end
+     *
+     * @param AbstractUserAuthentication $userAuthentication
+     * @return bool
+     */
+    private function isUserInFrontEnd(AbstractUserAuthentication $userAuthentication)
     {
-        $identificationIdentifier = $this->getConfiguration()->getIdentificationIdentifier();
-        switch ($identificationIdentifier) {
-            case 2:
-                // Login Name
-                $restrictionIdentifier = $this->getObjectManager()
-                    ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName');
-                $restrictionIdentifier->setFrontendUserAuthentication($this->getFrontendUserAuthentication());
-                return $restrictionIdentifier;
-                break;
-            default:
-                // Client IP (value 1)
-                $restrictionIdentifier = $this->getObjectManager()
-                    ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp');
-                $restrictionIdentifier->setConfiguration($this->getConfiguration());
-                return $restrictionIdentifier;
-                break;
-        }
+        return $userAuthentication instanceof FrontendUserAuthentication;
     }
 
     /**
@@ -227,10 +222,10 @@ class PostUserLookUp
     }
 
     /**
-     * @param Core\Authentication\AbstractUserAuthentication $userAuthObject
+     * @param AbstractUserAuthentication $userAuthObject
      * @return boolean
      */
-    private function hasFeUserLoggedIn(Core\Authentication\AbstractUserAuthentication $userAuthObject)
+    private function hasFeUserLoggedIn(AbstractUserAuthentication $userAuthObject)
     {
         if ($userAuthObject->loginType === 'FE' &&
             $userAuthObject->loginFailure === false &&
@@ -243,10 +238,10 @@ class PostUserLookUp
     }
 
     /**
-     * @param Core\Authentication\AbstractUserAuthentication $userAuthObject
+     * @param AbstractUserAuthentication $userAuthObject
      * @return boolean
      */
-    private function hasFeUserLogInFailed(Core\Authentication\AbstractUserAuthentication $userAuthObject)
+    private function hasFeUserLogInFailed(AbstractUserAuthentication $userAuthObject)
     {
         if ($userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === true && !$userAuthObject->user) {
             return true;
@@ -255,7 +250,6 @@ class PostUserLookUp
     }
 
     /**
-     * @todo Logger in Service umziehen?
      * @return Logger\Logger
      */
     private function getLogger()
@@ -267,18 +261,7 @@ class PostUserLookUp
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        }
-        return $this->objectManager;
-    }
-
-    /**
-     * @return \Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService
+     * @return RestrictionService
      */
     private function getRestrictionService()
     {
@@ -298,21 +281,33 @@ class PostUserLookUp
     }
 
     /**
+     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    private function getObjectManager()
+    {
+        if (false === isset($this->objectManager)) {
+            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        }
+        return $this->objectManager;
+    }
+
+    /**
      * @return FeLoginBruteForceApi
      */
     protected function getFeLoginBruteForceApi()
     {
         if (!isset($this->feLoginBruteForceApi)) {
-            $this->feLoginBruteForceApi = $this->getObjectManager()
-                ->get('Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi');
+            $this->feLoginBruteForceApi = $this->getObjectManager()->get(
+                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
+            );
         }
         return $this->feLoginBruteForceApi;
     }
-    
+
     /**
      * @return FrontendUserAuthentication
      */
-    public function getFrontendUserAuthentication()
+    protected function getFrontendUserAuthentication()
     {
         return $this->frontendUserAuthentication;
     }
@@ -320,8 +315,28 @@ class PostUserLookUp
     /**
      * @param FrontendUserAuthentication $frontendUserAuthentication
      */
-    public function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication)
+    protected function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication)
     {
         $this->frontendUserAuthentication = $frontendUserAuthentication;
+    }
+
+    /**
+     * @return object
+     */
+    protected function getRestrictionIdentifierFabric()
+    {
+        return $this->getObjectManager()
+            ->get(
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+            );
+    }
+
+    protected function initRestrictionService()
+    {
+        return $this->getObjectManager()
+            ->get(
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService',
+                $this->restrictionIdentifier
+            );
     }
 }

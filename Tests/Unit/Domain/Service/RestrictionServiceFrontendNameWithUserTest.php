@@ -1,10 +1,10 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Model;
+namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2013 Kevin Schu <kevin.schu@aoemedia.de>, AOE media GmbH
+ * (c) 2014 Kevin Schu <dev@aoe.com>, AOE GmbH
  *
  * All rights reserved
  *
@@ -25,44 +25,18 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Model;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
-
 /**
- * @package Aoe\FeloginBruteforceProtection\Tests\Domain\Model
+ * @package Aoe\FeloginBruteforceProtection\Domain\Service
  */
-class EntryTest extends UnitTestCase
+class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFrontendNameAbstract
 {
     /**
-     * @var Entry
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected $fixture;
-
     public function setUp()
     {
-        $this->fixture = new Entry();
-    }
-
-    public function tearDown()
-    {
-        unset($this->fixture);
-    }
-
-    /**
-     * @test
-     */
-    public function setIdentifierForStringSetsIdentifier()
-    {
-        $this->fixture->setIdentifier('Conceived at T3CON10');
-        $this->assertSame('Conceived at T3CON10', $this->fixture->getIdentifier());
-    }
-
-    /**
-     * @test
-     */
-    public function setFailuresForIntegerSetsFailures()
-    {
-        $this->fixture->setFailures(12);
-        $this->assertSame(12, $this->fixture->getFailures());
+        parent::setUp();
+        $loginFormData['uname'] = 'TEST User';
     }
 }

@@ -46,7 +46,6 @@ class RestrictionService
 
     /**
      * @var RestrictionIdentifierInterface
-     * @inject
      */
     protected $restrictionIdentifier;
 
@@ -121,6 +120,7 @@ class RestrictionService
         return $this->clientRestricted;
     }
 
+
     /**
      * @return void
      */
@@ -143,6 +143,11 @@ class RestrictionService
             return;
         }
 
+        $identifierValue = $this->restrictionIdentifier->getIdentifierValue();
+        if (empty($identifierValue)) {
+            return;
+        }
+
         if (false === $this->hasEntry()) {
             $this->createEntry();
         }
@@ -150,6 +155,7 @@ class RestrictionService
         if ($this->hasMaximumNumberOfFailuresReached($this->getEntry())) {
             return;
         }
+
         $this->entry->increaseFailures();
         $this->saveEntry();
     }
@@ -208,7 +214,7 @@ class RestrictionService
     }
 
     /**
-     * @return Entry|NULL
+     * @return Entry|null
      */
     public function getEntry()
     {
@@ -265,6 +271,7 @@ class RestrictionService
 
     /**
      * Returns the client identifier based on the clients IP address.
+     *
      * @return string
      */
     private function getClientIdentifier()

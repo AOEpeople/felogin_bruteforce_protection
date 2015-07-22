@@ -1,5 +1,4 @@
 <?php
-
 namespace Aoe\FeloginBruteforceProtection\Utility;
 
 /***************************************************************
@@ -52,13 +51,17 @@ class CIDRUtility
 
     /**
      * Checks if an ip address corresponds to the CIDR format.
+     * Valid CIDR: 192.168.100.14/24
+     * Invalid CIDR: 192.168.100.14
      *
      * @param string $ip
      * @return boolean
      */
     public static function isCIDR($ip)
     {
-        $pattern = "/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$/";
+        $ipBlock = "[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]";
+        $subnetMask = "[0-9]|[1-2][0-9]|3[0-2]";
+        $pattern = "/^(($ipBlock)\.){3}($ipBlock)(\/($subnetMask))$/";
         return (preg_match($pattern, $ip) > 0);
     }
 }

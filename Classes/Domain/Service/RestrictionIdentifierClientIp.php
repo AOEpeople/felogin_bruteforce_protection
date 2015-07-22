@@ -25,7 +25,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
 
@@ -63,25 +62,17 @@ class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
     public function checkPreconditions()
     {
         if (in_array($this->getIdentifierValue(), $this->configuration->getExcludedIps())) {
-            $this->log(
-                'Client will be skipped due to configured exclude IP address.',
-                LoggerInterface::SEVERITY_NOTICE
-            );
-            return false;
+            return true;
         }
         foreach ($this->configuration->getExcludedIps() as $excludedIp) {
             // CIDR notation is used within excluded IPs
             if (CIDRUtility::isCIDR($excludedIp)) {
                 if (CIDRUtility::matchCIDR($this->getIdentifierValue(), $excludedIp)) {
-                    $this->log(
-                        'Client will be skipped due to configured exclude IP address.',
-                        LoggerInterface::SEVERITY_NOTICE
-                    );
-                    return false;
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     /**
