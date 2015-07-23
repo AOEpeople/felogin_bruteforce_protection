@@ -27,14 +27,13 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
-use Aoe\FeloginBruteforceProtection\Service\Logger;
-use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 
@@ -54,12 +53,12 @@ class PostUserLookUp
     protected $objectManager;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\System\Configuration
+     * @var Configuration
      */
     protected $configuration;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService
+     * @var RestrictionService
      */
     protected $restrictionService;
 
@@ -67,21 +66,6 @@ class PostUserLookUp
      * @var RestrictionIdentifierInterface
      */
     protected $restrictionIdentifier;
-
-    /**
-     * @var Logger\LoggerService
-     */
-    protected $loggerService;
-
-    /**
-     * @var Logger\Logger
-     */
-    protected $logger;
-
-    /**
-     * @var FeLoginBruteForceApi
-     */
-    protected $feLoginBruteForceApi;
 
     /**
      * @var FrontendUserAuthentication
@@ -106,11 +90,11 @@ class PostUserLookUp
 
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
+
             /**
              * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
              */
             $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
-
             $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
                 $this->getConfiguration(),
                 $frontendUserAuthentication
@@ -120,35 +104,14 @@ class PostUserLookUp
             if ($this->restrictionIdentifier->checkPreconditions()) {
                 if ($this->hasFeUserLoggedIn($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->removeEntry();
-                    $this->log('Bruteforce Counter removed', Logger\LoggerInterface::SEVERITY_INFO);
 
                 } elseif ($this->hasFeUserLogInFailed($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->checkAndHandleRestriction();
                     $this->updateGlobals($this->getFrontendUserAuthentication());
-
-                    if ($this->getRestrictionService()->isClientRestricted()) {
-                        $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_WARNING);
-                    } else {
-                        $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_NOTICE);
-                    }
-
-                    if ($this->getFeLoginBruteForceApi()->shouldCountWithinThisRequest()) {
-                        if ($this->getRestrictionService()->isClientRestricted()) {
-                            $this->log('Bruteforce Protection Locked', Logger\LoggerInterface::SEVERITY_WARNING);
-                        } else {
-                            $this->log('Bruteforce Counter increased', Logger\LoggerInterface::SEVERITY_NOTICE);
-                        }
-                    } else {
-                        $this->log(
-                            'Bruteforce Counter would increase, but is prohibited by API',
-                            Logger\LoggerInterface::SEVERITY_NOTICE
-                        );
-                    }
                 }
             }
         }
     }
-
 
     /**
      * Check if the user is in front end
@@ -159,32 +122,6 @@ class PostUserLookUp
     private function isUserInFrontEnd(AbstractUserAuthentication $userAuthentication)
     {
         return $userAuthentication instanceof FrontendUserAuthentication;
-    }
-
-    /**
-     * @param $message
-     * @param $severity
-     */
-    private function log($message, $severity)
-    {
-        $failureCount = 0;
-        if ($this->getRestrictionService()->hasEntry()) {
-            $failureCount = $this->getRestrictionService()->getEntry()->getFailures();
-        }
-        if ($this->getRestrictionService()->isClientRestricted()) {
-            $restricted = 'Yes';
-        } else {
-            $restricted = 'No';
-        }
-        $additionalData = array(
-            'FAILURE_COUNT' => $failureCount,
-            'RESTRICTED' => $restricted,
-            'REMOTE_ADDR' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-            'REQUEST_URI' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-        );
-
-        $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }
 
     /**
@@ -250,17 +187,6 @@ class PostUserLookUp
     }
 
     /**
-     * @return Logger\Logger
-     */
-    private function getLogger()
-    {
-        if (!isset($this->logger)) {
-            $this->logger = new Logger\Logger();
-        }
-        return $this->logger;
-    }
-
-    /**
      * @return RestrictionService
      */
     private function getRestrictionService()
@@ -281,30 +207,6 @@ class PostUserLookUp
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        }
-        return $this->objectManager;
-    }
-
-    /**
-     * @return FeLoginBruteForceApi
-     */
-    protected function getFeLoginBruteForceApi()
-    {
-        if (!isset($this->feLoginBruteForceApi)) {
-            $this->feLoginBruteForceApi = $this->getObjectManager()->get(
-                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
-            );
-        }
-        return $this->feLoginBruteForceApi;
-    }
-
-    /**
      * @return FrontendUserAuthentication
      */
     protected function getFrontendUserAuthentication()
@@ -321,7 +223,7 @@ class PostUserLookUp
     }
 
     /**
-     * @return object
+     * @return RestrictionIdentifierFabric
      */
     protected function getRestrictionIdentifierFabric()
     {
@@ -331,6 +233,9 @@ class PostUserLookUp
             );
     }
 
+    /**
+     * @return RestrictionService
+     */
     protected function initRestrictionService()
     {
         return $this->getObjectManager()
@@ -338,5 +243,16 @@ class PostUserLookUp
                 'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService',
                 $this->restrictionIdentifier
             );
+    }
+
+    /**
+     * @return ObjectManagerInterface
+     */
+    private function getObjectManager()
+    {
+        if (false === isset($this->objectManager)) {
+            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        }
+        return $this->objectManager;
     }
 }

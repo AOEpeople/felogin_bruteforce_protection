@@ -26,11 +26,16 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
+use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
+use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
 
 /**
  *
- * @package Aoe\FeloginBruteforceProtection\\Domain\Service
+ * @package Aoe\\FeloginBruteforceProtection\\Domain\\Service
  *
  * @author Kevin Schu <kevin.schu@aoe.com>
  * @author Timo Fuchs <timo.fuchs@aoe.com>
@@ -89,6 +94,16 @@ class RestrictionService
     protected $clientRestricted;
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var FeLoginBruteForceApi
+     */
+    protected $feLoginBruteForceApi;
+
+    /**
      * @param RestrictionIdentifierInterface $restrictionIdentifier
      */
     public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
@@ -120,7 +135,6 @@ class RestrictionService
         return $this->clientRestricted;
     }
 
-
     /**
      * @return void
      */
@@ -129,6 +143,8 @@ class RestrictionService
         if ($this->hasEntry()) {
             $this->entryRepository->remove($this->entry);
             $this->persistenceManager->persistAll();
+
+            $this->log('Bruteforce Counter removed', LoggerInterface::SEVERITY_INFO);
         }
         $this->clientRestricted = false;
         unset($this->entry);
@@ -158,6 +174,71 @@ class RestrictionService
 
         $this->entry->increaseFailures();
         $this->saveEntry();
+
+        $this->restrictionLog();
+    }
+
+    /**
+     * @todo log in separate functions
+     * @return void
+     */
+    protected function restrictionLog()
+    {
+        if ($this->isClientRestricted()) {
+            $this->log('Bruteforce Counter increased', LoggerInterface::SEVERITY_WARNING);
+        } else {
+            $this->log('Bruteforce Counter increased', LoggerInterface::SEVERITY_NOTICE);
+        }
+
+        if ($this->getFeLoginBruteForceApi()->shouldCountWithinThisRequest()) {
+            if ($this->isClientRestricted()) {
+                $this->log('Bruteforce Protection Locked', LoggerInterface::SEVERITY_WARNING);
+            } else {
+                $this->log('Bruteforce Counter increased', LoggerInterface::SEVERITY_NOTICE);
+            }
+        } else {
+            $this->log(
+                'Bruteforce Counter would increase, but is prohibited by API',
+                LoggerInterface::SEVERITY_NOTICE
+            );
+        }
+    }
+
+    /**
+     * @param $message
+     * @param $severity
+     */
+    private function log($message, $severity)
+    {
+        $failureCount = 0;
+        if ($this->hasEntry()) {
+            $failureCount = $this->getEntry()->getFailures();
+        }
+        if ($this->isClientRestricted()) {
+            $restricted = 'Yes';
+        } else {
+            $restricted = 'No';
+        }
+        $additionalData = array(
+            'FAILURE_COUNT' => $failureCount,
+            'RESTRICTED' => $restricted,
+            'REMOTE_ADDR' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+            'REQUEST_URI' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+            'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
+        );
+
+        $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
+    }
+
+    /**
+     * @return Logger
+     */
+    private function getLogger()
+    {
+        if (!isset($this->logger)) {
+            $this->logger = new Logger();
+        }
+        return $this->logger;
     }
 
     /**
@@ -282,5 +363,29 @@ class RestrictionService
             );
         }
         return $this->clientIdentifier;
+    }
+
+    /**
+     * @return ObjectManagerInterface
+     */
+    private function getObjectManager()
+    {
+        if (false === isset($this->objectManager)) {
+            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        }
+        return $this->objectManager;
+    }
+
+    /**
+     * @return FeLoginBruteForceApi
+     */
+    protected function getFeLoginBruteForceApi()
+    {
+        if (!isset($this->feLoginBruteForceApi)) {
+            $this->feLoginBruteForceApi = $this->getObjectManager()->get(
+                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
+            );
+        }
+        return $this->feLoginBruteForceApi;
     }
 }
