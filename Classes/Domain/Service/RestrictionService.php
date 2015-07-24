@@ -179,17 +179,10 @@ class RestrictionService
     }
 
     /**
-     * @todo log in separate functions
      * @return void
      */
     protected function restrictionLog()
     {
-        if ($this->isClientRestricted()) {
-            $this->log('Bruteforce Counter increased', LoggerInterface::SEVERITY_WARNING);
-        } else {
-            $this->log('Bruteforce Counter increased', LoggerInterface::SEVERITY_NOTICE);
-        }
-
         if ($this->getFeLoginBruteForceApi()->shouldCountWithinThisRequest()) {
             if ($this->isClientRestricted()) {
                 $this->log('Bruteforce Protection Locked', LoggerInterface::SEVERITY_WARNING);
