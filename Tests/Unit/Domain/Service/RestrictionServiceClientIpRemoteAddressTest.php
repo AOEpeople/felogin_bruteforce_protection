@@ -54,6 +54,6 @@ class RestrictionServiceClientIpRemoteAddressTest extends RestrictionServiceClie
 
         $_SERVER['REMOTE_ADDR'] = $clientIp;
 
-        $this->assertEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
+        $this->assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
     }
 }

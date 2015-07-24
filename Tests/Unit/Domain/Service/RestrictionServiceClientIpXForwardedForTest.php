@@ -54,6 +54,6 @@ class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClie
 
         $_SERVER['HTTP_X_FORWARDED_FOR'] = $clientIp;
 
-        $this->assertEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
+        $this->assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
     }
 }
