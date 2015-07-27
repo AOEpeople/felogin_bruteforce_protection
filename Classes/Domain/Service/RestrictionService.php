@@ -359,23 +359,12 @@ class RestrictionService
     }
 
     /**
-     * @return ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        }
-        return $this->objectManager;
-    }
-
-    /**
      * @return FeLoginBruteForceApi
      */
     protected function getFeLoginBruteForceApi()
     {
         if (!isset($this->feLoginBruteForceApi)) {
-            $this->feLoginBruteForceApi = $this->getObjectManager()->get(
+            $this->feLoginBruteForceApi = $this->objectManager()->get(
                 'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
             );
         }

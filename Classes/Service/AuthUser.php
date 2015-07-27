@@ -112,7 +112,7 @@ class AuthUser extends AuthenticationService
      * Ensure chain breaking if client is already banned!
      * Simulate an invalid user and stop the chain by setting the "fetchAllUsers" configuration to "FALSE";
      *
-     * @return bool|array
+     * @return boolean|array
      */
     public function getUser()
     {
@@ -139,7 +139,7 @@ class AuthUser extends AuthenticationService
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isProtectionEnabled()
     {

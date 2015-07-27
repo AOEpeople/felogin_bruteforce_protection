@@ -57,7 +57,7 @@ class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
 
     /**
      * when IP is excluded no restriction check is necessary
-     * @return bool
+     * @return boolean
      */
     public function checkPreconditions()
     {
@@ -66,7 +66,7 @@ class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
 
     /**
      * checks if the IP is excluded for restriction
-     * @return bool
+     * @return boolean
      */
     protected function isIpExcluded()
     {

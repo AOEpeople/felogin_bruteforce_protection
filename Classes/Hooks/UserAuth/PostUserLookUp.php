@@ -117,7 +117,7 @@ class PostUserLookUp
      * Check if the user is in front end
      *
      * @param AbstractUserAuthentication $userAuthentication
-     * @return bool
+     * @return boolean
      */
     private function isUserInFrontEnd(AbstractUserAuthentication $userAuthentication)
     {

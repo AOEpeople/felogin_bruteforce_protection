@@ -75,4 +75,17 @@ class PostUserLookUpTest extends UnitTestCase
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);
     }
+
+    /**
+     * @test
+     */
+    public function handlePostUserLookUpWithFrontendLogin()
+    {
+        $feUserAuth = $this->getMock('\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
+        $feUserAuth->loginType = 'FE';
+        $params = array();
+        $params['pObj'] = $feUserAuth;
+        $this->postUserLookUp->handlePostUserLookUp($params);
+    }
+
 }

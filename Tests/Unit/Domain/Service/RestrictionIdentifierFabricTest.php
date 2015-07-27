@@ -24,6 +24,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
@@ -171,6 +172,5 @@ class RestrictionIdentifierFabricTest extends UnitTestCase
             'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
             $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration)
         );
-
     }
 }

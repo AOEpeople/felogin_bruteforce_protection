@@ -40,7 +40,7 @@ interface RestrictionIdentifierInterface
 
     /**
      * when precondition is true go one with restriction service.
-     * @return bool
+     * @return boolean
      */
     public function checkPreconditions();
 }

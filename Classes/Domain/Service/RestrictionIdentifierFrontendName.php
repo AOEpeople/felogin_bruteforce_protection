@@ -62,7 +62,7 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
 
     /**
      * no precondition for frontend name
-     * @return bool
+     * @return boolean
      */
     public function checkPreconditions()
     {
