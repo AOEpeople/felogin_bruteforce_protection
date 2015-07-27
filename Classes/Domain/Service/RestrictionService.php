@@ -364,7 +364,7 @@ class RestrictionService
     protected function getFeLoginBruteForceApi()
     {
         if (!isset($this->feLoginBruteForceApi)) {
-            $this->feLoginBruteForceApi = $this->objectManager()->get(
+            $this->feLoginBruteForceApi = $this->objectManager->get(
                 'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
             );
         }

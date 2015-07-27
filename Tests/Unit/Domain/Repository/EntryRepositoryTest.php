@@ -25,19 +25,19 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package Aoe\\FeloginBruteforceProtection\\Tests\\Unit\\Domain\\Repository
  * @author Patrick Roos <patrick.roos@aoe.com>
  */
-class EntryRepositoryTest extends UnitTestCase
+class EntryRepositoryTest extends \Tx_Phpunit_Database_TestCase
 {
     /**
      * @var EntryRepository $entryRepository
      */
-    private $entryRepository;
+    private $repository;
 
     /**
      * (non-PHPdoc)
@@ -45,7 +45,12 @@ class EntryRepositoryTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->entryRepository = new EntryRepository();
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->repository = $objectManager->get('Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository');
+        $this->repository->initializeObject();
+        $this->createDatabase();
+        $this->useTestDatabase();
+        $this->importExtensions(array('felogin_bruteforce_protection'));
     }
 
     /**
@@ -55,5 +60,25 @@ class EntryRepositoryTest extends UnitTestCase
     public function tearDown()
     {
         unset($this->entryRepository);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindEntriesToCleanUp()
+    {
+        $this->importDataSet(dirname(__FILE__) . '/fixtures/tx_feloginbruteforceprotection_domain_model_entry_row.xml');
+        $entries = $this->repository->findEntriesToCleanUp(300, 10, 1800);
+        $this->assertCount(2, $entries);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindEntriesWithIdentifierToCleanUp()
+    {
+        $this->importDataSet(dirname(__FILE__) . '/fixtures/tx_feloginbruteforceprotection_domain_model_entry_row.xml');
+        $entries = $this->repository->findEntriesToCleanUp(300, 10, 1800, '348fc3b487c9b7853b8be6a1e514b16d');
+        $this->assertCount(1, $entries);
     }
 }

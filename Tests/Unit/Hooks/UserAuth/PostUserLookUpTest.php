@@ -87,5 +87,4 @@ class PostUserLookUpTest extends UnitTestCase
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);
     }
-
 }
