@@ -59,6 +59,8 @@ class EntryRepositoryTest extends \Tx_Phpunit_Database_TestCase
      */
     public function tearDown()
     {
+
+        //$this->dropDatabase();
         unset($this->entryRepository);
     }
 

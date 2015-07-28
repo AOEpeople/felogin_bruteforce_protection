@@ -25,14 +25,14 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
 use Aoe\FeloginBruteforceProtection\Domain\Repository\Entry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package Aoe\\FeloginBruteforceProtection\\Tests\\Unit\\Domain\\Repository
  * @author Patrick Roos <patrick.roos@aoe.com>
  */
-class EntryTest extends UnitTestCase
+class EntryTest extends \Tx_Phpunit_Database_TestCase
 {
     /**
      * @var Entry $entry
@@ -45,7 +45,12 @@ class EntryTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->entry = new Entry();
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->entry = $objectManager->get('Aoe\FeloginBruteforceProtection\Domain\Repository\Entry');
+        $this->entry->initializeObject();
+        $this->createDatabase();
+        $this->useTestDatabase();
+        $this->importExtensions(array('felogin_bruteforce_protection'));
     }
 
     /**
@@ -54,6 +59,18 @@ class EntryTest extends UnitTestCase
      */
     public function tearDown()
     {
+
+        //$this->dropDatabase();
         unset($this->entry);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldFindOneEntryByUid()
+    {
+        $this->importDataSet(dirname(__FILE__) . '/fixtures/tx_feloginbruteforceprotection_domain_model_entry_row.xml');
+        $entry = $this->entry->findByUid(1);
+        $this->assertInternalType('object', $entry);
     }
 }
