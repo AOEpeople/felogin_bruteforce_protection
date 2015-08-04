@@ -99,7 +99,6 @@ class PostUserLookUp
             $this->getRestrictionService()->removeEntry();
             $this->log('Bruteforce Counter removed', Logger\LoggerInterface::SEVERITY_INFO);
         } elseif ($this->hasFeUserLogInFailed($frontendUserAuthentication)) {
-
             if ($this->getRestrictionService()->isIpExcluded()) {
                 $this->log(
                     'The client will be skipped because the its IP address is excluded in the configuration.',
