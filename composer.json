@@ -1,0 +1,47 @@
+{
+    "name": "aoe/felogin-bruteforce-protection",
+    "description": "Protects TYPO3´s frontend authentication (e.g. fe_login) against brute force attacks.",
+    "type": "typo3-cms-extension",
+    "homepage": "https://github.com/AOEpeople/felogin_bruteforce_protection",
+    "license": "GPL-3.0",
+    "support": {
+        "email": "dev@aoe.com",
+        "issues": "https://github.com/AOEpeople/felogin_bruteforce_protection/issues",
+        "source": "https://github.com/AOEpeople/felogin_bruteforce_protection"
+    },
+    "authors": [
+        {
+            "name": "AOE GmbH",
+            "email": "dev@aoe.com",
+            "homepage": "http://www.aoe.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "typo3/cms-core": ">=6.2.0",
+        "typo3/cms-extbase": ">=6.2.0",
+        "typo3/cms-sv": ">=6.2.0",
+        "typo3/cms-backend": ">=6.2.0",
+        "typo3/cms-reports": ">=6.2.0",
+        "typo3/cms-frontend": ">=6.2.0"
+    },
+    "require-dev": {
+        "typo3/cms": "6.2.*",
+        "phpunit/phpunit": "4.6.*",
+        "phpunit/phpcov": "2.0.*",
+        "squizlabs/php_codesniffer": "2.3.*",
+        "sebastian/phpcpd": "2.0.*",
+        "phpmd/phpmd": "2.2.*"
+    },
+    "replace": {
+        "felogin_bruteforce_protection": "*"
+    },
+    "keywords": [
+        "TYPO3",
+        "extbase",
+        "extension",
+        "bruteforce",
+        "protection",
+        "felogin"
+    ]
+}
