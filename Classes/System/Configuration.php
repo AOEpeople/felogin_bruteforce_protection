@@ -26,8 +26,6 @@ namespace Aoe\FeloginBruteforceProtection\System;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use JsonSchema\Exception\InvalidArgumentException;
-
 /**
  * Class Configuration
  *
