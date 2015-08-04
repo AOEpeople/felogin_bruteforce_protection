@@ -31,7 +31,6 @@ namespace Aoe\FeloginBruteforceProtection\Utility;
  *
  * @package Aoe\FeloginBruteforceProtection\Utility
  */
-
 class CIDRUtility
 {
     /**
@@ -62,6 +61,7 @@ class CIDRUtility
         $ipBlock = "[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]";
         $subnetMask = "[0-9]|[1-2][0-9]|3[0-2]";
         $pattern = "/^(($ipBlock)\.){3}($ipBlock)(\/($subnetMask))$/";
+
         return (preg_match($pattern, $ip) > 0);
     }
 }

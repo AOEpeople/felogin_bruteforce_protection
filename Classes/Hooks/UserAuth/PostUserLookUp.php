@@ -105,6 +105,7 @@ class PostUserLookUp
                     'The client will be skipped because the its IP address is excluded in the configuration.',
                     Logger\LoggerInterface::SEVERITY_NOTICE
                 );
+
                 return;
             }
 
@@ -185,8 +186,10 @@ class PostUserLookUp
                 $this->getConfiguration()->getRestrictionTime();
             $GLOBALS ['felogin_bruteforce_protection'] ['restriction_message'] =
                 $this->getRestrictionMessage();
+
             return false;
         }
+
         return true;
     }
 
@@ -196,6 +199,7 @@ class PostUserLookUp
     private function getRestrictionMessage()
     {
         $time = (integer)($this->getConfiguration()->getRestrictionTime() / 60);
+
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
             'restriction_message',
             'felogin_bruteforce_protection',
@@ -216,6 +220,7 @@ class PostUserLookUp
         ) {
             return true;
         }
+
         return false;
     }
 
@@ -228,6 +233,7 @@ class PostUserLookUp
         if ($userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === true && !$userAuthObject->user) {
             return true;
         }
+
         return false;
     }
 
@@ -239,6 +245,7 @@ class PostUserLookUp
         if (!isset($this->loggerService)) {
             $this->loggerService = new Logger\LoggerService();
         }
+
         return $this->loggerService;
     }
 
@@ -250,6 +257,7 @@ class PostUserLookUp
         if (!isset($this->logger)) {
             $this->logger = new Logger\Logger();
         }
+
         return $this->logger;
     }
 
@@ -262,6 +270,7 @@ class PostUserLookUp
             $this->restrictionService = $this->getObjectManager()
                 ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService');
         }
+
         return $this->restrictionService;
     }
 
@@ -274,6 +283,7 @@ class PostUserLookUp
             $this->configuration = $this->getObjectManager()
                 ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
         }
+
         return $this->configuration;
     }
 
@@ -285,6 +295,7 @@ class PostUserLookUp
         if (false === isset($this->objectManager)) {
             $this->objectManager = Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         }
+
         return $this->objectManager;
     }
 
@@ -298,6 +309,7 @@ class PostUserLookUp
                 'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
             );
         }
+
         return $this->feLoginBruteForceApi;
     }
 }
