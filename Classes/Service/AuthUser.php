@@ -60,9 +60,13 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
 
     /**
      * Load extbase dependencies to use repositories and persistence.
+     *
+     * @return boolean TRUE if the service is available
      */
     public function init()
     {
+        $isServiceAvailable = parent::init();
+
         ExtensionManagementUtility::loadBaseTca(false);
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
             $GLOBALS['TSFE']->sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
@@ -70,6 +74,8 @@ class AuthUser extends \TYPO3\CMS\Sv\AuthenticationService
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->tmpl)) {
             $GLOBALS['TSFE']->tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tstemplate');
         }
+
+        return $isServiceAvailable;
     }
 
     /**
