@@ -1,5 +1,4 @@
 <?php
-
 namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /***************************************************************

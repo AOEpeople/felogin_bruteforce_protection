@@ -1,9 +1,5 @@
 <?php
-
 namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
-
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /***************************************************************
  *  Copyright notice
@@ -28,6 +24,9 @@ use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Class FeLoginBruteForceApi
