@@ -11,5 +11,8 @@
 Screenshots
 ============
 
+Extension configuration:
 
-.. image:: /Images/UserManual/BackendView.png
+.. image:: /Images/Screenshots/bruteforce_protection_basic.png
+.. image:: /Images/Screenshots/bruteforce_protection_clientip.png
+.. image:: /Images/Screenshots/bruteforce_protection_logging.png

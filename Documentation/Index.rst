@@ -9,13 +9,13 @@
 .. _start:
 
 =============================================================
-Extensionname
+Brute Force Protection for TYPO3
 =============================================================
 
 .. only:: html
 
 	:Classification:
-		extension_key
+		Documentation
 
 	:Version:
 		|release|
@@ -24,10 +24,10 @@ Extensionname
 		en
 
 	:Description:
-		enter description.
+		Protects TYPO3s frontend authentication (e.g. fe_login) against brute force attacks.
 
 	:Keywords:
-		comma,separated,list,keywords
+		brute,force,attack,login,felogin
 
 	:Copyright:
 		2015
@@ -72,7 +72,6 @@ Extensionname
 	:glob:
 
 	Pages/Introduction
-	Pages/Screenshots
-	Pages/UserManual
 	Pages/AdministratorManual
+	Pages/Screenshots
 	Pages/Aoe
