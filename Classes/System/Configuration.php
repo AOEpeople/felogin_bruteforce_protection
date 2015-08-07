@@ -26,10 +26,12 @@ namespace Aoe\FeloginBruteforceProtection\System;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Configuration\Exception;
+
 /**
  * Class Configuration
  *
- * @package Aoe\FeloginBruteforceProtection\\System
+ * @package Aoe\\FeloginBruteforceProtection\\System
  */
 class Configuration
 {
@@ -72,6 +74,11 @@ class Configuration
      * @var string
      */
     const X_FORWARDED_FOR = 'x_forwarded_for';
+
+    /**
+     * @var string
+     */
+    const CONF_IDENTIFICATION_IDENTIFIER = 'identification_identifier';
 
     /**
      * @var array
@@ -165,15 +172,23 @@ class Configuration
     }
 
     /**
+     * @return integer
+     **/
+    public function getIdentificationIdentifier()
+    {
+        return (integer)$this->get(self::CONF_IDENTIFICATION_IDENTIFIER);
+    }
+
+    /**
      * @param string $key
      * @return mixed
-     * @throws \InvalidArgumentException
+     * @throws Exception
      */
     public function get($key)
     {
         if (array_key_exists($key, $this->configuration)) {
             return $this->configuration[$key];
         }
-        throw new \InvalidArgumentException('Configuration key "' . $key . '" does not exist.');
+        throw new Exception('Configuration key "' . $key . '" does not exist.');
     }
 }

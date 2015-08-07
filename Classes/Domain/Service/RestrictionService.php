@@ -26,11 +26,16 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
+use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
+use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
+use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
 
 /**
  *
- * @package Aoe\FeloginBruteforceProtection\\Domain\Service
+ * @package Aoe\\FeloginBruteforceProtection\\Domain\\Service
  *
  * @author Kevin Schu <kevin.schu@aoe.com>
  * @author Timo Fuchs <timo.fuchs@aoe.com>
@@ -43,6 +48,11 @@ class RestrictionService
      * @var boolean
      */
     protected static $preventFailureCount = false;
+
+    /**
+     * @var RestrictionIdentifierInterface
+     */
+    protected $restrictionIdentifier;
 
     /**
      * @var string
@@ -74,7 +84,7 @@ class RestrictionService
     protected $objectManager;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\Domain\Model\Entry
+     * @var Entry
      */
     protected $entry;
 
@@ -82,6 +92,24 @@ class RestrictionService
      * @var boolean
      */
     protected $clientRestricted;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var FeLoginBruteForceApi
+     */
+    protected $feLoginBruteForceApi;
+
+    /**
+     * @param RestrictionIdentifierInterface $restrictionIdentifier
+     */
+    public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
+    {
+        $this->restrictionIdentifier = $restrictionIdentifier;
+    }
 
     /**
      * @param boolean $preventFailureCount
@@ -108,27 +136,6 @@ class RestrictionService
     }
 
     /**
-     * If the current IP is matching against one specified in the configuration this will return true
-     *
-     * @return boolean
-     */
-    public function isIpExcluded()
-    {
-        if (in_array($this->getClientIp(), $this->configuration->getExcludedIps())) {
-            return true;
-        }
-        foreach ($this->configuration->getExcludedIps() as $excludedIp) {
-            // CIDR notation is used within excluded IPs
-            if (CIDRUtility::isCIDR($excludedIp)) {
-                if (CIDRUtility::matchCIDR($this->getClientIp(), $excludedIp)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * @return void
      */
     public function removeEntry()
@@ -136,6 +143,8 @@ class RestrictionService
         if ($this->hasEntry()) {
             $this->entryRepository->remove($this->entry);
             $this->persistenceManager->persistAll();
+
+            $this->log('Bruteforce Counter removed', LoggerInterface::SEVERITY_INFO);
         }
         $this->clientRestricted = false;
         unset($this->entry);
@@ -144,11 +153,17 @@ class RestrictionService
     /**
      * @return void
      */
-    public function incrementFailureCount()
+    public function checkAndHandleRestriction()
     {
         if (self::$preventFailureCount) {
             return;
         }
+
+        $identifierValue = $this->restrictionIdentifier->getIdentifierValue();
+        if (empty($identifierValue)) {
+            return;
+        }
+
         if (false === $this->hasEntry()) {
             $this->createEntry();
         }
@@ -156,8 +171,67 @@ class RestrictionService
         if ($this->hasMaximumNumberOfFailuresReached($this->getEntry())) {
             return;
         }
+
         $this->entry->increaseFailures();
         $this->saveEntry();
+
+        $this->restrictionLog();
+    }
+
+    /**
+     * @return void
+     */
+    protected function restrictionLog()
+    {
+        if ($this->getFeLoginBruteForceApi()->shouldCountWithinThisRequest()) {
+            if ($this->isClientRestricted()) {
+                $this->log('Bruteforce Protection Locked', LoggerInterface::SEVERITY_WARNING);
+            } else {
+                $this->log('Bruteforce Counter increased', LoggerInterface::SEVERITY_NOTICE);
+            }
+        } else {
+            $this->log(
+                'Bruteforce Counter would increase, but is prohibited by API',
+                LoggerInterface::SEVERITY_NOTICE
+            );
+        }
+    }
+
+    /**
+     * @param $message
+     * @param $severity
+     */
+    private function log($message, $severity)
+    {
+        $failureCount = 0;
+        if ($this->hasEntry()) {
+            $failureCount = $this->getEntry()->getFailures();
+        }
+        if ($this->isClientRestricted()) {
+            $restricted = 'Yes';
+        } else {
+            $restricted = 'No';
+        }
+        $additionalData = array(
+            'FAILURE_COUNT' => $failureCount,
+            'RESTRICTED' => $restricted,
+            'REMOTE_ADDR' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+            'REQUEST_URI' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+            'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
+        );
+
+        $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
+    }
+
+    /**
+     * @return Logger
+     */
+    private function getLogger()
+    {
+        if (!isset($this->logger)) {
+            $this->logger = new Logger();
+        }
+        return $this->logger;
     }
 
     /**
@@ -165,7 +239,7 @@ class RestrictionService
      */
     private function createEntry()
     {
-        /** @var $entry \Aoe\FeloginBruteforceProtection\Domain\Model\Entry */
+        /** @var $entry Entry */
         $this->entry = $this->objectManager->get('Aoe\FeloginBruteforceProtection\Domain\Model\Entry');
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
@@ -192,10 +266,10 @@ class RestrictionService
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isRestricted(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isRestricted(Entry $entry)
     {
         if ($this->hasMaximumNumberOfFailuresReached($entry)) {
             if (false === $this->isRestrictionTimeReached($entry)) {
@@ -210,17 +284,17 @@ class RestrictionService
      */
     public function hasEntry()
     {
-        return ($this->getEntry() instanceof \Aoe\FeloginBruteforceProtection\Domain\Model\Entry);
+        return ($this->getEntry() instanceof Entry);
     }
 
     /**
-     * @return \Aoe\FeloginBruteforceProtection\Domain\Model\Entry|NULL
+     * @return Entry|null
      */
     public function getEntry()
     {
         if (false === isset($this->entry)) {
             $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
-            if ($entry instanceof \Aoe\FeloginBruteforceProtection\Domain\Model\Entry) {
+            if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {
                     $this->removeEntry();
@@ -231,10 +305,10 @@ class RestrictionService
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isOutdated(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isOutdated(Entry $entry)
     {
         return (
             ($this->hasMaximumNumberOfFailuresReached($entry) && $this->isRestrictionTimeReached($entry)) ||
@@ -243,28 +317,28 @@ class RestrictionService
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isResetTimeOver(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isResetTimeOver(Entry $entry)
     {
         return ($entry->getCrdate() < time() - $this->configuration->getResetTime());
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function hasMaximumNumberOfFailuresReached(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function hasMaximumNumberOfFailuresReached(Entry $entry)
     {
         return ($entry->getFailures() >= $this->configuration->getMaximumNumberOfFailures());
     }
 
     /**
-     * @param \Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry
+     * @param Entry $entry
      * @return boolean
      */
-    private function isRestrictionTimeReached(\Aoe\FeloginBruteforceProtection\Domain\Model\Entry $entry)
+    private function isRestrictionTimeReached(Entry $entry)
     {
         return ($entry->getTstamp() < time() - $this->configuration->getRestrictionTime());
     }
@@ -278,22 +352,22 @@ class RestrictionService
     {
         if (false === isset($this->clientIdentifier)) {
             $this->clientIdentifier = md5(
-                $this->getClientIp() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+                $this->restrictionIdentifier->getIdentifierValue() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
             );
         }
         return $this->clientIdentifier;
     }
 
     /**
-     * Return clients IP address.
-     *
-     * @return string
+     * @return FeLoginBruteForceApi
      */
-    private function getClientIp()
+    protected function getFeLoginBruteForceApi()
     {
-        if ($this->configuration->getXForwardedFor() && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        if (!isset($this->feLoginBruteForceApi)) {
+            $this->feLoginBruteForceApi = $this->objectManager->get(
+                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
+            );
         }
-        return $_SERVER['REMOTE_ADDR'];
+        return $this->feLoginBruteForceApi;
     }
 }

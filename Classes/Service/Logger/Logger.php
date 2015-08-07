@@ -27,8 +27,7 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use TYPO3\CMS\Core as Core;
-use TYPO3\CMS\Extbase\Utility as Utility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Logger
@@ -106,7 +105,7 @@ class Logger
     protected function getObjectManager()
     {
         if (false === isset($this->objectManager)) {
-            $this->objectManager = Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
         }
         return $this->objectManager;
     }
@@ -117,6 +116,7 @@ class Logger
     private function getLoggerImplementation()
     {
         if (!is_object($this->loggerImplementation)) {
+            /** @var LoggerInterface $loggerImplementation */
             $loggerImplementation = $this->getObjectManager()->get(
                 'Aoe\FeloginBruteforceProtection\Service\Logger\DevLogger'
             );

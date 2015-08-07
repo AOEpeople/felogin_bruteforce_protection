@@ -1,5 +1,8 @@
-# cat=basic; type=boolean; label=disable brute force protection:If checked, the brute force protection is completely disabled
+# cat=basic; type=boolean; label=Disable brute force protection:If checked, the brute force protection is completely disabled
 disabled = 0
+
+# cat=basic; type=options[Client IP=1,Login Name=2]; label=Defines the restriction identifier.
+identification_identifier = 1
 
 # cat=basic; type=int; label=seconds till reset:Defines the time in seconds till the count for failed login will be reset
 seconds_till_reset = 300
@@ -10,14 +13,14 @@ restriction_time = 1800
 # cat=basic; type=int; label=max allowed login failures: Defines the amount of maximum allowed login failures within the seconds configured in "seconds_till_reset"
 max_failures = 10
 
-# cat=basic; type=boolean; label=Enable Logging in Devlog
-logging_enabled = 0
-
-# cat=basic; type=int; label=Log everything greater equal this level (SEVERITY_INFO=0, SEVERITY_NOTICE=1, SEVERITY_WARNING=2, SEVERITY_ERROR=3)
-logging_level = 0
-
-# cat=basic; type=string; label=Exclude IP´s: Define a comma separated list of IP addresses that should be excluded from restriction.
+# cat=clientip; type=string; label=Exclude IP´s: define a comma separated list of IP addresses that should be excluded from restriction.
 exclude_ips =
 
-# cat=basic; type=boolean; label=Use HTTP_X_FORWARDED_FOR for client ip evaluation.
+# cat=clientip; type=boolean; label=Use HTTP_X_FORWARDED_FOR for client ip evaluation.
 x_forwarded_for = 0
+
+# cat=logging; type=boolean; label=Enable logging in devlog
+logging_enabled = 0
+
+# cat=logging; type=options[SEVERITY_INFO=0,SEVERITY_NOTICE=1,SEVERITY_WARNING=2,SEVERITY_ERROR=3]; label=Log level defines how events should be logged
+logging_level = 0

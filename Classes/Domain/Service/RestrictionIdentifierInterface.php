@@ -1,5 +1,5 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Service\Logger;
+namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
  *  Copyright notice
@@ -26,23 +26,21 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
  ***************************************************************/
 
 /**
- * Interface LoggerInterface
- * @package Aoe\FeloginBruteforceProtection\Service\Logger
+ * @package Aoe\FeloginBruteforceProtection\Domain\Service
+ * @author Patrick Roos <patrick.roos@aoe.com>
  */
-interface LoggerInterface
+interface RestrictionIdentifierInterface
 {
-    const SEVERITY_INFO = 0;
-    const SEVERITY_NOTICE = 1;
-    const SEVERITY_WARNING  = 2;
-    const SEVERITY_ERROR  = 3;
 
     /**
-     * @param $message, The Message to log
-     * @param int $severity type and severity of log entry
-     * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
-     * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
-     *                                to find
-     * @return void
+     * the value of the restriction identifier
+     * @return string
      */
-    public function log($message, $severity = self::SEVERITY_INFO, $additionalData = null, $packageKey = null);
+    public function getIdentifierValue();
+
+    /**
+     * when precondition is true go one with restriction service.
+     * @return boolean
+     */
+    public function checkPreconditions();
 }
