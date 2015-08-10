@@ -27,7 +27,7 @@ Brute Force Protection for TYPO3
 		Protects TYPO3s frontend authentication (e.g. fe_login) against brute force attacks.
 
 	:Keywords:
-		brute,force,attack,login,felogin
+		bruteforce,protection,attack,login,felogin
 
 	:Copyright:
 		2015
