@@ -44,3 +44,11 @@ script:
       echo "Running unit tests";
       ./bin/phpunit --coverage-clover=unittest-coverage.clover --colors -c typo3/sysext/core/Build/UnitTests.xml typo3conf/ext/felogin_bruteforce_protection/Tests/Unit/
     fi
+  - >
+    if [[ "$COVERAGE" == "1" ]]; then
+      echo;
+      echo "Uploading code coverage results";
+      wget https://scrutinizer-ci.com/ocular.phar
+      cp -R typo3conf/ext/felogin_bruteforce_protection/.git .
+      php ocular.phar code-coverage:upload --format=php-clover unittest-coverage.clover
+    fi
