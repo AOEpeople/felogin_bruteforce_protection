@@ -75,16 +75,20 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
             '',
             false
         );
+        $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
         $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
         $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
         $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration);
         $this->restriction = new RestrictionService($this->restrictionIdentifier);
+
+        $logger = $this->getMock('\Aoe\FeloginBruteforceProtection\Service\Logger\Logger', array('log'));
         $this->inject(
             $this->restriction,
             'persistenceManager',
             $this->getMock('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager')
         );
+        $this->inject($this->restriction, 'logger', $logger);
     }
 
     /**
@@ -101,7 +105,7 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
     /**
      * @test
      */
-    public function isClientRestricted()
+    public function isNotClientRestrictedWhenMaximumNumbersOfFailtureNotReached()
     {
         $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
@@ -115,10 +119,12 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
         );
         $entry = $this->getMock('Aoe\FeloginBruteforceProtection\Domain\Model\Entry');
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(0));
-        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
+        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 200));
+
         $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
+
         $this->assertFalse($this->restriction->isClientRestricted());
     }
 
@@ -155,9 +161,10 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
         $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
+
         $entry = $this->getMock('Aoe\FeloginBruteforceProtection\Domain\Model\Entry', array(), array(), '', false);
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
-        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
+        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 200));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 4000));
         $entryRepository = $this->getMock(
             'Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository',

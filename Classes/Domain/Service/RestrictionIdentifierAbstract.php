@@ -39,13 +39,4 @@ abstract class RestrictionIdentifierAbstract implements RestrictionIdentifierInt
      */
     protected $identifierValue;
 
-    /**
-     * @param string $message
-     * @param int $severity
-     */
-    protected function log($message, $severity = LoggerInterface::SEVERITY_INFO)
-    {
-        $logger = new Logger();
-        $logger->log($message, $severity);
-    }
 }

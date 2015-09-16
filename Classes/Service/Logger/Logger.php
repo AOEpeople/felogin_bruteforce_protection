@@ -93,8 +93,7 @@ class Logger
     protected function getConfiguration()
     {
         if (!isset($this->configuration)) {
-            $this->configuration =
-                $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+            $this->configuration = new Configuration();
         }
         return $this->configuration;
     }

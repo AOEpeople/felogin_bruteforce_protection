@@ -76,6 +76,7 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
             '',
             false
         );
+        $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
         $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
         $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
@@ -89,6 +90,8 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
             'persistenceManager',
             $this->getMock('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager')
         );
+        $logger = $this->getMock('\Aoe\FeloginBruteforceProtection\Service\Logger\Logger', array('log'));
+        $this->inject($this->restriction, 'logger', $logger);
     }
 
     /**
@@ -123,6 +126,7 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
         $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
+
         $this->assertFalse($this->restriction->isClientRestricted());
     }
 

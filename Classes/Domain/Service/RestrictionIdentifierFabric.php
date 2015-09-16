@@ -42,27 +42,19 @@ class RestrictionIdentifierFabric
         Configuration $configuration,
         FrontendUserAuthentication $frontendUserAuthentication = null
     ) {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 
         $identificationIdentifier = $configuration->getIdentificationIdentifier();
         switch ($identificationIdentifier) {
             case 2:
                 if ($frontendUserAuthentication !== null) {
-                    /**
-                     * @var RestrictionIdentifierFrontendName $restrictionIdentifier
-                     */
-                    $restrictionIdentifier = $objectManager
-                        ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName');
+                    new RestrictionIdentifierFrontendName();
+                    $restrictionIdentifier = new RestrictionIdentifierFrontendName();
                     $restrictionIdentifier->setFrontendUserAuthentication($frontendUserAuthentication);
                     return $restrictionIdentifier;
                     break;
                 }
             default:
-                /**
-                 * @var RestrictionIdentifierClientIp $restrictionIdentifier
-                 */
-                $restrictionIdentifier = $objectManager
-                    ->get('Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp');
+                $restrictionIdentifier = new RestrictionIdentifierClientIp();
                 $restrictionIdentifier->setConfiguration($configuration);
                 return $restrictionIdentifier;
                 break;

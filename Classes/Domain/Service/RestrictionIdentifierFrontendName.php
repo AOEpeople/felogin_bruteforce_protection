@@ -51,10 +51,6 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
                 $this->identifierValue = $loginFormData['uname'];
             } else {
                 $this->identifierValue = '';
-                $this->log(
-                    'Empty user login.',
-                    LoggerInterface::SEVERITY_NOTICE
-                );
             }
         }
         return $this->identifierValue;
