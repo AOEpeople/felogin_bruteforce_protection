@@ -25,9 +25,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
-use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
-
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
  * @author Patrick Roos <patrick.roos@aoe.com>

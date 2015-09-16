@@ -26,6 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * Test case for class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp.
@@ -34,7 +35,7 @@ use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
  * @subpackage brute force protection
  *
  */
-class PostUserLookUpTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class PostUserLookUpTest extends UnitTestCase
 {
     /**
      * @var PostUserLookUp

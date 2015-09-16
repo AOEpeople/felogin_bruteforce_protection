@@ -28,7 +28,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
 use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
