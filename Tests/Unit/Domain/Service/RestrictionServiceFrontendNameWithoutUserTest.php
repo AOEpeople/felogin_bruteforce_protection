@@ -39,5 +39,4 @@ class RestrictionServiceFrontendNameWithoutUserTest extends RestrictionServiceFr
     {
         parent::setUp();
     }
-
 }

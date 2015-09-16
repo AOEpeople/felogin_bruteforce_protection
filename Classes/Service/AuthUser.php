@@ -145,7 +145,7 @@ class AuthUser extends AuthenticationService
      */
     private function getRestrictionService()
     {
-        if (false === isset ($this->restrictionService)) {
+        if (false === isset($this->restrictionService)) {
             /**
              * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
              */
@@ -172,7 +172,7 @@ class AuthUser extends AuthenticationService
      */
     protected function getConfiguration()
     {
-        if (false === isset ($this->configuration)) {
+        if (false === isset($this->configuration)) {
             $this->configuration = $this->getObjectManager()
                 ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
         }
@@ -184,7 +184,7 @@ class AuthUser extends AuthenticationService
      */
     private function getObjectManager()
     {
-        if (false === isset ($this->objectManager)) {
+        if (false === isset($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(
                 'TYPO3\CMS\Extbase\Object\ObjectManager'
             );

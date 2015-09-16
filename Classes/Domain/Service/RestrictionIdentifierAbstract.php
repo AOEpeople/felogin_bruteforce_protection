@@ -35,5 +35,4 @@ abstract class RestrictionIdentifierAbstract implements RestrictionIdentifierInt
      * @var string
      */
     protected $identifierValue;
-
 }

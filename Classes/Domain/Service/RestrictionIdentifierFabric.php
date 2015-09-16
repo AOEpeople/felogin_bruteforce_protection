@@ -52,6 +52,7 @@ class RestrictionIdentifierFabric
                     return $restrictionIdentifier;
                     break;
                 }
+                // no break
             default:
                 $restrictionIdentifier = new RestrictionIdentifierClientIp();
                 $restrictionIdentifier->setConfiguration($configuration);

@@ -90,7 +90,6 @@ class PostUserLookUp
 
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
-
             /**
              * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
              */
