@@ -30,13 +30,4 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
  */
 class RestrictionServiceFrontendNameWithoutUserTest extends RestrictionServiceFrontendNameAbstract
 {
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
-    public function setUp()
-    {
-        parent::setUp();
-    }
 }
