@@ -78,10 +78,10 @@ class AuthUser extends AuthenticationService
     {
         ExtensionManagementUtility::loadBaseTca(false);
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('t3lib_pageSelect');
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         }
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->tmpl)) {
-            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance('t3lib_tstemplate');
+            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
         }
 
         return parent::init();
