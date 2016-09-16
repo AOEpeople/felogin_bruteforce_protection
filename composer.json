@@ -33,8 +33,10 @@
         "sebastian/phpcpd": "2.0.*",
         "phpmd/phpmd": "2.2.*"
     },
-    "replace": {
-        "felogin_bruteforce_protection": "*"
+    "autoload": {
+        "psr-4": {
+            "Aoe\\FeloginBruteforceProtection\\": "Classes/"
+        }
     },
     "keywords": [
         "TYPO3",

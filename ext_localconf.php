@@ -18,7 +18,7 @@ if (TYPO3_MODE == 'FE') {
         'EXT:' .
         $_EXTKEY .
         '/Classes/Hooks/UserAuth/PostUserLookUp.php:' .
-        '\\Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp->handlePostUserLookUp';
+        'Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp->handlePostUserLookUp';
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
