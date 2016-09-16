@@ -43,7 +43,7 @@ class EntryRepository extends Persistence\Repository
     public function initializeObject()
     {
         /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings');
+        $defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
         // don't add fields from enable columns constraint
