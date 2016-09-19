@@ -38,6 +38,11 @@
             "Aoe\\FeloginBruteforceProtection\\": "Classes/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Aoe\\FeloginBruteforceProtection\\Tests\\": "Tests/"
+        }
+    },
     "keywords": [
         "TYPO3",
         "extbase",
