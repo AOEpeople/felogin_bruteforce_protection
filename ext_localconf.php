@@ -34,6 +34,6 @@ if (TYPO3_MODE == 'FE') {
         'quality' => 100,
         'os' => '',
         'exec' => '',
-        'className' => '\Aoe\FeloginBruteforceProtection\Service\AuthUser'
+        'className' => 'Aoe\\FeloginBruteforceProtection\\Service\\AuthUser'
     )
 );
