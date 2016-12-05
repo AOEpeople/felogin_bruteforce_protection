@@ -124,7 +124,7 @@ class AuthUser extends AuthenticationService
      * @param mixed $userData Data of user.
      * @return integer     Chain result (<0: break chain; 100: use next chain service; 200: success)
      */
-    public function authUser($userData)
+    public function authUser(array $userData)
     {
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
             return -1;
