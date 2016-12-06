@@ -16,9 +16,13 @@ matrix:
   exclude:
     - env: TYPO3_BRANCH=master COVERAGE=0
       php: 5.3
+    - env: TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
+      php: 5.3
     - env: TYPO3_BRANCH=master COVERAGE=0
       php: 5.4
-    - env: TYPO3_BRANCH=master COVERAGE=0
+    - env: TYPO3_BRANCH=TYPO3_6-2 COVERAGE=0
+      php: 5.4
+    - env: TYPO3_BRANCH=master COVERAGE=0    
       php: 5.5
     - env: TYPO3_BRANCH=master COVERAGE=0
       php: 5.6
