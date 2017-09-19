@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
 
 /***************************************************************
@@ -25,10 +26,13 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
+use PHPUnit_Framework_MockObject_MockObject;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
@@ -36,7 +40,7 @@ use \TYPO3\CMS\Core\Tests\UnitTestCase;
 class RestrictionIdentifierFactoryTest extends UnitTestCase
 {
     /**
-     * @var Configuration
+     * @var Configuration|PHPUnit_Framework_MockObject_MockObject
      */
     private $configuration;
 
@@ -57,13 +61,13 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
     public function setUp()
     {
         $this->configuration = $this->getMock(
-            'Aoe\FeloginBruteforceProtection\System\Configuration',
-            array(),
-            array(),
+            Configuration::class,
+            [],
+            [],
             '',
             false
         );
-        $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
+        $this->frontendUserAuthentication = $this->getMock(FrontendUserAuthentication::class);
     }
 
     /**
@@ -82,11 +86,14 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
      */
     public function isInstanceOfRestrictionIdentifierClientIp()
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
+        $this->configuration
+            ->expects(static::any())
+            ->method('getIdentificationIdentifier')
+            ->will(static::returnValue(1));
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+        static::assertInstanceOf(
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration)
         );
     }
@@ -96,11 +103,14 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
      */
     public function isInstanceOfRestrictionIdentifierClientIpWithNonExistingIdentifier()
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(10));
+        $this->configuration
+            ->expects(static::any())
+            ->method('getIdentificationIdentifier')
+            ->will(static::returnValue(10));
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+        static::assertInstanceOf(
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration)
         );
     }
@@ -110,12 +120,18 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
      */
     public function isInstanceOfRestrictionIdentifierClientIpWithSecondParam()
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
+        $this->configuration
+            ->expects(static::any())
+            ->method('getIdentificationIdentifier')
+            ->will(static::returnValue(1));
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
-            $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration, $this->frontendUserAuthentication)
+        static::assertInstanceOf(
+            RestrictionIdentifierClientIp::class,
+            $this->restrictionIdentifierFactory->getRestrictionIdentifier(
+                $this->configuration,
+                $this->frontendUserAuthentication
+            )
         );
     }
 
@@ -126,8 +142,8 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
     {
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+        static::assertInstanceOf(
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration)
         );
     }
@@ -139,9 +155,12 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
     {
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
-            $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration, $this->frontendUserAuthentication)
+        static::assertInstanceOf(
+            RestrictionIdentifierClientIp::class,
+            $this->restrictionIdentifierFactory->getRestrictionIdentifier(
+                $this->configuration,
+                $this->frontendUserAuthentication
+            )
         );
     }
 
@@ -150,14 +169,20 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
      */
     public function isInstanceOfRestrictionIdentifierFrontendUsername()
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
+        $this->configuration
+            ->expects(static::any())
+            ->method('getIdentificationIdentifier')
+            ->will(static::returnValue(2));
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName',
-            $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration, $this->frontendUserAuthentication)
+        static::assertInstanceOf(
+            RestrictionIdentifierFrontendName::class,
+            $this->restrictionIdentifierFactory
+                ->getRestrictionIdentifier(
+                    $this->configuration,
+                    $this->frontendUserAuthentication
+                )
         );
-
     }
 
     /**
@@ -165,11 +190,14 @@ class RestrictionIdentifierFactoryTest extends UnitTestCase
      */
     public function isInstanceOfRestrictionIdentifierClientIpWithMissingFrontendUsername()
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
+        $this->configuration
+            ->expects(static::any())
+            ->method('getIdentificationIdentifier')
+            ->will(static::returnValue(RestrictionIdentifierFrontendName::IDENTIFIER));
         $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
 
-        $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+        static::assertInstanceOf(
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration)
         );
     }

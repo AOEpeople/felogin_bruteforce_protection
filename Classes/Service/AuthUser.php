@@ -113,7 +113,7 @@ class AuthUser extends AuthenticationService
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
             $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']
             [$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
-            return array('uid' => 0);
+            return ['uid' => 0];
         }
         return parent::getUser();
     }

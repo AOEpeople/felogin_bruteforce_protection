@@ -152,7 +152,7 @@ class PostUserLookUp
         return LocalizationUtility::translate(
             'restriction_message',
             'felogin_bruteforce_protection',
-            array($time, $time)
+            [$time, $time]
         );
     }
 
