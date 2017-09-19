@@ -91,10 +91,10 @@ class PostUserLookUp
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
             /**
-             * @var RestrictionIdentifierFactory $restrictionIdentifierFabric
+             * @var RestrictionIdentifierFactory $restrictionIdentifierFactory
              */
-            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
-            $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+            $restrictionIdentifierFactory = $this->getRestrictionIdentifierFactory();
+            $this->restrictionIdentifier = $restrictionIdentifierFactory->getRestrictionIdentifier(
                 $this->getConfiguration(),
                 $frontendUserAuthentication
             );
@@ -224,7 +224,7 @@ class PostUserLookUp
     /**
      * @return RestrictionIdentifierFactory
      */
-    protected function getRestrictionIdentifierFabric()
+    protected function getRestrictionIdentifierFactory()
     {
         return $this->getObjectManager()
             ->get(

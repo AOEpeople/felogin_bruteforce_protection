@@ -147,13 +147,13 @@ class AuthUser extends AuthenticationService
     {
         if (false === isset($this->restrictionService)) {
             /**
-             * @var RestrictionIdentifierFactory $restrictionIdentifierFabric
+             * @var RestrictionIdentifierFactory $restrictionIdentifierFactory
              */
-            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
+            $restrictionIdentifierFactory = $this->getRestrictionIdentifierFactory();
             /**
              * @var RestrictionIdentifierInterface $restrictionIdentifier
              */
-            $restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+            $restrictionIdentifier = $restrictionIdentifierFactory->getRestrictionIdentifier(
                 $this->getConfiguration(),
                 $this->frontendUserAuthentication
             );
@@ -195,7 +195,7 @@ class AuthUser extends AuthenticationService
     /**
      * @return RestrictionIdentifierFactory
      */
-    protected function getRestrictionIdentifierFabric()
+    protected function getRestrictionIdentifierFactory()
     {
         return $this->getObjectManager()
             ->get(

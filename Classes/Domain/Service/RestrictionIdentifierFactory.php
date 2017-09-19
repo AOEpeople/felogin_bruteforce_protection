@@ -35,7 +35,7 @@ use Aoe\FeloginBruteforceProtection\System\Configuration;
 class RestrictionIdentifierFactory
 {
     /**
-     * Restriction identifier fabric method
+     * Restriction identifier factory method
      *
      * @param Configuration $configuration
      * @param FrontendUserAuthentication $frontendUserAuthentication

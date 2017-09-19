@@ -50,7 +50,7 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
     /**
      * @var RestrictionIdentifierFactory
      */
-    private $restrictionIdentifierFabric;
+    private $restrictionIdentifierFactory;
 
     /**
      * @var RestrictionIdentifierFrontendName
@@ -77,8 +77,8 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
         $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
         $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
         $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
-        $this->restrictionIdentifierFabric = new RestrictionIdentifierFactory();
-        $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier(
+        $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
+        $this->restrictionIdentifier = $this->restrictionIdentifierFactory->getRestrictionIdentifier(
             $this->configuration,
             $this->frontendUserAuthentication
         );

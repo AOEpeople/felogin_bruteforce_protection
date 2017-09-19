@@ -50,7 +50,7 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
     /**
      * @var RestrictionIdentifierFactory
      */
-    protected $restrictionIdentifierFabric;
+    protected $restrictionIdentifierFactory;
 
     /**
      * @var RestrictionIdentifierClientIp
@@ -78,8 +78,8 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
         $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
         $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
         $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
-        $this->restrictionIdentifierFabric = new RestrictionIdentifierFactory();
-        $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration);
+        $this->restrictionIdentifierFactory = new RestrictionIdentifierFactory();
+        $this->restrictionIdentifier = $this->restrictionIdentifierFactory->getRestrictionIdentifier($this->configuration);
         $this->restriction = new RestrictionService($this->restrictionIdentifier);
 
         $logger = $this->getMock('\Aoe\FeloginBruteforceProtection\Service\Logger\Logger', array('log'));
