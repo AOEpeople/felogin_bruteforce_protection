@@ -48,7 +48,7 @@ class RestrictionIdentifierFactory
 
         $identificationIdentifier = $configuration->getIdentificationIdentifier();
         switch ($identificationIdentifier) {
-            case 2:
+            case RestrictionIdentifierFrontendName::IDENTIFIER:
                 if ($frontendUserAuthentication !== null) {
                     new RestrictionIdentifierFrontendName();
                     $restrictionIdentifier = new RestrictionIdentifierFrontendName();
@@ -57,6 +57,7 @@ class RestrictionIdentifierFactory
                     break;
                 }
                 // no break
+            case RestrictionIdentifierClientIp::IDENTIFIER:
             default:
                 $restrictionIdentifier = new RestrictionIdentifierClientIp();
                 $restrictionIdentifier->setConfiguration($configuration);
