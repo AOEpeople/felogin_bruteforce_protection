@@ -1,39 +1,42 @@
 <?php
+defined('TYPO3_MODE') || die();
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+$boot = function ($_EXTKEY) {
 
-if (TYPO3_MODE == 'BE') {
-    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) == false) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = array();
+    if (TYPO3_MODE == 'BE') {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) == false) {
+            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = [];
+        }
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] =
+            \Aoe\FeloginBruteforceProtection\Tests\Unit\Command\CleanUpCommandController::class;
     }
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] =
-        'Aoe\\FeloginBruteforceProtection\\Command\\CleanUpCommandController';
-}
 
-if (TYPO3_MODE == 'FE') {
-    // postUserLookUp hookC
-    $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'][$_EXTKEY] =
-        'EXT:' .
-        $_EXTKEY .
-        '/Classes/Hooks/UserAuth/PostUserLookUp.php:' .
-        'Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp->handlePostUserLookUp';
-}
+    if (TYPO3_MODE == 'FE') {
+        // postUserLookUp hookC
+        $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'][$_EXTKEY] =
+            'EXT:' .
+            $_EXTKEY .
+            '/Classes/Hooks/UserAuth/PostUserLookUp.php:' .
+            \Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp::class . '->handlePostUserLookUp';
+    }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
-    $_EXTKEY,
-    'auth',
-    '\Aoe\FeloginBruteforceProtection\Service\AuthUser',
-    array(
-        'title' => 'brute force protection',
-        'description' => 'brute force protection for system extension felogin',
-        'subtype' => 'authUserFE,getUserFE',
-        'available' => true,
-        'priority' => 100,
-        'quality' => 100,
-        'os' => '',
-        'exec' => '',
-        'className' => 'Aoe\\FeloginBruteforceProtection\\Service\\AuthUser'
-    )
-);
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
+        $_EXTKEY,
+        'auth',
+        '\Aoe\FeloginBruteforceProtection\Service\AuthUser',
+        [
+            'title' => 'brute force protection',
+            'description' => 'brute force protection for system extension felogin',
+            'subtype' => 'authUserFE,getUserFE',
+            'available' => true,
+            'priority' => 100,
+            'quality' => 100,
+            'os' => '',
+            'exec' => '',
+            'className' => \Aoe\FeloginBruteforceProtection\Service\AuthUser::class
+        ]
+    );
+};
+
+$boot($_EXTKEY);
+unset($boot);
