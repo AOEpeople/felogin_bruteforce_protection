@@ -25,7 +25,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
@@ -48,7 +48,7 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
     protected $frontendUserAuthentication;
 
     /**
-     * @var RestrictionIdentifierFabric
+     * @var RestrictionIdentifierFactory
      */
     private $restrictionIdentifierFabric;
 
@@ -77,7 +77,7 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
         $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
         $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
         $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
-        $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
+        $this->restrictionIdentifierFabric = new RestrictionIdentifierFactory();
         $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier(
             $this->configuration,
             $this->frontendUserAuthentication

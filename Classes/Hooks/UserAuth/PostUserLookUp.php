@@ -34,7 +34,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 
 /**
@@ -71,7 +71,7 @@ class PostUserLookUp
      * @var FrontendUserAuthentication
      */
     protected $frontendUserAuthentication;
-    
+
     /**
      * @param array $params
      * @return void
@@ -91,7 +91,7 @@ class PostUserLookUp
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
             /**
-             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
+             * @var RestrictionIdentifierFactory $restrictionIdentifierFabric
              */
             $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
             $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
@@ -222,13 +222,13 @@ class PostUserLookUp
     }
 
     /**
-     * @return RestrictionIdentifierFabric
+     * @return RestrictionIdentifierFactory
      */
     protected function getRestrictionIdentifierFabric()
     {
         return $this->getObjectManager()
             ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory'
             );
     }
 

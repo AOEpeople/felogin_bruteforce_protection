@@ -28,7 +28,7 @@ namespace Aoe\FeloginBruteforceProtection\Service;
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -147,7 +147,7 @@ class AuthUser extends AuthenticationService
     {
         if (false === isset($this->restrictionService)) {
             /**
-             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
+             * @var RestrictionIdentifierFactory $restrictionIdentifierFabric
              */
             $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
             /**
@@ -193,13 +193,13 @@ class AuthUser extends AuthenticationService
     }
 
     /**
-     * @return RestrictionIdentifierFabric
+     * @return RestrictionIdentifierFactory
      */
     protected function getRestrictionIdentifierFabric()
     {
         return $this->getObjectManager()
             ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory'
             );
     }
 }

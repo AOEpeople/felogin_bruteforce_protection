@@ -28,7 +28,11 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 
-class RestrictionIdentifierFabric
+/**
+ * Class RestrictionIdentifierFactory
+ * @package Aoe\FeloginBruteforceProtection\Domain\Service
+ */
+class RestrictionIdentifierFactory
 {
     /**
      * Restriction identifier fabric method
