@@ -103,7 +103,6 @@ class PostUserLookUp
             if ($this->restrictionIdentifier->checkPreconditions()) {
                 if ($this->hasFeUserLoggedIn($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->removeEntry();
-
                 } elseif ($this->hasFeUserLogInFailed($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->checkAndHandleRestriction();
                     $this->updateGlobals($this->getFrontendUserAuthentication());
