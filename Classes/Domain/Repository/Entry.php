@@ -80,14 +80,14 @@ class Entry extends Repository
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
-        $constraintsRestrictedEntries = array(
+        $constraintsRestrictedEntries = [
             $query->lessThan('tstamp', $restrictionTime),
             $query->greaterThanOrEqual('failures', $maxFailures),
-        );
-        $constraintsResettableEntries = array(
+        ];
+        $constraintsResettableEntries = [
             $query->lessThan('crdate', $age),
             $query->lessThan('failures', $maxFailures),
-        );
+        ];
         if (null !== $identifier) {
             $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
             $constraintsResettableEntries[] = $query->equals('identifier', $identifier);

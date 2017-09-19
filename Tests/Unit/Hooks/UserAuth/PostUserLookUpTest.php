@@ -27,6 +27,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
 
 use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * Test case for class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp.
@@ -69,9 +70,9 @@ class PostUserLookUpTest extends UnitTestCase
      */
     public function handlePostUserLookUpWithBackendLogin()
     {
-        $feUserAuth = $this->getMock('\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
+        $feUserAuth = $this->getMock(FrontendUserAuthentication::class);
         $feUserAuth->loginType = 'BE';
-        $params = array();
+        $params = [];
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);
     }
