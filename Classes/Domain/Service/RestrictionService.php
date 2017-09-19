@@ -211,13 +211,13 @@ class RestrictionService
         } else {
             $restricted = 'No';
         }
-        $additionalData = array(
+        $additionalData = [
             'FAILURE_COUNT' => $failureCount,
             'RESTRICTED' => $restricted,
             'REMOTE_ADDR' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
             'REQUEST_URI' => GeneralUtility::getIndpEnv('REQUEST_URI'),
             'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-        );
+        ];
 
         $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }

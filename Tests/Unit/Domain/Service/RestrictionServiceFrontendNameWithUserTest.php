@@ -38,6 +38,9 @@ class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFront
     {
         parent::setUp();
         $loginFormData['uname'] = 'TESTLOGINNAME';
-        $this->frontendUserAuthentication->expects($this->any())->method('getLoginFormData')->will($this->returnValue($loginFormData));
+        $this->frontendUserAuthentication
+            ->expects(static::any())
+            ->method('getLoginFormData')
+            ->will(static::returnValue($loginFormData));
     }
 }

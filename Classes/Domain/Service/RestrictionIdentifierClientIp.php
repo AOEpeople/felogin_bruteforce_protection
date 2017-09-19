@@ -34,6 +34,8 @@ use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
  */
 class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
 {
+    const IDENTIFIER = 1;
+
     /**
      * @var Configuration
      */

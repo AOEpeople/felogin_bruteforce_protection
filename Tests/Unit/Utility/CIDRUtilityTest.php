@@ -26,8 +26,13 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Utility;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
+use PHPUnit_Framework_TestCase;
 
-class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class CIDRUtilityTest
+ * @package Aoe\FeloginBruteforceProtection\Tests\Unit\Utility
+ */
+class CIDRUtilityTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -37,7 +42,7 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldMatchIpInRage($ip, $range)
     {
-        $this->assertTrue(CIDRUtility::matchCIDR($ip, $range));
+        static::assertTrue(CIDRUtility::matchCIDR($ip, $range));
     }
 
     /**
@@ -48,7 +53,7 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotMatchIpInRange($ip, $range)
     {
-        $this->assertFalse(CIDRUtility::matchCIDR($ip, $range));
+        static::assertFalse(CIDRUtility::matchCIDR($ip, $range));
     }
 
     /**
@@ -58,7 +63,7 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldValidateIpAsCIRD($ip)
     {
-        $this->assertTrue(CIDRUtility::isCIDR($ip));
+        static::assertTrue(CIDRUtility::isCIDR($ip));
     }
 
     /**
@@ -68,7 +73,7 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotValidateIpAsCIRD($ip)
     {
-        $this->assertFalse(CIDRUtility::isCIDR($ip));
+        static::assertFalse(CIDRUtility::isCIDR($ip));
     }
 
     /**
@@ -76,12 +81,12 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderMatchIpInRange()
     {
-        return array(
-            array('192.168.30.2', '192.0.0.0/8'),
-            array('192.168.30.2', '192.168.0.0/16'),
-            array('192.168.30.2', '192.168.30.0/24'),
-            array('192.168.30.2', '192.168.30.2/32')
-        );
+        return [
+            ['192.168.30.2', '192.0.0.0/8'],
+            ['192.168.30.2', '192.168.0.0/16'],
+            ['192.168.30.2', '192.168.30.0/24'],
+            ['192.168.30.2', '192.168.30.2/32']
+        ];
     }
 
     /**
@@ -89,12 +94,12 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderNotMatchIpInRange()
     {
-        return array(
-            array('197.190.30.2', '192.0.0.0/8'),
-            array('192.192.30.2', '192.168.0.0/16'),
-            array('192.168.32.2', '192.168.30.0/24'),
-            array('192.168.30.4', '192.168.30.2/32')
-        );
+        return [
+            ['197.190.30.2', '192.0.0.0/8'],
+            ['192.192.30.2', '192.168.0.0/16'],
+            ['192.168.32.2', '192.168.30.0/24'],
+            ['192.168.30.4', '192.168.30.2/32']
+        ];
     }
 
     /**
@@ -102,13 +107,13 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderValidateIpAsCIRD()
     {
-        return array(
-            array('1.1.1.1/8'),
-            array('192.0.0.0/8'),
-            array('192.168.0.0/16'),
-            array('192.168.30.0/24'),
-            array('192.168.30.2/32')
-        );
+        return [
+            ['1.1.1.1/8'],
+            ['192.0.0.0/8'],
+            ['192.168.0.0/16'],
+            ['192.168.30.0/24'],
+            ['192.168.30.2/32']
+        ];
     }
 
     /**
@@ -116,12 +121,12 @@ class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderNotValidateIpAsCIRD()
     {
-        return array(
-            array('192.168.30.2/48'),
-            array('192.168.30.2/08'),
-            array('280.168.30.2/8'),
-            array('192.0.0.0'),
-            array('teststring'),
-        );
+        return [
+            ['192.168.30.2/48'],
+            ['192.168.30.2/08'],
+            ['280.168.30.2/8'],
+            ['192.0.0.0'],
+            ['teststring'],
+        ];
     }
 }

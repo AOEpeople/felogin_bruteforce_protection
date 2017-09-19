@@ -28,7 +28,7 @@ namespace Aoe\FeloginBruteforceProtection\Service;
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -113,7 +113,7 @@ class AuthUser extends AuthenticationService
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
             $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']
             [$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
-            return array('uid' => 0);
+            return ['uid' => 0];
         }
         return parent::getUser();
     }
@@ -147,13 +147,13 @@ class AuthUser extends AuthenticationService
     {
         if (false === isset($this->restrictionService)) {
             /**
-             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
+             * @var RestrictionIdentifierFactory $restrictionIdentifierFactory
              */
-            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
+            $restrictionIdentifierFactory = $this->getRestrictionIdentifierFactory();
             /**
              * @var RestrictionIdentifierInterface $restrictionIdentifier
              */
-            $restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+            $restrictionIdentifier = $restrictionIdentifierFactory->getRestrictionIdentifier(
                 $this->getConfiguration(),
                 $this->frontendUserAuthentication
             );
@@ -193,13 +193,13 @@ class AuthUser extends AuthenticationService
     }
 
     /**
-     * @return RestrictionIdentifierFabric
+     * @return RestrictionIdentifierFactory
      */
-    protected function getRestrictionIdentifierFabric()
+    protected function getRestrictionIdentifierFactory()
     {
         return $this->getObjectManager()
             ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory'
             );
     }
 }
