@@ -54,7 +54,7 @@ class EntryTest extends UnitTestCase
     public function setIdentifierForStringSetsIdentifier()
     {
         $this->entry->setIdentifier('Conceived at T3CON10');
-        $this->assertSame('Conceived at T3CON10', $this->entry->getIdentifier());
+        static::assertSame('Conceived at T3CON10', $this->entry->getIdentifier());
     }
 
     /**
@@ -63,7 +63,7 @@ class EntryTest extends UnitTestCase
     public function setFailuresForIntegerSetsFailures()
     {
         $this->entry->setFailures(12);
-        $this->assertSame(12, $this->entry->getFailures());
+        static::assertSame(12, $this->entry->getFailures());
     }
 
     /**
@@ -73,7 +73,7 @@ class EntryTest extends UnitTestCase
     {
         $time = 1;
         $this->entry->setCrdate($time);
-        $this->assertSame($time, $this->entry->getCrdate());
+        static::assertSame($time, $this->entry->getCrdate());
     }
 
     /**
@@ -83,7 +83,7 @@ class EntryTest extends UnitTestCase
     {
         $time = 1;
         $this->entry->setTstamp($time);
-        $this->assertSame($time, $this->entry->getTstamp());
+        static::assertSame($time, $this->entry->getTstamp());
     }
 
     /**
@@ -93,6 +93,6 @@ class EntryTest extends UnitTestCase
     {
         $this->entry->setFailures(12);
         $this->entry->increaseFailures();
-        $this->assertEquals(13, $this->entry->getFailures());
+        static::assertEquals(13, $this->entry->getFailures());
     }
 }

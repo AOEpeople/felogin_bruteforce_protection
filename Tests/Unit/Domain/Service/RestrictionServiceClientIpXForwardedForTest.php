@@ -37,7 +37,7 @@ class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClie
     public function setUp()
     {
         parent::setUp();
-        $this->configuration->expects($this->any())->method('getXForwardedFor')->will($this->returnValue(true));
+        $this->configuration->expects(static::any())->method('getXForwardedFor')->will(static::returnValue(true));
     }
 
     /**
@@ -49,11 +49,11 @@ class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClie
      */
     public function isClientRestrictedWithExcludedIpWithoutCIRD($clientIp, array $excludedIPs, $shouldClientRestricted)
     {
-        $this->configuration->expects($this->any())->method('getExcludedIps')->will($this->returnValue($excludedIPs));
+        $this->configuration->expects(static::any())->method('getExcludedIps')->will(static::returnValue($excludedIPs));
         $this->inject($this->restriction, 'configuration', $this->configuration);
 
         $_SERVER['HTTP_X_FORWARDED_FOR'] = $clientIp;
 
-        $this->assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
+        static::assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
     }
 }

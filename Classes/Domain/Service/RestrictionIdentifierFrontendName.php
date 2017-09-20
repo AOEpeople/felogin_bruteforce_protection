@@ -33,6 +33,8 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
 {
+    const IDENTIFIER = 2;
+
     /**
      * @var FrontendUserAuthentication
      */

@@ -34,7 +34,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 
 /**
@@ -71,7 +71,7 @@ class PostUserLookUp
      * @var FrontendUserAuthentication
      */
     protected $frontendUserAuthentication;
-    
+
     /**
      * @param array $params
      * @return void
@@ -91,10 +91,10 @@ class PostUserLookUp
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
             /**
-             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
+             * @var RestrictionIdentifierFactory $restrictionIdentifierFactory
              */
-            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
-            $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+            $restrictionIdentifierFactory = $this->getRestrictionIdentifierFactory();
+            $this->restrictionIdentifier = $restrictionIdentifierFactory->getRestrictionIdentifier(
                 $this->getConfiguration(),
                 $frontendUserAuthentication
             );
@@ -103,7 +103,6 @@ class PostUserLookUp
             if ($this->restrictionIdentifier->checkPreconditions()) {
                 if ($this->hasFeUserLoggedIn($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->removeEntry();
-
                 } elseif ($this->hasFeUserLogInFailed($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->checkAndHandleRestriction();
                     $this->updateGlobals($this->getFrontendUserAuthentication());
@@ -153,7 +152,7 @@ class PostUserLookUp
         return LocalizationUtility::translate(
             'restriction_message',
             'felogin_bruteforce_protection',
-            array($time, $time)
+            [$time, $time]
         );
     }
 
@@ -222,13 +221,13 @@ class PostUserLookUp
     }
 
     /**
-     * @return RestrictionIdentifierFabric
+     * @return RestrictionIdentifierFactory
      */
-    protected function getRestrictionIdentifierFabric()
+    protected function getRestrictionIdentifierFactory()
     {
         return $this->getObjectManager()
             ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFactory'
             );
     }
 

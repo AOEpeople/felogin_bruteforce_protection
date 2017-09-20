@@ -37,7 +37,7 @@ class RestrictionServiceClientIpRemoteAddressTest extends RestrictionServiceClie
     public function setUp()
     {
         parent::setUp();
-        $this->configuration->expects($this->any())->method('getXForwardedFor')->will($this->returnValue(false));
+        $this->configuration->expects(static::any())->method('getXForwardedFor')->will(static::returnValue(false));
     }
 
     /**
@@ -49,11 +49,11 @@ class RestrictionServiceClientIpRemoteAddressTest extends RestrictionServiceClie
      */
     public function isClientRestrictedWithExcludedIpWithoutCIRD($clientIp, array $excludedIPs, $shouldClientRestricted)
     {
-        $this->configuration->expects($this->any())->method('getExcludedIps')->will($this->returnValue($excludedIPs));
+        $this->configuration->expects(static::any())->method('getExcludedIps')->will(static::returnValue($excludedIPs));
         $this->inject($this->restriction, 'configuration', $this->configuration);
 
         $_SERVER['REMOTE_ADDR'] = $clientIp;
 
-        $this->assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
+        static::assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
     }
 }

@@ -69,14 +69,14 @@ class EntryRepository extends Persistence\Repository
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setIgnoreEnableFields(true);
         $query->getQuerySettings()->setRespectSysLanguage(false);
-        $constraintsRestrictedEntries = array(
+        $constraintsRestrictedEntries = [
             $query->lessThan('tstamp', $restrictionTime),
             $query->greaterThanOrEqual('failures', $maxFailures),
-        );
-        $constraintsResettableEntries = array(
+        ];
+        $constraintsResettableEntries = [
             $query->lessThan('crdate', $age),
             $query->lessThan('failures', $maxFailures),
-        );
+        ];
         if (null !== $identifier) {
             $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
             $constraintsResettableEntries[] = $query->equals('identifier', $identifier);

@@ -26,6 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\System;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use Exception;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
@@ -63,7 +64,7 @@ class ConfigurationTest extends UnitTestCase
     public function doesIsEnabledReturnFalse()
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_DISABLED, '1');
-        $this->assertFalse($this->configuration->isEnabled());
+        static::assertFalse($this->configuration->isEnabled());
     }
 
     /**
@@ -72,7 +73,7 @@ class ConfigurationTest extends UnitTestCase
     public function doesIsEnabledReturnTrue()
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_DISABLED, 0);
-        $this->assertTrue($this->configuration->isEnabled());
+        static::assertTrue($this->configuration->isEnabled());
     }
 
     /**
@@ -81,7 +82,7 @@ class ConfigurationTest extends UnitTestCase
     public function checkGetMaximumNumberOfFailuresReturn()
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_MAX_FAILURES, 10);
-        $this->assertEquals(10, $this->configuration->getMaximumNumberOfFailures());
+        static::assertEquals(10, $this->configuration->getMaximumNumberOfFailures());
     }
 
     /**
@@ -90,7 +91,7 @@ class ConfigurationTest extends UnitTestCase
     public function checkGetRestrictionTimeReturn()
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_RESTRICTION_TIME, 300);
-        $this->assertEquals(300, $this->configuration->getRestrictionTime());
+        static::assertEquals(300, $this->configuration->getRestrictionTime());
     }
 
     /**
@@ -99,7 +100,7 @@ class ConfigurationTest extends UnitTestCase
     public function checkGetResetTimeReturn()
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_SECONDS_TILL_RESET, 50);
-        $this->assertEquals(50, $this->configuration->getResetTime());
+        static::assertEquals(50, $this->configuration->getResetTime());
     }
 
     /**
@@ -108,7 +109,7 @@ class ConfigurationTest extends UnitTestCase
     public function checkGetIdentificationIdentifierReturn()
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_IDENTIFICATION_IDENTIFIER, 1);
-        $this->assertEquals(1, $this->configuration->getIdentificationIdentifier());
+        static::assertEquals(1, $this->configuration->getIdentificationIdentifier());
     }
 
     /**
@@ -117,7 +118,7 @@ class ConfigurationTest extends UnitTestCase
     public function doesGetXForwardedForReturnTrue()
     {
         $this->setGlobalConfigurationValue(Configuration::X_FORWARDED_FOR, 1);
-        $this->assertEquals(true, $this->configuration->getXForwardedFor());
+        static::assertEquals(true, $this->configuration->getXForwardedFor());
     }
 
     /**
@@ -126,7 +127,7 @@ class ConfigurationTest extends UnitTestCase
     public function doesGetXForwardedForReturnFalse()
     {
         $this->setGlobalConfigurationValue(Configuration::X_FORWARDED_FOR, 0);
-        $this->assertFalse($this->configuration->getXForwardedFor());
+        static::assertFalse($this->configuration->getXForwardedFor());
     }
 
     /**
@@ -135,7 +136,7 @@ class ConfigurationTest extends UnitTestCase
     public function doesGetExcludedIpsReturnEmptyArray()
     {
         $this->setGlobalConfigurationValue(Configuration::EXCLUDED_IPS, '');
-        $this->assertCount(1, $this->configuration->getExcludedIps());
+        static::assertCount(1, $this->configuration->getExcludedIps());
     }
 
     /**
@@ -144,7 +145,7 @@ class ConfigurationTest extends UnitTestCase
     public function doesGetExcludedIpsReturnArrayValues()
     {
         $this->setGlobalConfigurationValue(Configuration::EXCLUDED_IPS, '127.0.0.1,192.168.0.0.1,192.0.0.0/8');
-        $this->assertCount(3, $this->configuration->getExcludedIps());
+        static::assertCount(3, $this->configuration->getExcludedIps());
     }
 
     /**

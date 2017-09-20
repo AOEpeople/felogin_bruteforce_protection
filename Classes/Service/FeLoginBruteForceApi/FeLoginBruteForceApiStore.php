@@ -36,7 +36,7 @@ use \TYPO3\CMS\Core\SingletonInterface;
 class FeLoginBruteForceApiStore implements SingletonInterface
 {
     /** @var array */
-    private $propertyStore = array();
+    private $propertyStore = [];
 
     /**
      * @param $propertyName

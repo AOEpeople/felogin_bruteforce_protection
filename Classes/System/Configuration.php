@@ -83,7 +83,7 @@ class Configuration
     /**
      * @var array
      */
-    private $configuration = array();
+    private $configuration = [];
 
     /**
      * Initialize configuration array
