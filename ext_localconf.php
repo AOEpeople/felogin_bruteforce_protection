@@ -13,10 +13,7 @@ $boot = function ($_EXTKEY) {
 
     if (TYPO3_MODE == 'FE') {
         // postUserLookUp hookC
-        $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'][$_EXTKEY] =
-            'EXT:' .
-            $_EXTKEY .
-            '/Classes/Hooks/UserAuth/PostUserLookUp.php:' .
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'][$_EXTKEY] =
             \Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp::class . '->handlePostUserLookUp';
     }
 
