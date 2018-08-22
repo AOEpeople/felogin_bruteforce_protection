@@ -30,7 +30,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
@@ -64,7 +64,6 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {
@@ -89,17 +88,6 @@ class RestrictionServiceClientIpAbstract extends UnitTestCase
             $this->getMock('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager')
         );
         $this->inject($this->restriction, 'logger', $logger);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    public function tearDown()
-    {
-        unset($this->frontendUserAuthentication);
-        unset($this->configuration);
-        unset($this->restrictionIdentifier);
     }
 
     /**

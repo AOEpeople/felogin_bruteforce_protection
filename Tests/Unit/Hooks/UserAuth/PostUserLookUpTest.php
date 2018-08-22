@@ -26,7 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Test case for class Tx_FeloginBruteforceProtection_Hooks_UserAuth_PostUserLookUp.
@@ -44,7 +44,6 @@ class PostUserLookUpTest extends UnitTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {
@@ -52,15 +51,6 @@ class PostUserLookUpTest extends UnitTestCase
             ->getMockBuilder('Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp')
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    public function tearDown()
-    {
-        unset($this->postUserLookUp);
     }
 
     /**

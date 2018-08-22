@@ -26,8 +26,9 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Utility;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
-class CIDRUtilityTest extends \PHPUnit_Framework_TestCase
+class CIDRUtilityTest extends UnitTestCase
 {
     /**
      * @test

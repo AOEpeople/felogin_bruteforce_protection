@@ -28,7 +28,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
@@ -52,7 +52,6 @@ class RestrictionIdentifierFabricTest extends UnitTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {
@@ -64,17 +63,6 @@ class RestrictionIdentifierFabricTest extends UnitTestCase
             false
         );
         $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    public function tearDown()
-    {
-        unset($this->frontendUserAuthentication);
-        unset($this->configuration);
-        unset($this->restrictionIdentifierFabric);
     }
 
     /**

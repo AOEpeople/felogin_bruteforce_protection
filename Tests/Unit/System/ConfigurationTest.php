@@ -26,7 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\System;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\\FeloginBruteforceProtection\\Tests\\Unit\\System
@@ -41,20 +41,10 @@ class ConfigurationTest extends UnitTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {
         $this->configuration = new Configuration();
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    public function tearDown()
-    {
-        unset($this->configuration);
     }
 
     /**

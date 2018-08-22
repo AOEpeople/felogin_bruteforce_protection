@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "typo3/cms": "6.2.*",
-        "phpunit/phpunit": "4.8.*",
+        "nimut/testing-framework": "^2.0",
         "phpunit/phpcov": "2.0.*",
         "squizlabs/php_codesniffer": "2.3.*",
         "sebastian/phpcpd": "2.0.*",
@@ -39,8 +39,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Aoe\\FeloginBruteforceProtection\\Tests\\": "Tests/",
-            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+            "Aoe\\FeloginBruteforceProtection\\Tests\\": "Tests/"
         }
     },
     "config": {
@@ -51,6 +50,10 @@
         "post-autoload-dump": [
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/felogin_bruteforce_protection ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/felogin_bruteforce_protection"
+        ],
+        "test:unit": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit --debug --verbose"
         ]
     },
     "extra": {

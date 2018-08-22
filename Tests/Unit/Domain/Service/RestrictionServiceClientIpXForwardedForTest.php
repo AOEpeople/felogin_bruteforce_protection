@@ -32,7 +32,6 @@ class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClie
 {
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {

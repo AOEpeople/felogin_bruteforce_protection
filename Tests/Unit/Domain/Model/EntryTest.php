@@ -26,7 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\\FeloginBruteforceProtection\\Tests\\Domain\\Model
@@ -41,11 +41,6 @@ class EntryTest extends UnitTestCase
     public function setUp()
     {
         $this->entry = new Entry();
-    }
-
-    public function tearDown()
-    {
-        unset($this->entry);
     }
 
     /**

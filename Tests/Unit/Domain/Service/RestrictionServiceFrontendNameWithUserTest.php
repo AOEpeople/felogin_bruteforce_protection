@@ -32,7 +32,6 @@ class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFront
 {
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {

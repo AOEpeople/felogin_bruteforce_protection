@@ -30,7 +30,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontend
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use \TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
@@ -63,7 +63,6 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {
@@ -90,17 +89,6 @@ class RestrictionServiceFrontendNameAbstract extends UnitTestCase
         );
         $logger = $this->getMock('\Aoe\FeloginBruteforceProtection\Service\Logger\Logger', array('log'));
         $this->inject($this->restriction, 'logger', $logger);
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    public function tearDown()
-    {
-        unset($this->frontendUserAuthentication);
-        unset($this->configuration);
-        unset($this->restrictionIdentifier);
     }
 
     /**

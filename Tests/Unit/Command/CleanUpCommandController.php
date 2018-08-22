@@ -25,7 +25,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Tests\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\\Tests\\Unit\\Command
@@ -40,19 +40,9 @@ class CleanUpCommandController extends UnitTestCase
 
     /**
      * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
     {
         $this->cleanUpCommandController = new CleanUpCommandController();
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see PHPUnit_Framework_TestCase::tearDown()
-     */
-    public function tearDown()
-    {
-        unset($this->cleanUpCommandController);
     }
 }
