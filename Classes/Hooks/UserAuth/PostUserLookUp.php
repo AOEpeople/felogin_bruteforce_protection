@@ -4,9 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2015 AOE GmbH, <dev@aoe.com>
- * (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
- * (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ * (c) 2018 AOE GmbH, <dev@aoe.com>
  *
  * All rights reserved
  *
@@ -37,14 +35,6 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\\Hook\UserAuth
- *
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Timo Fuchs <timo.fuchs@aoe.com>
- * @author Andre Wuttig <wuttig@portrino.de>
- * @author Stefan Masztalerz <stefan.masztalerz@aoe.com>
- */
 class PostUserLookUp
 {
     /**

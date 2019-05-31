@@ -1,10 +1,10 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
+namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2014 Kevin Schu <dev@aoe.com>, AOE GmbH
+ * (c) 2018 AOE GmbH <dev@aoe.com>
  *
  * All rights reserved
  *
@@ -28,7 +28,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
  */
-class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFrontendNameAbstract
+class RestrictionServiceClientIpRemoteAddressTest extends RestrictionServiceClientIpAbstract
 {
     /**
      * (non-PHPdoc)
@@ -36,7 +36,23 @@ class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFront
     public function setUp()
     {
         parent::setUp();
-        $loginFormData['uname'] = 'TESTLOGINNAME';
-        $this->frontendUserAuthentication->expects($this->any())->method('getLoginFormData')->will($this->returnValue($loginFormData));
+        $this->configuration->expects($this->any())->method('getXForwardedFor')->will($this->returnValue(false));
+    }
+
+    /**
+     * @test
+     * @dataProvider dataProviderIsClientRestrictedWithExcludedIp
+     * @param string $clientIp
+     * @param array $excludedIPs
+     * @param boolean $shouldClientRestricted
+     */
+    public function isClientRestrictedWithExcludedIpWithoutCIRD($clientIp, array $excludedIPs, $shouldClientRestricted)
+    {
+        $this->configuration->expects($this->any())->method('getExcludedIps')->will($this->returnValue($excludedIPs));
+        $this->inject($this->restriction, 'configuration', $this->configuration);
+
+        $_SERVER['REMOTE_ADDR'] = $clientIp;
+
+        $this->assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
     }
 }

@@ -4,8 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2014 Andre Wuttig <wuttig@portrino.de>, portrino GmbH
- *  (c) 2015 AOE GmbH, <dev@aoe.com>
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *

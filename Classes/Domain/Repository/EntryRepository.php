@@ -4,8 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
- *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *

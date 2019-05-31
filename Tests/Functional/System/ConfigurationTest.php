@@ -1,10 +1,10 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Tests\Unit\System;
+namespace Aoe\FeloginBruteforceProtection\Tests\Functional\System;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 AOE GmbH <dev@aoe.com>
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -26,24 +26,33 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\System;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @package Aoe\\FeloginBruteforceProtection\\Tests\\Unit\\System
- * @author Patrick Roos <patrick.roos@aoe.com>
+ * Class ConfigurationTest
  */
-class ConfigurationTest extends UnitTestCase
+class ConfigurationTest extends FunctionalTestCase
 {
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = ['cms', 'core', 'lang', 'extensionmanager'];
+
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
+
     /**
      * @var Configuration $configuration
      */
     private $configuration;
 
-    /**
-     * (non-PHPdoc)
-     */
     public function setUp()
     {
+        parent::setUp();
         $this->configuration = new Configuration();
     }
 
@@ -147,9 +156,8 @@ class ConfigurationTest extends UnitTestCase
     }
 
     /**
-     * @param string $key
-     * @param mixed $value
-     * @return void
+     * @param $key
+     * @param $value
      */
     private function setGlobalConfigurationValue($key, $value)
     {

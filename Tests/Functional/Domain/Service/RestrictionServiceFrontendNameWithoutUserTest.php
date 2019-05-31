@@ -1,10 +1,10 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
+namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2014 Kevin Schu <dev@aoe.com>, AOE GmbH
+ * (c) 2018 AOE GmbH <dev@aoe.com>
  *
  * All rights reserved
  *

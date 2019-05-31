@@ -4,8 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Service;
     /***************************************************************
      *  Copyright notice
      *
-     *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
-     *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+     *  (c) 2019 AOE GmbH <dev@aoe.com>
      *
      *  All rights reserved
      *
@@ -30,20 +29,12 @@ use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Sv\AuthenticationService;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\\Service
- *
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Timo Fuchs <timo.fuchs@aoe.com>
- * @author Andre Wuttig <wuttig@portrino.de>
- *
- */
 class AuthUser extends AuthenticationService
 {
 
@@ -121,10 +112,11 @@ class AuthUser extends AuthenticationService
     /**
      * Ensure chain breaking if client is already banned!
      *
-     * @param mixed $userData Data of user.
-     * @return integer     Chain result (<0: break chain; 100: use next chain service; 200: success)
+     * @param array $userData Data of user.
+     *
+     * @return int Chain result (<0: break chain; 100: use next chain service; 200: success)
      */
-    public function authUser(array $userData)
+    public function authUser(array $userData): int
     {
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
             return -1;

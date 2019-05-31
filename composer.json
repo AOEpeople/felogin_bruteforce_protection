@@ -19,19 +19,18 @@
     "require": {
         "php": "^7.0",
         "typo3/cms-core": ">=7.6.0",
-        "typo3/cms-extbase": ">=7.6.0",
-        "typo3/cms-sv": ">=7.6.0",
-        "typo3/cms-backend": ">=7.6.0",
-        "typo3/cms-reports": ">=7.6.0",
-        "typo3/cms-frontend": ">=7.6.0"
+        "typo3/cms-extbase": "*",
+        "typo3/cms-sv": "*",
+        "typo3/cms-backend": "*",
+        "typo3/cms-reports": "*",
+        "typo3/cms-frontend": "*"
     },
     "require-dev": {
-        "typo3/cms": "7.6.*",
-        "nimut/testing-framework": "2.0.*",
-        "phpunit/phpcov": "3.1.*",
-        "squizlabs/php_codesniffer": "3.3.*",
-        "sebastian/phpcpd": "3.0.*",
-        "phpmd/phpmd": "2.6.*"
+        "nimut/typo3-complete": "^7.6",
+        "nimut/testing-framework": "^4.1"
+    },
+	"suggest": {
+        "typo3/cms-felogin": "A template-based plugin to log in Website Users in the Frontend"
     },
     "autoload": {
         "psr-4": {
@@ -50,11 +49,15 @@
     "scripts": {
         "post-autoload-dump": [
             "mkdir -p .Build/Web/typo3conf/ext/",
-            "[ -L .Build/Web/typo3conf/ext/felogin_bruteforce_protection ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/felogin_bruteforce_protection"
+            "[ -L .Build/Web/typo3conf/ext/felogin_bruteforce_protection ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/felogin_bruteforce_protection",
+            "export TYPO3_PATH_WEB=$PWD/.Build/Web"
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit --debug --verbose"
+            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit --verbose"
+        ],
+        "test:functional": [
+            "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional/"
         ]
     },
     "extra": {

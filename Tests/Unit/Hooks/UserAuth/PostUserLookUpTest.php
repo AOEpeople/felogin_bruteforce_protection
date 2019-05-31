@@ -4,7 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 AOE GmbH <dev@aoe.com>
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -59,7 +59,9 @@ class PostUserLookUpTest extends UnitTestCase
      */
     public function handlePostUserLookUpWithBackendLogin()
     {
-        $feUserAuth = $this->getMock('\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication');
+        $feUserAuth = $this->getMockBuilder('\\TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication')
+            ->disableOriginalConstructor()
+            ->getMock();
         $feUserAuth->loginType = 'BE';
         $params = array();
         $params['pObj'] = $feUserAuth;

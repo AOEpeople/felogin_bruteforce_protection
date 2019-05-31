@@ -4,7 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Model;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2013 Kevin Schu <kevin.schu@aoemedia.de>, AOE media GmbH
+ * (c) 2018 AOE GmbH <dev@aoe.com>
  *
  * All rights reserved
  *
