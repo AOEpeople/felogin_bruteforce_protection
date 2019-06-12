@@ -4,7 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 /***************************************************************
  * Copyright notice
  *
- * (c) 2018 AOE GmbH <dev@aoe.com>
+ * (c) 2019 AOE GmbH <dev@aoe.com>
  *
  * All rights reserved
  *
@@ -65,12 +65,8 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
      */
     public function setUp()
     {
-        $this->configuration = $this->getMockBuilder('Aoe\FeloginBruteforceProtection\System\Configuration')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->frontendUserAuthentication = $this->getMockBuilder('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->configuration = $this->createMock('Aoe\FeloginBruteforceProtection\System\Configuration');
+        $this->frontendUserAuthentication = $this->createMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
     }
 
     /**
