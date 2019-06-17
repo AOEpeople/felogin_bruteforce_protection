@@ -4,7 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 AOE GmbH <dev@aoe.com>
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *

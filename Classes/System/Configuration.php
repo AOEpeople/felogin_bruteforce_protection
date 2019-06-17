@@ -4,8 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\System;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Kevin Schu <kevin.schu@aoe.com>, AOE GmbH
- *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -26,12 +25,12 @@ namespace Aoe\FeloginBruteforceProtection\System;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 
 /**
  * Class Configuration
- *
- * @package Aoe\\FeloginBruteforceProtection\\System
  */
 class Configuration
 {

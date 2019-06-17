@@ -4,8 +4,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2015 AOE GmbH, <dev@aoe.com>
- *  (c) 2014 André Wuttig <wuttig@portrino.de>, portrino GmbH
+ *  (c) 2019 AOE GmbH <dev@aoe.com>
  *
  *  All rights reserved
  *
@@ -26,11 +25,15 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
 use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
 use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  *
@@ -60,25 +63,21 @@ class RestrictionService
 
     /**
      * @var \Aoe\FeloginBruteforceProtection\System\Configuration
-     * @inject
      */
     protected $configuration;
 
     /**
      * @var \Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository
-     * @inject
      */
     protected $entryRepository;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     * @inject
      */
     protected $persistenceManager;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @inject
      */
     protected $objectManager;
 
@@ -107,7 +106,14 @@ class RestrictionService
      */
     public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
     {
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->restrictionIdentifier = $restrictionIdentifier;
+
+        $this->configuration = $this->objectManager->get(Configuration::class);
+        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        $this->entryRepository = $this->objectManager->get(EntryRepository::class);
+
+
     }
 
     /**
@@ -292,7 +298,7 @@ class RestrictionService
     public function getEntry()
     {
         if (false === isset($this->entry)) {
-            $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
+            $entry = $this->entryRepository->findByIdentifier($this->getClientIdentifier());
             if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {

@@ -1,10 +1,10 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
+namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2014 Kevin Schu <dev@aoe.com>, AOE GmbH
+ * (c) 2019 AOE GmbH <dev@aoe.com>
  *
  * All rights reserved
  *
@@ -28,6 +28,15 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
  */
-class RestrictionServiceFrontendNameWithoutUserTest extends RestrictionServiceFrontendNameAbstract
+class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFrontendNameAbstract
 {
+    /**
+     * (non-PHPdoc)
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $loginFormData['uname'] = 'TESTLOGINNAME';
+        $this->frontendUserAuthentication->expects($this->any())->method('getLoginFormData')->will($this->returnValue($loginFormData));
+    }
 }

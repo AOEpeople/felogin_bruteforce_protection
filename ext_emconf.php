@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Brute Force Protection',
     'description' => 'Protects TYPO3 frontend authentication (e.g. fe_login) against brute force attacks.',
     'category' => 'services',
@@ -17,14 +17,14 @@ $EM_CONF[$_EXTKEY] = array(
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '2.0.0',
-    'constraints' => array(
-    		'depends' => array(
-    			'typo3' => '7.6.0-7.6.99'
-    		),
-    		'conflicts' => array(
-    		),
-    		'suggests' => array(
-    		),
-    	),
-);
+    'version' => '2.1.0',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '7.6.0-9.5.99',
+        ],
+        'conflicts' => [
+        ],
+        'suggests' => [
+        ],
+    ],
+];

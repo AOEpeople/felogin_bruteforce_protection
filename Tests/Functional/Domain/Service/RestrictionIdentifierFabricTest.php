@@ -1,10 +1,10 @@
 <?php
-namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
+namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
 /***************************************************************
  * Copyright notice
  *
- * (c) 2014 Kevin Schu <dev@aoe.com>, AOE GmbH
+ * (c) 2019 AOE GmbH <dev@aoe.com>
  *
  * All rights reserved
  *
@@ -26,15 +26,25 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Service;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
  */
-class RestrictionIdentifierFabricTest extends UnitTestCase
+class RestrictionIdentifierFabricTest extends FunctionalTestCase
 {
+    /**
+     * @var array
+     */
+    protected $coreExtensionsToLoad = ['cms', 'core', 'lang', 'extensionmanager'];
+
+    /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
+
     /**
      * @var Configuration
      */
@@ -55,14 +65,8 @@ class RestrictionIdentifierFabricTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->configuration = $this->getMock(
-            'Aoe\FeloginBruteforceProtection\System\Configuration',
-            array(),
-            array(),
-            '',
-            false
-        );
-        $this->frontendUserAuthentication = $this->getMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
+        $this->configuration = $this->createMock('Aoe\FeloginBruteforceProtection\System\Configuration');
+        $this->frontendUserAuthentication = $this->createMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
     }
 
     /**
