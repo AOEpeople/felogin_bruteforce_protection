@@ -56,6 +56,7 @@ class PostUserLookUpTest extends UnitTestCase
     /**
      * with backend login
      * @test
+     * @doesNotPerformAssertions
      */
     public function handlePostUserLookUpWithBackendLogin()
     {
@@ -63,7 +64,7 @@ class PostUserLookUpTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $feUserAuth->loginType = 'BE';
-        $params = array();
+        $params = [];
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);
     }
