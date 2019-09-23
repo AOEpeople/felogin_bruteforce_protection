@@ -120,12 +120,12 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
 
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
+        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findOneByIdentifier', 'remove'], [], '', false);
 
         $entry = $this->getMockBuilder('Aoe\FeloginBruteforceProtection\Domain\Model\Entry')->getMock();
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(0));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
 
@@ -144,8 +144,8 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 400));
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findOneByIdentifier', 'remove'], [], '', false);
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
         $this->assertTrue($this->restriction->isClientRestricted());
@@ -163,8 +163,8 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 4000));
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findOneByIdentifier', 'remove'], [], '', false);
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
         $this->assertFalse($this->restriction->isClientRestricted());
@@ -182,8 +182,8 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(5));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 400));
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findOneByIdentifier', 'remove'], [], '', false);
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
         $this->assertFalse($this->restriction->isClientRestricted());
