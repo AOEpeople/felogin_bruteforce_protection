@@ -67,7 +67,6 @@ class AuthUser extends AuthenticationService
      */
     public function init()
     {
-        ExtensionManagementUtility::loadBaseTca(false);
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         }
