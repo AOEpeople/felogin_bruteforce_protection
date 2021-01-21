@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Command;
 
 /***************************************************************
@@ -25,8 +26,12 @@ namespace Aoe\FeloginBruteforceProtection\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \Aoe\FeloginBruteforceProtection\System;
+use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Command
@@ -36,39 +41,35 @@ use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
 class CleanUpCommandController extends CommandController
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     * @inject
+     * @var ConfigurationManagerInterface
      */
     protected $configurationManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     * @inject
+     * @var PersistenceManager
      */
     protected $persistenceManager;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository
-     * @inject
+     * @var EntryRepository
      */
     protected $entryRepository;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\System\Configuration
-     * @inject
+     * @var Configuration
      */
     protected $configuration;
 
     /**
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @return void
+     * @throws IllegalObjectTypeException
      */
     public function cleanupCommand()
     {
         $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(
-            $this->configuration->get(System\Configuration::CONF_SECONDS_TILL_RESET),
-            $this->configuration->get(System\Configuration::CONF_MAX_FAILURES),
-            $this->configuration->get(System\Configuration::CONF_RESTRICTION_TIME)
+            $this->configuration->get(Configuration::CONF_SECONDS_TILL_RESET),
+            $this->configuration->get(Configuration::CONF_MAX_FAILURES),
+            $this->configuration->get(Configuration::CONF_RESTRICTION_TIME)
         );
 
         foreach ($entriesToCleanUp as $entryToCleanUp) {
@@ -76,5 +77,25 @@ class CleanUpCommandController extends CommandController
         }
 
         $this->persistenceManager->persistAll();
+    }
+
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    public function injectPersistenceManager(PersistenceManager $persistenceManager): void
+    {
+        $this->persistenceManager = $persistenceManager;
+    }
+
+    public function injectEntryRepository(EntryRepository $entryRepository): void
+    {
+        $this->entryRepository = $entryRepository;
+    }
+
+    public function injectConfiguration(Configuration $configuration): void
+    {
+        $this->configuration = $configuration;
     }
 }

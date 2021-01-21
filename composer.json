@@ -1,5 +1,5 @@
 {
-    "name": "aoe/felogin-bruteforce-protection",
+    "name": "in2code/felogin-bruteforce-protection",
     "description": "Protects TYPO3 frontend authentication (e.g. fe_login) against brute force attacks.",
     "type": "typo3-cms-extension",
     "homepage": "https://github.com/AOEpeople/felogin_bruteforce_protection",
@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^7.0",
-        "typo3/cms-core": ">=7.6.0,<=8.7.99",
+        "typo3/cms-core": "^10.4",
         "typo3/cms-extbase": "*",
         "typo3/cms-sv": "*",
         "typo3/cms-backend": "*",
@@ -26,10 +26,10 @@
         "typo3/cms-frontend": "*"
     },
     "require-dev": {
-        "nimut/typo3-complete": "^7.6",
-        "nimut/testing-framework": "^4.1"
+        "nimut/typo3-complete": "^v10.4.0",
+        "nimut/testing-framework": "^5.2.0"
     },
-	"suggest": {
+    "suggest": {
         "typo3/cms-felogin": "A template-based plugin to log in Website Users in the Frontend"
     },
     "autoload": {

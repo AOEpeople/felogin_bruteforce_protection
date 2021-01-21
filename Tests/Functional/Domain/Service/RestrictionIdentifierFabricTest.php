@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
 /***************************************************************
@@ -25,10 +26,12 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use Aoe\FeloginBruteforceProtection\System\Configuration;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
@@ -65,8 +68,10 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
      */
     public function setUp()
     {
-        $this->configuration = $this->createMock('Aoe\FeloginBruteforceProtection\System\Configuration');
-        $this->frontendUserAuthentication = $this->createMock('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication');
+        $this->configuration = $this->createMock(Configuration::class);
+        $this->frontendUserAuthentication = $this->createMock(
+            FrontendUserAuthentication::class
+        );
     }
 
     /**
@@ -78,7 +83,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration)
         );
     }
@@ -88,11 +93,13 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
      */
     public function isInstanceOfRestrictionIdentifierClientIpWithNonExistingIdentifier()
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(10));
+        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will(
+            $this->returnValue(10)
+        );
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration)
         );
     }
@@ -106,8 +113,11 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
-            $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration, $this->frontendUserAuthentication)
+            RestrictionIdentifierClientIp::class,
+            $this->restrictionIdentifierFabric->getRestrictionIdentifier(
+                $this->configuration,
+                $this->frontendUserAuthentication
+            )
         );
     }
 
@@ -119,7 +129,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration)
         );
     }
@@ -132,8 +142,11 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
-            $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration, $this->frontendUserAuthentication)
+            RestrictionIdentifierClientIp::class,
+            $this->restrictionIdentifierFabric->getRestrictionIdentifier(
+                $this->configuration,
+                $this->frontendUserAuthentication
+            )
         );
     }
 
@@ -146,10 +159,12 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName',
-            $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration, $this->frontendUserAuthentication)
+            RestrictionIdentifierFrontendName::class,
+            $this->restrictionIdentifierFabric->getRestrictionIdentifier(
+                $this->configuration,
+                $this->frontendUserAuthentication
+            )
         );
-
     }
 
     /**
@@ -161,7 +176,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
-            'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp',
+            RestrictionIdentifierClientIp::class,
             $this->restrictionIdentifierFabric->getRestrictionIdentifier($this->configuration)
         );
     }

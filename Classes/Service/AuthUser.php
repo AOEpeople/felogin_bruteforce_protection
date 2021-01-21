@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service;
 
 /***************************************************************
@@ -25,19 +26,21 @@ namespace Aoe\FeloginBruteforceProtection\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Sv\AuthenticationService;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
 class AuthUser extends AuthenticationService
 {
-
     /**
      * @var Configuration
      */
@@ -65,14 +68,14 @@ class AuthUser extends AuthenticationService
      *
      * @return boolean TRUE if the service is available
      */
-    public function init()
+    public function init(): bool
     {
         ExtensionManagementUtility::loadBaseTca(false);
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         }
         if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->tmpl)) {
-            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\TemplateService');
+            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         }
 
         return parent::init();
@@ -104,7 +107,7 @@ class AuthUser extends AuthenticationService
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
             $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']
             [$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
-            return array('uid' => 0);
+            return ['uid' => 0];
         }
         return parent::getUser();
     }
@@ -152,7 +155,7 @@ class AuthUser extends AuthenticationService
 
             $this->restrictionService = $this->getObjectManager()
                 ->get(
-                    'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService',
+                    RestrictionService::class,
                     $restrictionIdentifier
                 );
         }
@@ -166,7 +169,7 @@ class AuthUser extends AuthenticationService
     {
         if (false === isset($this->configuration)) {
             $this->configuration = $this->getObjectManager()
-                ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+                ->get(Configuration::class);
         }
         return $this->configuration;
     }
@@ -178,7 +181,7 @@ class AuthUser extends AuthenticationService
     {
         if (false === isset($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(
-                'TYPO3\CMS\Extbase\Object\ObjectManager'
+                ObjectManager::class
             );
         }
         return $this->objectManager;
@@ -191,7 +194,7 @@ class AuthUser extends AuthenticationService
     {
         return $this->getObjectManager()
             ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
+                RestrictionIdentifierFabric::class
             );
     }
 }

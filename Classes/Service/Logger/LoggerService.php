@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /***************************************************************
@@ -25,9 +26,10 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Aoe\FeloginBruteforceProtection\Service\Logger;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Interface LoggerInterface
@@ -38,7 +40,7 @@ class LoggerService
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
+    /** @var ObjectManagerInterface */
     protected $objectManager;
 
     /** @var Configuration */
@@ -53,7 +55,7 @@ class LoggerService
     }
 
     /**
-     * @param $message, The Message to log
+     * @param $message , The Message to log
      * @param int $severity type and severity of log entry
      * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
      * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
@@ -94,18 +96,18 @@ class LoggerService
     {
         if (!isset($this->configuration)) {
             $this->configuration =
-                $this->getObjectManager()->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+                $this->getObjectManager()->get(Configuration::class);
         }
         return $this->configuration;
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @return ObjectManagerInterface
      */
     protected function getObjectManager()
     {
         if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
         return $this->objectManager;
     }

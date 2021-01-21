@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
@@ -46,7 +47,7 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
     {
         if (!isset($this->identifierValue)) {
             $loginFormData = $this->frontendUserAuthentication->getLoginFormData();
-            if (isset($loginFormData['uname']) &&  !empty($loginFormData['uname'])) {
+            if (isset($loginFormData['uname']) && !empty($loginFormData['uname'])) {
                 $this->identifierValue = $loginFormData['uname'];
             } else {
                 $this->identifierValue = '';

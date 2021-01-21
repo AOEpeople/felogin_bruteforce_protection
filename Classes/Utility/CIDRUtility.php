@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Utility;
 
 /***************************************************************
@@ -39,7 +40,7 @@ class CIDRUtility
      */
     public static function matchCIDR($ip, $range)
     {
-        list ($subnet, $bits) = explode('/', $range);
+        [$subnet, $bits] = explode('/', $range);
         $ip = ip2long($ip);
         $subnet = ip2long($subnet);
         $mask = -1 << (32 - $bits);

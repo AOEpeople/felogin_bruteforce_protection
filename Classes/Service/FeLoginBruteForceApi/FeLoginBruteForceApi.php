@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
 
 /***************************************************************
@@ -25,8 +26,9 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Class FeLoginBruteForceApi
@@ -49,7 +51,7 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
             $this->apiStore = $apiStore;
         } else {
             $this->apiStore = $this->getObjectManager()->get(
-                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApiStore'
+                FeLoginBruteForceApiStore::class
             );
         }
     }
@@ -76,7 +78,7 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
     protected function getObjectManager()
     {
         if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
         return $this->objectManager;
     }

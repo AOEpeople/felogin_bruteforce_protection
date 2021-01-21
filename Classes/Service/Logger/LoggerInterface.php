@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /***************************************************************
@@ -33,11 +34,11 @@ interface LoggerInterface
 {
     const SEVERITY_INFO = 0;
     const SEVERITY_NOTICE = 1;
-    const SEVERITY_WARNING  = 2;
-    const SEVERITY_ERROR  = 3;
+    const SEVERITY_WARNING = 2;
+    const SEVERITY_ERROR = 3;
 
     /**
-     * @param $message, The Message to log
+     * @param $message , The Message to log
      * @param int $severity type and severity of log entry
      * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
      * @param string|null $packageKey optional string with a free key for the application so the log entries are easier

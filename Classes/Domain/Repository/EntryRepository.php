@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
 
 /***************************************************************
@@ -25,7 +26,9 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Extbase\Persistence;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Repository
@@ -33,16 +36,15 @@ use \TYPO3\CMS\Extbase\Persistence;
  * @author Kevin Schu <kevin.schu@aoe.com>
  * @author Andre Wuttig <wuttig@portrino.de>
  */
-class EntryRepository extends Persistence\Repository
+class EntryRepository extends Repository
 {
-
     /**
      * @return void
      */
     public function initializeObject()
     {
-        /** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        /** @var $defaultQuerySettings Typo3QuerySettings */
+        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
         // don't add fields from enable columns constraint
@@ -57,7 +59,7 @@ class EntryRepository extends Persistence\Repository
      * @param $maxFailures
      * @param $restrictionTime
      * @param null $identifier
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findEntriesToCleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null)
     {
@@ -68,14 +70,14 @@ class EntryRepository extends Persistence\Repository
         $query->getQuerySettings()->setRespectStoragePage(false);
         $query->getQuerySettings()->setIgnoreEnableFields(true);
         $query->getQuerySettings()->setRespectSysLanguage(false);
-        $constraintsRestrictedEntries = array(
+        $constraintsRestrictedEntries = [
             $query->lessThan('tstamp', $restrictionTime),
             $query->greaterThanOrEqual('failures', $maxFailures),
-        );
-        $constraintsResettableEntries = array(
+        ];
+        $constraintsResettableEntries = [
             $query->lessThan('crdate', $age),
             $query->lessThan('failures', $maxFailures),
-        );
+        ];
         if (null !== $identifier) {
             $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
             $constraintsResettableEntries[] = $query->equals('identifier', $identifier);

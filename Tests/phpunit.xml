@@ -1,7 +1,7 @@
 <phpunit
         backupGlobals="true"
         backupStaticAttributes="false"
-        bootstrap="../../../../typo3/sysext/core/Build/UnitTestsBootstrap.php"
+        bootstrap="../../typo3/sysext/core/Build/UnitTestsBootstrap.php"
         colors="false"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
@@ -13,7 +13,7 @@
         stopOnIncomplete="false"
         stopOnSkipped="false"
         verbose="false"
-        >
+>
     <testsuites>
         <testsuite name="felogin_bruteforce_protection">
             <directory suffix="Test.php">./Unit</directory>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Tests\Functional\System;
 
 /***************************************************************
@@ -161,7 +162,7 @@ class ConfigurationTest extends FunctionalTestCase
      */
     private function setGlobalConfigurationValue($key, $value)
     {
-        $config = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection']);
+        $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('felogin_bruteforce_protection');
         $config[$key] = $value;
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection'] = serialize($config);
         $this->configuration = new Configuration();
