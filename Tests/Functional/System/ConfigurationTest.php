@@ -164,7 +164,7 @@ class ConfigurationTest extends FunctionalTestCase
     {
         $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('felogin_bruteforce_protection');
         $config[$key] = $value;
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection'] = serialize($config);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['felogin_bruteforce_protection'] = $config;
         $this->configuration = new Configuration();
     }
 }

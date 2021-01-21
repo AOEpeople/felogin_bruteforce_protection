@@ -27,8 +27,6 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * Class FeLoginBruteForceApi
@@ -39,9 +37,6 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
     /** @var FeLoginBruteForceApiStore */
     protected $apiStore;
 
-    /** @var ObjectManagerInterface */
-    protected $objectManager;
-
     /**
      * @param null $apiStore
      */
@@ -50,9 +45,7 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
         if (isset($apiStore)) {
             $this->apiStore = $apiStore;
         } else {
-            $this->apiStore = $this->getObjectManager()->get(
-                FeLoginBruteForceApiStore::class
-            );
+            $this->apiStore = GeneralUtility::makeInstance(FeLoginBruteForceApiStore::class);
         }
     }
 
@@ -70,16 +63,5 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
     public function shouldCountWithinThisRequest()
     {
         return $this->apiStore->getProperty('stopCountWithinThisRequest') !== true;
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    protected function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        }
-        return $this->objectManager;
     }
 }

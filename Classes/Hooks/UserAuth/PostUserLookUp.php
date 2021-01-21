@@ -32,8 +32,6 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -43,11 +41,6 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 class PostUserLookUp
 {
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * @var Configuration
      */
@@ -194,8 +187,7 @@ class PostUserLookUp
     protected function getConfiguration()
     {
         if (false === isset($this->configuration)) {
-            $this->configuration = $this->getObjectManager()
-                ->get(Configuration::class);
+            $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
         return $this->configuration;
     }
@@ -221,10 +213,7 @@ class PostUserLookUp
      */
     protected function getRestrictionIdentifierFabric()
     {
-        return $this->getObjectManager()
-            ->get(
-                RestrictionIdentifierFabric::class
-            );
+        return GeneralUtility::makeInstance(RestrictionIdentifierFabric::class);
     }
 
     /**
@@ -232,21 +221,6 @@ class PostUserLookUp
      */
     protected function initRestrictionService()
     {
-        return $this->getObjectManager()
-            ->get(
-                RestrictionService::class,
-                $this->restrictionIdentifier
-            );
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        }
-        return $this->objectManager;
+        return GeneralUtility::makeInstance(RestrictionService::class, $this->restrictionIdentifier);
     }
 }

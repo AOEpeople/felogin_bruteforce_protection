@@ -28,8 +28,11 @@ namespace Aoe\FeloginBruteforceProtection\Command;
 
 use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
+use TYPO3\CMS\Extbase\Configuration\Exception;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
@@ -38,7 +41,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
  *
  * @author Andre Wuttig <wuttig@portrino.de>
  */
-class CleanUpCommandController extends CommandController
+class CleanUpCommand extends Command
 {
     /**
      * @var ConfigurationManagerInterface
@@ -60,25 +63,6 @@ class CleanUpCommandController extends CommandController
      */
     protected $configuration;
 
-    /**
-     * @return void
-     * @throws IllegalObjectTypeException
-     */
-    public function cleanupCommand()
-    {
-        $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(
-            $this->configuration->get(Configuration::CONF_SECONDS_TILL_RESET),
-            $this->configuration->get(Configuration::CONF_MAX_FAILURES),
-            $this->configuration->get(Configuration::CONF_RESTRICTION_TIME)
-        );
-
-        foreach ($entriesToCleanUp as $entryToCleanUp) {
-            $this->entryRepository->remove($entryToCleanUp);
-        }
-
-        $this->persistenceManager->persistAll();
-    }
-
     public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
@@ -97,5 +81,29 @@ class CleanUpCommandController extends CommandController
     public function injectConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @throws IllegalObjectTypeException
+     * @throws Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(
+            $this->configuration->get(Configuration::CONF_SECONDS_TILL_RESET),
+            $this->configuration->get(Configuration::CONF_MAX_FAILURES),
+            $this->configuration->get(Configuration::CONF_RESTRICTION_TIME)
+        );
+
+        foreach ($entriesToCleanUp as $entryToCleanUp) {
+            $this->entryRepository->remove($entryToCleanUp);
+        }
+
+        $this->persistenceManager->persistAll();
+
+        return Command::SUCCESS;
     }
 }

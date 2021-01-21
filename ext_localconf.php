@@ -2,14 +2,6 @@
 
 defined('TYPO3') or die();
 
-if (TYPO3_MODE == 'BE') {
-    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers']) == false) {
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = [];
-    }
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] =
-        \Aoe\FeloginBruteforceProtection\Command\CleanUpCommandController::class;
-}
-
 if (TYPO3_MODE == 'FE') {
     // postUserLookUp hookC
     $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp']['felogin_bruteforce_protection'] = \Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp::class . '->handlePostUserLookUp';

@@ -31,13 +31,12 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterfac
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 
 class AuthUser extends AuthenticationService
 {
@@ -153,11 +152,7 @@ class AuthUser extends AuthenticationService
                 $this->frontendUserAuthentication
             );
 
-            $this->restrictionService = $this->getObjectManager()
-                ->get(
-                    RestrictionService::class,
-                    $restrictionIdentifier
-                );
+            $this->restrictionService = GeneralUtility::makeInstance(RestrictionService::class, $restrictionIdentifier);
         }
         return $this->restrictionService;
     }
@@ -168,23 +163,9 @@ class AuthUser extends AuthenticationService
     protected function getConfiguration()
     {
         if (false === isset($this->configuration)) {
-            $this->configuration = $this->getObjectManager()
-                ->get(Configuration::class);
+            $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
         return $this->configuration;
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance(
-                ObjectManager::class
-            );
-        }
-        return $this->objectManager;
     }
 
     /**
@@ -192,9 +173,6 @@ class AuthUser extends AuthenticationService
      */
     protected function getRestrictionIdentifierFabric()
     {
-        return $this->getObjectManager()
-            ->get(
-                RestrictionIdentifierFabric::class
-            );
+        return GeneralUtility::makeInstance(RestrictionIdentifierFabric::class);
     }
 }
