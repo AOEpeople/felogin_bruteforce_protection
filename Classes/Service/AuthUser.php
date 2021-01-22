@@ -30,6 +30,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use stdClass;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -70,10 +71,13 @@ class AuthUser extends AuthenticationService
     public function init(): bool
     {
         ExtensionManagementUtility::loadBaseTca(false);
-        if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->sys_page)) {
+        if (!isset($GLOBALS['TSFE'])) {
+            $GLOBALS['TSFE'] = new stdClass();
+        }
+        if (empty($GLOBALS['TSFE']->sys_page)) {
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         }
-        if (!isset($GLOBALS['TSFE']) || empty($GLOBALS['TSFE']->tmpl)) {
+        if (empty($GLOBALS['TSFE']->tmpl)) {
             $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         }
 
