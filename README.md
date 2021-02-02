@@ -1,6 +1,6 @@
 # Brute Force Protection for TYPO3
 
-[![Build Status](https://travis-ci.org/AOEpeople/felogin_bruteforce_protection.svg?branch=master)](https://travis-ci.org/AOEpeople/felogin_bruteforce_protection)
+[![Build Status](https://github.com/AOEpeople/felogin_bruteforce_protection/workflows/CI/badge.svg?branch=master)](https://github.com/AOEpeople/felogin_bruteforce_protection/actions)
 [![Code Coverage](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/?branch=master)
 
