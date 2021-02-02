@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Model;
 
 /***************************************************************
@@ -48,13 +49,13 @@ class Entry extends AbstractEntity
 
     /**
      * @var string
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate(validator="NotEmpty")
      */
     protected $identifier;
 
     /**
      * @var integer
-     * @validate NotEmpty
+     * @TYPO3\CMS\Extbase\Annotation\Validate(validator="NotEmpty")
      */
     protected $failures;
 

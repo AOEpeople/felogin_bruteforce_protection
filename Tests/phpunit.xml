@@ -13,7 +13,7 @@
         stopOnIncomplete="false"
         stopOnSkipped="false"
         verbose="false"
-        >
+>
     <testsuites>
         <testsuite name="felogin_bruteforce_protection">
             <directory suffix="Test.php">./Unit</directory>

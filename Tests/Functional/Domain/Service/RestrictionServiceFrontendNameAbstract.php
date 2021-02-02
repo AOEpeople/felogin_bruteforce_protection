@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
 /***************************************************************
@@ -25,13 +26,16 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
 use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
+use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
@@ -67,6 +71,7 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
      * @var RestrictionIdentifierFrontendName
      */
     private $restrictionIdentifier;
+
     /**
      * @var RestrictionService
      */
@@ -84,14 +89,24 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             'lockIP' => '',
             'checkFeUserPid' => '',
             'lifetime' => '',
-            'sessionTimeout' => 300
+            'sessionTimeout' => 300,
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = md5('this-encryptionkey-is-only-for-testing');
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIPv6'] = 0;
 
-        $this->configuration = $this->getAccessibleMock('Aoe\FeloginBruteforceProtection\System\Configuration', [], [], '', true);
+        $this->configuration = $this->getAccessibleMock(
+            Configuration::class,
+            [],
+            [],
+            '',
+            true
+        );
 
         $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
-        $this->frontendUserAuthentication = $this->getMockBuilder('TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication')->getMock();
+        $this->frontendUserAuthentication = $this->getMockBuilder(
+            FrontendUserAuthentication::class
+        )->getMock();
         $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
         $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier(
@@ -102,9 +117,9 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $this->inject(
             $this->restriction,
             'persistenceManager',
-            $this->getMockBuilder('\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager')->disableOriginalConstructor()->getMock()
+            $this->getMockBuilder(PersistenceManager::class)->disableOriginalConstructor()->getMock()
         );
-        $logger = $this->getMockBuilder('\Aoe\FeloginBruteforceProtection\Service\Logger\Logger')
+        $logger = $this->getMockBuilder(Logger::class)
             ->setMethodsExcept(['log'])
             ->getMock();
 
@@ -120,12 +135,18 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
 
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
+        $entryRepository = $this->getAccessibleMock(
+            EntryRepository::class,
+            ['findOneByIdentifier', 'remove'],
+            [],
+            '',
+            false
+        );
 
-        $entry = $this->getMockBuilder('Aoe\FeloginBruteforceProtection\Domain\Model\Entry')->getMock();
+        $entry = $this->getMockBuilder(Entry::class)->getMock();
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(0));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
 
@@ -140,12 +161,18 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
-        $entry = $this->getMockBuilder('Aoe\FeloginBruteforceProtection\Domain\Model\Entry')->disableOriginalConstructor()->getMock();
+        $entry = $this->getMockBuilder(Entry::class)->disableOriginalConstructor()->getMock();
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 400));
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository = $this->getAccessibleMock(
+            EntryRepository::class,
+            ['findOneByIdentifier', 'remove'],
+            [],
+            '',
+            false
+        );
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
         $this->assertTrue($this->restriction->isClientRestricted());
@@ -159,12 +186,18 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
-        $entry = $this->getMockBuilder('Aoe\FeloginBruteforceProtection\Domain\Model\Entry')->disableOriginalConstructor()->getMock();
+        $entry = $this->getMockBuilder(Entry::class)->disableOriginalConstructor()->getMock();
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 4000));
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository = $this->getAccessibleMock(
+            EntryRepository::class,
+            ['findOneByIdentifier', 'remove'],
+            [],
+            '',
+            false
+        );
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
         $this->assertFalse($this->restriction->isClientRestricted());
@@ -178,12 +211,18 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
         $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
         $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
-        $entry = $this->getMockBuilder('Aoe\FeloginBruteforceProtection\Domain\Model\Entry')->disableOriginalConstructor()->getMock();
+        $entry = $this->getMockBuilder(Entry::class)->disableOriginalConstructor()->getMock();
         $entry->expects($this->any())->method('getFailures')->will($this->returnValue(5));
         $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
         $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 400));
-        $entryRepository = $this->getAccessibleMock(EntryRepository::class, ['findByIdentifier', 'remove'], [], '', false);
-        $entryRepository->expects($this->any())->method('findByIdentifier')->will($this->returnValue($entry));
+        $entryRepository = $this->getAccessibleMock(
+            EntryRepository::class,
+            ['findOneByIdentifier', 'remove'],
+            [],
+            '',
+            false
+        );
+        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
         $this->inject($this->restriction, 'entryRepository', $entryRepository);
         $this->inject($this->restriction, 'configuration', $this->configuration);
         $this->assertFalse($this->restriction->isClientRestricted());

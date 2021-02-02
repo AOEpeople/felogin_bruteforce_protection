@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
 
 /***************************************************************
@@ -25,23 +26,21 @@ namespace Aoe\FeloginBruteforceProtection\Hooks\UserAuth;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
-use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
+/**
+ * Class PostUserLookUp
+ * @package Aoe\FeloginBruteforceProtection\Hooks\UserAuth
+ */
 class PostUserLookUp
 {
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
     /**
      * @var Configuration
      */
@@ -61,14 +60,14 @@ class PostUserLookUp
      * @var FrontendUserAuthentication
      */
     protected $frontendUserAuthentication;
-    
+
     /**
      * @param array $params
      * @return void
      */
     public function handlePostUserLookUp(&$params)
     {
-        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUserAuthentication */
+        /** @var FrontendUserAuthentication $frontendUserAuthentication */
         $frontendUserAuthentication = $params['pObj'];
 
         // Continue only if the user is in front-end
@@ -93,7 +92,6 @@ class PostUserLookUp
             if ($this->restrictionIdentifier->checkPreconditions()) {
                 if ($this->hasFeUserLoggedIn($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->removeEntry();
-
                 } elseif ($this->hasFeUserLogInFailed($this->getFrontendUserAuthentication())) {
                     $this->getRestrictionService()->checkAndHandleRestriction();
                     $this->updateGlobals($this->getFrontendUserAuthentication());
@@ -114,13 +112,12 @@ class PostUserLookUp
     }
 
     /**
-     * @param $userAuthObject
+     * @param FrontendUserAuthentication $userAuthObject
      * @return boolean
      */
-    private function updateGlobals(&$userAuthObject)
+    private function updateGlobals(FrontendUserAuthentication $userAuthObject)
     {
-        $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
-            false;
+        $GLOBALS['felogin_bruteforce_protection']['restricted'] = false;
         if ($this->getRestrictionService()->isClientRestricted()) {
             $userAuthObject->loginFailure = 1;
             $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
@@ -143,7 +140,7 @@ class PostUserLookUp
         return LocalizationUtility::translate(
             'restriction_message',
             'felogin_bruteforce_protection',
-            array($time, $time)
+            [$time, $time]
         );
     }
 
@@ -184,13 +181,12 @@ class PostUserLookUp
     }
 
     /**
-     * @return \Aoe\FeloginBruteforceProtection\System\Configuration
+     * @return Configuration
      */
     protected function getConfiguration()
     {
         if (false === isset($this->configuration)) {
-            $this->configuration = $this->getObjectManager()
-                ->get('Aoe\FeloginBruteforceProtection\System\Configuration');
+            $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
         return $this->configuration;
     }
@@ -216,10 +212,7 @@ class PostUserLookUp
      */
     protected function getRestrictionIdentifierFabric()
     {
-        return $this->getObjectManager()
-            ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric'
-            );
+        return GeneralUtility::makeInstance(RestrictionIdentifierFabric::class);
     }
 
     /**
@@ -227,21 +220,6 @@ class PostUserLookUp
      */
     protected function initRestrictionService()
     {
-        return $this->getObjectManager()
-            ->get(
-                'Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService',
-                $this->restrictionIdentifier
-            );
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    private function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        }
-        return $this->objectManager;
+        return GeneralUtility::makeInstance(RestrictionService::class, $this->restrictionIdentifier);
     }
 }

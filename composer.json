@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "typo3/cms-core": ">=7.6.0",
+        "php": "^7.2",
+        "typo3/cms-core": "^10.4",
         "typo3/cms-extbase": "*",
         "typo3/cms-sv": "*",
         "typo3/cms-backend": "*",
@@ -26,10 +26,10 @@
         "typo3/cms-frontend": "*"
     },
     "require-dev": {
-        "nimut/typo3-complete": "^7.6",
-        "nimut/testing-framework": "^4.1"
+        "nimut/typo3-complete": "^v10.4.0",
+        "nimut/testing-framework": "^5.2.0"
     },
-	"suggest": {
+    "suggest": {
         "typo3/cms-felogin": "A template-based plugin to log in Website Users in the Frontend"
     },
     "autoload": {

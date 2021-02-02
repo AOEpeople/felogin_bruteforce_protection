@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\System;
 
 /***************************************************************
@@ -38,42 +39,34 @@ class Configuration
      * @var string
      */
     const CONF_MAX_FAILURES = 'max_failures';
-
     /**
      * @var string
      */
     const CONF_DISABLED = 'disabled';
-
     /**
      * @var string
      */
     const CONF_RESTRICTION_TIME = 'restriction_time';
-
     /**
      * @var string
      */
     const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
-
     /**
      * @var string
      */
     const LOGGING_ENABLED = 'logging_enabled';
-
     /**
      * @var string
      */
     const LOGGING_LEVEL = 'logging_level';
-
     /**
      * @var string
      */
     const EXCLUDED_IPS = 'exclude_ips';
-
     /**
      * @var string
      */
     const X_FORWARDED_FOR = 'x_forwarded_for';
-
     /**
      * @var string
      */
@@ -82,14 +75,14 @@ class Configuration
     /**
      * @var array
      */
-    private $configuration = array();
+    private $configuration = [];
 
     /**
      * Initialize configuration array
      */
     public function __construct()
     {
-        $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin_bruteforce_protection']);
+        $conf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('felogin_bruteforce_protection');
         if (is_array($conf)) {
             $this->configuration = $conf;
         }

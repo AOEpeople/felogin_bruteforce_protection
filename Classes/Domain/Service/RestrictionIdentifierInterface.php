@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
@@ -31,7 +32,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  */
 interface RestrictionIdentifierInterface
 {
-
     /**
      * the value of the restriction identifier
      * @return string

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /***************************************************************
@@ -38,9 +39,6 @@ class Logger
     /** @var LoggerInterface */
     private $loggerImplementation;
 
-    /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface */
-    protected $objectManager;
-
     /** @var Configuration */
     protected $configuration;
 
@@ -53,7 +51,7 @@ class Logger
     }
 
     /**
-     * @param $message, The Message to log
+     * @param $message , The Message to log
      * @param int $severity type and severity of log entry
      * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
      * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
@@ -99,26 +97,13 @@ class Logger
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     */
-    protected function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        }
-        return $this->objectManager;
-    }
-
-    /**
      * @return LoggerInterface
      */
     private function getLoggerImplementation()
     {
         if (!is_object($this->loggerImplementation)) {
             /** @var LoggerInterface $loggerImplementation */
-            $loggerImplementation = $this->getObjectManager()->get(
-                'Aoe\FeloginBruteforceProtection\Service\Logger\DevLogger'
-            );
+            $loggerImplementation = GeneralUtility::makeInstance(DevLogger::class);
             $this->injectLoggerImplementation($loggerImplementation);
         }
         return $this->loggerImplementation;

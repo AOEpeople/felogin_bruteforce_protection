@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /***************************************************************
@@ -34,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DevLogger implements LoggerInterface
 {
     /**
-     * @param $message, The Message to log
+     * @param $message , The Message to log
      * @param int $severity type and severity of log entry
      * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
      * @param string|null $packageKey optional string with a free key for the application so the log entries are easier

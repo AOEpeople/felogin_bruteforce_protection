@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
@@ -25,8 +26,8 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class RestrictionIdentifierFabric
 {
@@ -41,7 +42,6 @@ class RestrictionIdentifierFabric
         Configuration $configuration,
         FrontendUserAuthentication $frontendUserAuthentication = null
     ) {
-
         $identificationIdentifier = $configuration->getIdentificationIdentifier();
         switch ($identificationIdentifier) {
             case 2:
@@ -52,7 +52,7 @@ class RestrictionIdentifierFabric
                     return $restrictionIdentifier;
                     break;
                 }
-                // no break
+            // no break
             default:
                 $restrictionIdentifier = new RestrictionIdentifierClientIp();
                 $restrictionIdentifier->setConfiguration($configuration);
