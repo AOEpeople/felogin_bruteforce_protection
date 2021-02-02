@@ -112,13 +112,12 @@ class PostUserLookUp
     }
 
     /**
-     * @param $userAuthObject
+     * @param FrontendUserAuthentication $userAuthObject
      * @return boolean
      */
-    private function updateGlobals(&$userAuthObject)
+    private function updateGlobals(FrontendUserAuthentication $userAuthObject)
     {
-        $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
-            false;
+        $GLOBALS['felogin_bruteforce_protection']['restricted'] = false;
         if ($this->getRestrictionService()->isClientRestricted()) {
             $userAuthObject->loginFailure = 1;
             $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
