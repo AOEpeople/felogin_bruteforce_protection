@@ -119,7 +119,7 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
         $this->inject(
             $this->restriction,
             'persistenceManager',
-            $this->getMockBuilder(PersistenceManager::class)->getMock()
+            $this->getMockBuilder(PersistenceManager::class)->disableOriginalConstructor()->getMock()
         );
         $this->inject($this->restriction, 'logger', $logger);
     }
