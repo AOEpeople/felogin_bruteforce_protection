@@ -92,6 +92,8 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             'sessionTimeout' => 300,
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = md5('this-encryptionkey-is-only-for-testing');
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIPv6'] = 0;
 
         $this->configuration = $this->getAccessibleMock(
             Configuration::class,

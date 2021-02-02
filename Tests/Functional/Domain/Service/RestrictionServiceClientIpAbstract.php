@@ -95,6 +95,8 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
             'lifetime' => '',
             'sessionTimeout' => 300,
         ];
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIPv6'] = 0;
 
         $this->configuration = $this->getMockBuilder(Configuration::class)
             ->disableOriginalConstructor()
