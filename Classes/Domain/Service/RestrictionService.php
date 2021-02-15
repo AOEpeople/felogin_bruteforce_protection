@@ -298,7 +298,7 @@ class RestrictionService
     public function getEntry()
     {
         if (false === isset($this->entry)) {
-            $entry = $this->entryRepository->findByIdentifier($this->getClientIdentifier());
+            $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
             if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {
