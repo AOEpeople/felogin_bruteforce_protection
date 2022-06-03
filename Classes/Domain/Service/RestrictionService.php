@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
@@ -25,14 +26,15 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
 use Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository;
+use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
+use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
-use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
-use Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
@@ -62,22 +64,22 @@ class RestrictionService
     protected $clientIdentifier;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\System\Configuration
+     * @var Configuration
      */
     protected $configuration;
 
     /**
-     * @var \Aoe\FeloginBruteforceProtection\Domain\Repository\EntryRepository
+     * @var EntryRepository
      */
     protected $entryRepository;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     * @var PersistenceManager
      */
     protected $persistenceManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
 
@@ -112,8 +114,6 @@ class RestrictionService
         $this->configuration = $this->objectManager->get(Configuration::class);
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
         $this->entryRepository = $this->objectManager->get(EntryRepository::class);
-
-
     }
 
     /**
@@ -217,13 +217,13 @@ class RestrictionService
         } else {
             $restricted = 'No';
         }
-        $additionalData = array(
+        $additionalData = [
             'FAILURE_COUNT' => $failureCount,
             'RESTRICTED' => $restricted,
             'REMOTE_ADDR' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
             'REQUEST_URI' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-            'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
-        );
+            'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
+        ];
 
         $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }
@@ -245,7 +245,7 @@ class RestrictionService
     private function createEntry()
     {
         /** @var $entry Entry */
-        $this->entry = $this->objectManager->get('Aoe\FeloginBruteforceProtection\Domain\Model\Entry');
+        $this->entry = $this->objectManager->get(Entry::class);
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
         $this->entry->setTstamp(time());
@@ -298,7 +298,7 @@ class RestrictionService
     public function getEntry()
     {
         if (false === isset($this->entry)) {
-            $entry = $this->entryRepository->findByIdentifier($this->getClientIdentifier());
+            $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
             if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {
@@ -370,7 +370,7 @@ class RestrictionService
     {
         if (!isset($this->feLoginBruteForceApi)) {
             $this->feLoginBruteForceApi = $this->objectManager->get(
-                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApi'
+                FeLoginBruteForceApi::class
             );
         }
         return $this->feLoginBruteForceApi;

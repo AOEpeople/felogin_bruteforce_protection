@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
 
 /***************************************************************
@@ -25,7 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * Class FeLoginBruteForceApiStore
@@ -36,7 +37,7 @@ use \TYPO3\CMS\Core\SingletonInterface;
 class FeLoginBruteForceApiStore implements SingletonInterface
 {
     /** @var array */
-    private $propertyStore = array();
+    private $propertyStore = [];
 
     /**
      * @param $propertyName

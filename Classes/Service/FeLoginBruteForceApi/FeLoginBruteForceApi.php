@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
 
 /***************************************************************
@@ -25,8 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class FeLoginBruteForceApi
@@ -37,9 +37,6 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
     /** @var FeLoginBruteForceApiStore */
     protected $apiStore;
 
-    /** @var ObjectManagerInterface */
-    protected $objectManager;
-
     /**
      * @param null $apiStore
      */
@@ -48,9 +45,7 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
         if (isset($apiStore)) {
             $this->apiStore = $apiStore;
         } else {
-            $this->apiStore = $this->getObjectManager()->get(
-                'Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi\FeLoginBruteForceApiStore'
-            );
+            $this->apiStore = GeneralUtility::makeInstance(FeLoginBruteForceApiStore::class);
         }
     }
 
@@ -68,16 +63,5 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
     public function shouldCountWithinThisRequest()
     {
         return $this->apiStore->getProperty('stopCountWithinThisRequest') !== true;
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    protected function getObjectManager()
-    {
-        if (false === isset($this->objectManager)) {
-            $this->objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        }
-        return $this->objectManager;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 /***************************************************************
