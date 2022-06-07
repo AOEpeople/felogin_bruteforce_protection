@@ -47,7 +47,7 @@ class PostUserLookUpTest extends UnitTestCase
     /**
      * (non-PHPdoc)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->postUserLookUp = $this
             ->getMockBuilder(PostUserLookUp::class)

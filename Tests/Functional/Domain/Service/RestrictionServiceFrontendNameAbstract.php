@@ -80,7 +80,7 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
     /**
      * (non-PHPdoc)
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

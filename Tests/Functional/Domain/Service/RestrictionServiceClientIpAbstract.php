@@ -84,7 +84,7 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
      */
     protected $restriction;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

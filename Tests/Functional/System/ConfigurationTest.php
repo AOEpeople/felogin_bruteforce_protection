@@ -27,6 +27,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\System;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use Exception;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,7 +52,7 @@ class ConfigurationTest extends FunctionalTestCase
      */
     private $configuration;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->configuration = new Configuration();
@@ -149,10 +150,10 @@ class ConfigurationTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException Exception
      */
     public function testExceptionOfGetFunction()
     {
+        $this->expectException(Exception::class);
         $this->configuration->get('thisKeyDoesNotExist');
     }
 

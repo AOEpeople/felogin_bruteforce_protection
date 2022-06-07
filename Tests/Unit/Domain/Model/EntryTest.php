@@ -39,7 +39,7 @@ class EntryTest extends UnitTestCase
      */
     protected $entry;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entry = new Entry();
     }

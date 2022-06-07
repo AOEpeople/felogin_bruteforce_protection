@@ -66,7 +66,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
     /**
      * (non-PHPdoc)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->configuration = $this->createMock(Configuration::class);
         $this->frontendUserAuthentication = $this->createMock(

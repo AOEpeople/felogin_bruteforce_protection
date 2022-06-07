@@ -42,7 +42,7 @@ class CleanUpCommandController extends UnitTestCase
     /**
      * (non-PHPdoc)
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->cleanUpCommandController = new CleanUpCommandController();
     }

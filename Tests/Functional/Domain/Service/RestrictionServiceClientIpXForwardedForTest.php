@@ -34,7 +34,7 @@ class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClie
     /**
      * (non-PHPdoc)
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->configuration->expects($this->any())->method('getXForwardedFor')->will($this->returnValue(true));

@@ -34,7 +34,7 @@ class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFront
     /**
      * (non-PHPdoc)
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $loginFormData['uname'] = 'TESTLOGINNAME';
