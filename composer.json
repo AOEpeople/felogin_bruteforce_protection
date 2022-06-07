@@ -29,7 +29,7 @@
         "nimut/typo3-complete": "^7.6",
         "nimut/testing-framework": "^4.1"
     },
-	"suggest": {
+    "suggest": {
         "typo3/cms-felogin": "A template-based plugin to log in Website Users in the Frontend"
     },
     "autoload": {
@@ -44,7 +44,11 @@
     },
     "config": {
         "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin"
+        "bin-dir": ".Build/bin",
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        }
     },
     "scripts": {
         "post-autoload-dump": [
