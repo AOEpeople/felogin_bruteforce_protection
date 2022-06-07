@@ -52,7 +52,7 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = ['cms', 'core', 'lang', 'extensionmanager'];
+    protected $coreExtensionsToLoad = ['cms', 'lang', 'extensionmanager'];
 
     /**
      * @var array
