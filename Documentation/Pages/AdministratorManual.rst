@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
+.. include:: ../Includes.rst.txt
 
 
 .. _admin-manual:
@@ -24,7 +24,7 @@ Target group: **Administrators**
 Installation
 ------------
 
-1. Install the extension from TER or from `our GitHub repository <https://github.com/AOEpeople/felogin_bruteforce_protection>`_.
+1. Install the extension via composer `composer require aoe/felogin-bruteforce-protection`, from TER or from `our GitHub repository <https://github.com/AOEpeople/felogin_bruteforce_protection>`_.
 
 2. Configure this TYPO3-Extension (in TYPO3 Extension-Manager). See the "Screenshots" section as well.
 
