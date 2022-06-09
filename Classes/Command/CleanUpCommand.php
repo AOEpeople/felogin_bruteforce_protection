@@ -39,7 +39,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 /**
  * @package Aoe\FeloginBruteforceProtection\Command
  *
- * @author Andre Wuttig <wuttig@portrino.de>
+ * @author  Andre Wuttig <wuttig@portrino.de>
  */
 class CleanUpCommand extends Command
 {
@@ -84,13 +84,10 @@ class CleanUpCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
      * @throws IllegalObjectTypeException
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(
             $this->configuration->get(Configuration::CONF_SECONDS_TILL_RESET),

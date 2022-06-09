@@ -65,8 +65,7 @@ class AuthUser extends AuthenticationService
 
     /**
      * Load extbase dependencies to use repositories and persistence.
-     *
-     * @return boolean TRUE if the service is available
+     * returns TRUE if the service is available
      */
     public function init(): bool
     {
@@ -91,10 +90,9 @@ class AuthUser extends AuthenticationService
      * @param array $loginData Submitted login form data
      * @param array $authInfo Information array. Holds submitted form data etc.
      * @param object $pObj Parent object
-     * @return void
      * @todo Define visibility
      */
-    public function initAuth($mode, $loginData, $authInfo, $pObj)
+    public function initAuth($mode, $loginData, $authInfo, $pObj): void
     {
         $this->frontendUserAuthentication = $pObj;
     }
@@ -108,8 +106,7 @@ class AuthUser extends AuthenticationService
     public function getUser()
     {
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
-            $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup']
-            [$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
+            $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth']['setup'][$this->frontendUserAuthentication->loginType . '_fetchAllUsers'] = false;
             return ['uid' => 0];
         }
         return parent::getUser();
@@ -130,35 +127,10 @@ class AuthUser extends AuthenticationService
         return 100;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isProtectionEnabled()
+    public function isProtectionEnabled(): bool
     {
-        return $this->getConfiguration()->isEnabled();
-    }
-
-    /**
-     * @return RestrictionService
-     */
-    private function getRestrictionService()
-    {
-        if (false === isset($this->restrictionService)) {
-            /**
-             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
-             */
-            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
-            /**
-             * @var RestrictionIdentifierInterface $restrictionIdentifier
-             */
-            $restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
-                $this->getConfiguration(),
-                $this->frontendUserAuthentication
-            );
-
-            $this->restrictionService = GeneralUtility::makeInstance(RestrictionService::class, $restrictionIdentifier);
-        }
-        return $this->restrictionService;
+        return $this->getConfiguration()
+            ->isEnabled();
     }
 
     /**
@@ -166,7 +138,7 @@ class AuthUser extends AuthenticationService
      */
     protected function getConfiguration()
     {
-        if (false === isset($this->configuration)) {
+        if (!isset($this->configuration)) {
             $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
         return $this->configuration;
@@ -178,5 +150,24 @@ class AuthUser extends AuthenticationService
     protected function getRestrictionIdentifierFabric()
     {
         return GeneralUtility::makeInstance(RestrictionIdentifierFabric::class);
+    }
+
+    /**
+     * @return RestrictionService
+     */
+    private function getRestrictionService()
+    {
+        if (!isset($this->restrictionService)) {
+            /** @var RestrictionIdentifierFabric $restrictionIdentifierFabric */
+            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
+            /** @var RestrictionIdentifierInterface $restrictionIdentifier */
+            $restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+                $this->getConfiguration(),
+                $this->frontendUserAuthentication
+            );
+
+            $this->restrictionService = GeneralUtility::makeInstance(RestrictionService::class, $restrictionIdentifier);
+        }
+        return $this->restrictionService;
     }
 }

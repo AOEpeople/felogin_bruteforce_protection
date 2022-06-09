@@ -37,6 +37,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * Class PostUserLookUp
+ *
  * @package Aoe\FeloginBruteforceProtection\Hooks\UserAuth
  */
 class PostUserLookUp
@@ -63,25 +64,22 @@ class PostUserLookUp
 
     /**
      * @param array $params
-     * @return void
      */
-    public function handlePostUserLookUp(&$params)
+    public function handlePostUserLookUp(&$params): void
     {
         /** @var FrontendUserAuthentication $frontendUserAuthentication */
         $frontendUserAuthentication = $params['pObj'];
 
         // Continue only if the user is in front-end
-        if (false === $this->isUserInFrontEnd($frontendUserAuthentication)) {
+        if (!$this->isUserInFrontEnd($frontendUserAuthentication)) {
             return;
-        } else {
-            $this->setFrontendUserAuthentication($frontendUserAuthentication);
         }
+
+        $this->setFrontendUserAuthentication($frontendUserAuthentication);
 
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
-            /**
-             * @var RestrictionIdentifierFabric $restrictionIdentifierFabric
-             */
+            /** @var RestrictionIdentifierFabric $restrictionIdentifierFabric */
             $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
             $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
                 $this->getConfiguration(),
@@ -90,94 +88,16 @@ class PostUserLookUp
             $this->restrictionService = $this->initRestrictionService();
 
             if ($this->restrictionIdentifier->checkPreconditions()) {
-                if ($this->hasFeUserLoggedIn($this->getFrontendUserAuthentication())) {
-                    $this->getRestrictionService()->removeEntry();
-                } elseif ($this->hasFeUserLogInFailed($this->getFrontendUserAuthentication())) {
-                    $this->getRestrictionService()->checkAndHandleRestriction();
-                    $this->updateGlobals($this->getFrontendUserAuthentication());
+                if ($this->hasFeUserLoggedIn($this->frontendUserAuthentication)) {
+                    $this->restrictionService
+                        ->removeEntry();
+                } elseif ($this->hasFeUserLogInFailed($this->frontendUserAuthentication)) {
+                    $this->restrictionService
+                        ->checkAndHandleRestriction();
+                    $this->updateGlobals($this->frontendUserAuthentication);
                 }
             }
         }
-    }
-
-    /**
-     * Check if the user is in front end
-     *
-     * @param AbstractUserAuthentication $userAuthentication
-     * @return boolean
-     */
-    private function isUserInFrontEnd(AbstractUserAuthentication $userAuthentication)
-    {
-        return $userAuthentication instanceof FrontendUserAuthentication;
-    }
-
-    /**
-     * @param FrontendUserAuthentication $userAuthObject
-     * @return boolean
-     */
-    private function updateGlobals(FrontendUserAuthentication $userAuthObject)
-    {
-        $GLOBALS['felogin_bruteforce_protection']['restricted'] = false;
-        if ($this->getRestrictionService()->isClientRestricted()) {
-            $userAuthObject->loginFailure = 1;
-            $GLOBALS ['felogin_bruteforce_protection'] ['restricted'] =
-                true;
-            $GLOBALS ['felogin_bruteforce_protection'] ['restriction_time'] =
-                $this->getConfiguration()->getRestrictionTime();
-            $GLOBALS ['felogin_bruteforce_protection'] ['restriction_message'] =
-                $this->getRestrictionMessage();
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    private function getRestrictionMessage()
-    {
-        $time = (integer)($this->getConfiguration()->getRestrictionTime() / 60);
-        return LocalizationUtility::translate(
-            'restriction_message',
-            'felogin_bruteforce_protection',
-            [$time, $time]
-        );
-    }
-
-    /**
-     * @param AbstractUserAuthentication $userAuthObject
-     * @return boolean
-     */
-    private function hasFeUserLoggedIn(AbstractUserAuthentication $userAuthObject)
-    {
-        if ($userAuthObject->loginType === 'FE' &&
-            $userAuthObject->loginFailure === false &&
-            is_array($userAuthObject->user) &&
-            $userAuthObject->loginSessionStarted === true
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param AbstractUserAuthentication $userAuthObject
-     * @return boolean
-     */
-    private function hasFeUserLogInFailed(AbstractUserAuthentication $userAuthObject)
-    {
-        if ($userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === true && !$userAuthObject->user) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return RestrictionService
-     */
-    private function getRestrictionService()
-    {
-        return $this->restrictionService;
     }
 
     /**
@@ -185,24 +105,14 @@ class PostUserLookUp
      */
     protected function getConfiguration()
     {
-        if (false === isset($this->configuration)) {
+        if (!isset($this->configuration)) {
             $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
+
         return $this->configuration;
     }
 
-    /**
-     * @return FrontendUserAuthentication
-     */
-    protected function getFrontendUserAuthentication()
-    {
-        return $this->frontendUserAuthentication;
-    }
-
-    /**
-     * @param FrontendUserAuthentication $frontendUserAuthentication
-     */
-    protected function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication)
+    protected function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication): void
     {
         $this->frontendUserAuthentication = $frontendUserAuthentication;
     }
@@ -221,5 +131,52 @@ class PostUserLookUp
     protected function initRestrictionService()
     {
         return GeneralUtility::makeInstance(RestrictionService::class, $this->restrictionIdentifier);
+    }
+
+    /**
+     * Check if the user is in front end
+     */
+    private function isUserInFrontEnd(AbstractUserAuthentication $userAuthentication): bool
+    {
+        return $userAuthentication instanceof FrontendUserAuthentication;
+    }
+
+    private function updateGlobals(FrontendUserAuthentication $userAuthObject): bool
+    {
+        $GLOBALS['felogin_bruteforce_protection']['restricted'] = false;
+        if ($this->restrictionService->isClientRestricted()) {
+            $userAuthObject->loginFailure = 1;
+            $GLOBALS['felogin_bruteforce_protection']['restricted'] = true;
+            $GLOBALS['felogin_bruteforce_protection']['restriction_time'] = $this->getConfiguration()->getRestrictionTime();
+            $GLOBALS['felogin_bruteforce_protection']['restriction_message'] = $this->getRestrictionMessage();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function getRestrictionMessage(): string
+    {
+        $time = (int) ($this->getConfiguration()->getRestrictionTime() / 60);
+
+        return LocalizationUtility::translate(
+            'restriction_message',
+            'felogin_bruteforce_protection',
+            [$time, $time]
+        );
+    }
+
+    private function hasFeUserLoggedIn(AbstractUserAuthentication $userAuthObject): bool
+    {
+        return $userAuthObject->loginType === 'FE' &&
+            $userAuthObject->loginFailure === false &&
+            is_array($userAuthObject->user) &&
+            $userAuthObject->loginSessionStarted;
+    }
+
+    private function hasFeUserLogInFailed(AbstractUserAuthentication $userAuthObject): bool
+    {
+        return $userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === true && !$userAuthObject->user;
     }
 }

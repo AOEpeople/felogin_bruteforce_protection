@@ -31,7 +31,7 @@ use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
- * @author Patrick Roos <patrick.roos@aoe.com>
+ * @author  Patrick Roos <patrick.roos@aoe.com>
  */
 class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
 {
@@ -42,6 +42,7 @@ class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
 
     /**
      * the value of the restriction identifier
+     *
      * @return string
      */
     public function getIdentifierValue()
@@ -53,44 +54,38 @@ class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
                 $this->identifierValue = $_SERVER['REMOTE_ADDR'];
             }
         }
+
         return $this->identifierValue;
     }
 
     /**
      * when IP is excluded no restriction check is necessary
-     * @return boolean
      */
-    public function checkPreconditions()
+    public function checkPreconditions(): bool
     {
         return !$this->isIpExcluded();
     }
 
+    public function setConfiguration(Configuration $configuration): void
+    {
+        $this->configuration = $configuration;
+    }
+
     /**
      * checks if the IP is excluded for restriction
-     * @return boolean
      */
-    protected function isIpExcluded()
+    protected function isIpExcluded(): bool
     {
         if (in_array($this->getIdentifierValue(), $this->configuration->getExcludedIps())) {
             return true;
         }
         foreach ($this->configuration->getExcludedIps() as $excludedIp) {
             // CIDR notation is used within excluded IPs
-            if (CIDRUtility::isCIDR($excludedIp)) {
-                if (CIDRUtility::matchCIDR($this->getIdentifierValue(), $excludedIp)) {
-                    return true;
-                }
+            if (CIDRUtility::isCIDR($excludedIp) && CIDRUtility::matchCIDR($this->getIdentifierValue(), $excludedIp)) {
+                return true;
             }
         }
-        return false;
-    }
 
-    /**
-     * @param Configuration $configuration
-     * @return void
-     **/
-    public function setConfiguration(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
+        return false;
     }
 }

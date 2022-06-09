@@ -28,22 +28,36 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 /**
  * Interface LoggerInterface
+ *
  * @package Aoe\FeloginBruteforceProtection\Service\Logger
  */
 interface LoggerInterface
 {
-    const SEVERITY_INFO = 0;
-    const SEVERITY_NOTICE = 1;
-    const SEVERITY_WARNING = 2;
-    const SEVERITY_ERROR = 3;
+    /**
+     * @var int
+     */
+    public const SEVERITY_INFO = 0;
 
     /**
-     * @param $message , The Message to log
-     * @param int $severity type and severity of log entry
-     * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
-     * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
-     *                                to find
-     * @return void
+     * @var int
      */
-    public function log($message, $severity = self::SEVERITY_INFO, $additionalData = null, $packageKey = null);
+    public const SEVERITY_NOTICE = 1;
+
+    /**
+     * @var int
+     */
+    public const SEVERITY_WARNING = 2;
+
+    /**
+     * @var int
+     */
+    public const SEVERITY_ERROR = 3;
+
+    /**
+     * @param string      $message        the message to log
+     * @param int         $severity       type and severity of log entry
+     * @param array|null  $additionalData optional Array of additional data for the log entry which will be logged too
+     * @param string|null $packageKey     optional string with a free key for the application so the log entries are easier to find
+     */
+    public function log($message, $severity = self::SEVERITY_INFO, $additionalData = null, $packageKey = null): void;
 }

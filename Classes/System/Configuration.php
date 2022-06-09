@@ -30,47 +30,44 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\Exception;
 
-/**
- * Class Configuration
- */
 class Configuration
 {
     /**
      * @var string
      */
-    const CONF_MAX_FAILURES = 'max_failures';
+    public const CONF_MAX_FAILURES = 'max_failures';
     /**
      * @var string
      */
-    const CONF_DISABLED = 'disabled';
+    public const CONF_DISABLED = 'disabled';
     /**
      * @var string
      */
-    const CONF_RESTRICTION_TIME = 'restriction_time';
+    public const CONF_RESTRICTION_TIME = 'restriction_time';
     /**
      * @var string
      */
-    const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
+    public const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
     /**
      * @var string
      */
-    const LOGGING_ENABLED = 'logging_enabled';
+    public const LOGGING_ENABLED = 'logging_enabled';
     /**
      * @var string
      */
-    const LOGGING_LEVEL = 'logging_level';
+    public const LOGGING_LEVEL = 'logging_level';
     /**
      * @var string
      */
-    const EXCLUDED_IPS = 'exclude_ips';
+    public const EXCLUDED_IPS = 'exclude_ips';
     /**
      * @var string
      */
-    const X_FORWARDED_FOR = 'x_forwarded_for';
+    public const X_FORWARDED_FOR = 'x_forwarded_for';
     /**
      * @var string
      */
-    const CONF_IDENTIFICATION_IDENTIFIER = 'identification_identifier';
+    public const CONF_IDENTIFICATION_IDENTIFIER = 'identification_identifier';
 
     /**
      * @var array
@@ -90,89 +87,64 @@ class Configuration
 
     /**
      * Tells if the protection is enabled.
-     *
-     * @return boolean
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
-        if ('1' === $this->get(self::CONF_DISABLED)) {
-            return false;
-        }
-        return true;
+        return $this->get(self::CONF_DISABLED) !== '1';
     }
 
     /**
      * Returns the maximum number of allowed failures for an ip.
-     *
-     * @return integer
      */
-    public function getMaximumNumberOfFailures()
+    public function getMaximumNumberOfFailures(): int
     {
-        return (integer)$this->get(self::CONF_MAX_FAILURES);
+        return (int) $this->get(self::CONF_MAX_FAILURES);
     }
 
     /**
      * Returns the number of seconds of the restriction time.
-     *
-     * @return integer
      */
-    public function getRestrictionTime()
+    public function getRestrictionTime(): int
     {
-        return (integer)$this->get(self::CONF_RESTRICTION_TIME);
+        return (int) $this->get(self::CONF_RESTRICTION_TIME);
     }
 
     /**
      * Returns the number of seconds after an entry is resetted.
-     *
-     * @return integer
      */
-    public function getResetTime()
+    public function getResetTime(): int
     {
-        return (integer)$this->get(self::CONF_SECONDS_TILL_RESET);
+        return (int) $this->get(self::CONF_SECONDS_TILL_RESET);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isLoggingEnabled()
+    public function isLoggingEnabled(): bool
     {
-        return (boolean)$this->get(self::LOGGING_ENABLED) == 1;
+        return (bool) $this->get(self::LOGGING_ENABLED) == 1;
     }
 
-    /**
-     * @return int
-     */
-    public function getLogLevel()
+    public function getLogLevel(): int
     {
-        return (integer)$this->get(self::LOGGING_LEVEL);
+        return (int) $this->get(self::LOGGING_LEVEL);
     }
 
-    /**
-     * @return array
-     */
-    public function getExcludedIps()
+    public function getExcludedIps(): array
     {
         return explode(',', $this->get(self::EXCLUDED_IPS));
     }
 
-    /**
-     * @return boolean
-     */
-    public function getXForwardedFor()
+    public function getXForwardedFor(): bool
     {
-        return (boolean)$this->get(self::X_FORWARDED_FOR);
+        return (bool) $this->get(self::X_FORWARDED_FOR);
     }
 
-    /**
-     * @return integer
-     **/
-    public function getIdentificationIdentifier()
+    public function getIdentificationIdentifier(): int
     {
-        return (integer)$this->get(self::CONF_IDENTIFICATION_IDENTIFIER);
+        return (int) $this->get(self::CONF_IDENTIFICATION_IDENTIFIER);
     }
 
     /**
      * @param string $key
+     *
      * @return mixed
      * @throws Exception
      */

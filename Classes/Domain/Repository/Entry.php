@@ -30,23 +30,21 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * @package Tx_FeloginBruteforceProtection
+ * @package    Tx_FeloginBruteforceProtection
  * @subpackage Domain_Repository
- * @author Kevin Schu <kevin.schu@aoemedia.de>
+ * @author     Kevin Schu <kevin.schu@aoemedia.de>
  */
 class Entry extends Repository
 {
-    /**
-     * @return void
-     */
-    public function initializeObject()
+    public function initializeObject(): void
     {
-        /** @var $defaultQuerySettings Typo3QuerySettings */
+        /** @var Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
         // don't add fields from enable columns constraint
-        $defaultQuerySettings->setIgnoreEnableFields(true)->setIncludeDeleted(true);
+        $defaultQuerySettings->setIgnoreEnableFields(true)
+            ->setIncludeDeleted(true);
         // don't add sys_language_uid constraint
         $defaultQuerySettings->setRespectSysLanguage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
@@ -54,16 +52,23 @@ class Entry extends Repository
 
     /**
      * @param int $uid
-     * @return object
+     *
+     * @return object|null
      */
     public function findByUid($uid)
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
+        $query->getQuerySettings()
+            ->setRespectSysLanguage(false);
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
+        $query->getQuerySettings()
+            ->setIgnoreEnableFields(true)
+            ->setIncludeDeleted(true);
         $query->matching($query->equals('uid', $uid));
-        return $query->execute()->getFirst();
+
+        return $query->execute()
+            ->getFirst();
     }
 
     /**
@@ -71,17 +76,20 @@ class Entry extends Repository
      * @param $maxFailures
      * @param $restrictionTime
      * @param $identifier
-     * @return void
      */
-    public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null)
+    public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null): void
     {
         $time = time();
-        $age = (int)$time - $secondsTillReset;
-        $restrictionTime = (int)$time - $restrictionTime;
+        $age = (int) $time - $secondsTillReset;
+        $restrictionTime = (int) $time - $restrictionTime;
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setIgnoreEnableFields(true)->setIncludeDeleted(true);
+        $query->getQuerySettings()
+            ->setRespectSysLanguage(false);
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
+        $query->getQuerySettings()
+            ->setIgnoreEnableFields(true)
+            ->setIncludeDeleted(true);
         $constraintsRestrictedEntries = [
             $query->lessThan('tstamp', $restrictionTime),
             $query->greaterThanOrEqual('failures', $maxFailures),
@@ -90,7 +98,7 @@ class Entry extends Repository
             $query->lessThan('crdate', $age),
             $query->lessThan('failures', $maxFailures),
         ];
-        if (null !== $identifier) {
+        if ($identifier !== null) {
             $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
             $constraintsResettableEntries[] = $query->equals('identifier', $identifier);
         }

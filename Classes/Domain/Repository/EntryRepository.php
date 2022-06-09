@@ -33,17 +33,14 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Repository
  *
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Andre Wuttig <wuttig@portrino.de>
+ * @author  Kevin Schu <kevin.schu@aoe.com>
+ * @author  Andre Wuttig <wuttig@portrino.de>
  */
 class EntryRepository extends Repository
 {
-    /**
-     * @return void
-     */
-    public function initializeObject()
+    public function initializeObject(): void
     {
-        /** @var $defaultQuerySettings Typo3QuerySettings */
+        /** @var Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
@@ -55,21 +52,25 @@ class EntryRepository extends Repository
     }
 
     /**
-     * @param $secondsTillReset
-     * @param $maxFailures
-     * @param $restrictionTime
+     * @param      $secondsTillReset
+     * @param      $maxFailures
+     * @param      $restrictionTime
      * @param null $identifier
+     *
      * @return array|QueryResultInterface
      */
     public function findEntriesToCleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null)
     {
         $time = time();
-        $age = (int)$time - $secondsTillReset;
-        $restrictionTime = (int)$time - $restrictionTime;
+        $age = (int) $time - $secondsTillReset;
+        $restrictionTime = (int) $time - $restrictionTime;
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(false);
-        $query->getQuerySettings()->setIgnoreEnableFields(true);
-        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()
+            ->setRespectStoragePage(false);
+        $query->getQuerySettings()
+            ->setIgnoreEnableFields(true);
+        $query->getQuerySettings()
+            ->setRespectSysLanguage(false);
         $constraintsRestrictedEntries = [
             $query->lessThan('tstamp', $restrictionTime),
             $query->greaterThanOrEqual('failures', $maxFailures),
@@ -78,7 +79,7 @@ class EntryRepository extends Repository
             $query->lessThan('crdate', $age),
             $query->lessThan('failures', $maxFailures),
         ];
-        if (null !== $identifier) {
+        if ($identifier !== null) {
             $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
             $constraintsResettableEntries[] = $query->equals('identifier', $identifier);
         }

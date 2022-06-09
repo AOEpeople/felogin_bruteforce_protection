@@ -31,9 +31,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * @package Aoe\FeloginBruteforceProtection\\Domain\Model
  *
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Andre Wuttig <wuttig@portrino.de>
- *
+ * @author  Kevin Schu <kevin.schu@aoe.com>
+ * @author  Andre Wuttig <wuttig@portrino.de>
  */
 class Entry extends AbstractEntity
 {
@@ -92,7 +91,7 @@ class Entry extends AbstractEntity
     }
 
     /**
-     * @return string $identifier
+     * @return string
      */
     public function getIdentifier()
     {
@@ -101,15 +100,14 @@ class Entry extends AbstractEntity
 
     /**
      * @param string $identifier
-     * @return void
      */
-    public function setIdentifier($identifier)
+    public function setIdentifier($identifier): void
     {
         $this->identifier = $identifier;
     }
 
     /**
-     * @return integer $failures
+     * @return integer
      */
     public function getFailures()
     {
@@ -118,18 +116,14 @@ class Entry extends AbstractEntity
 
     /**
      * @param integer $failures
-     * @return void
      */
-    public function setFailures($failures)
+    public function setFailures($failures): void
     {
         $this->failures = $failures;
     }
 
-    /**
-     * @return void
-     */
-    public function increaseFailures()
+    public function increaseFailures(): void
     {
-        $this->setFailures($this->getFailures() + 1);
+        $this->setFailures($this->failures + 1);
     }
 }

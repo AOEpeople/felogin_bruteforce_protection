@@ -31,57 +31,54 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Interface LoggerInterface
+ *
  * @package Aoe\FeloginBruteforceProtection\Service\Logger
  */
 class LoggerService
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var Configuration */
+    /**
+     * @var Configuration
+     */
     protected $configuration;
 
     /**
-     * @param LoggerInterface $logger
+     * @var LoggerInterface
      */
-    public function injectLogger(LoggerInterface $logger)
+    private $logger;
+
+    public function injectLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
 
     /**
-     * @param $message , The Message to log
-     * @param int $severity type and severity of log entry
-     * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
-     * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
-     *                                to find
-     * @return void
+     * @param string      $message        the message to log
+     * @param int         $severity       type and severity of log entry
+     * @param array|null  $additionalData optional Array of additional data for the log entry which will be logged too
+     * @param string|null $packageKey     optional string with a free key for the application so the log entries are easier to find
      */
     public function log(
         $message,
         $severity = LoggerInterface::SEVERITY_INFO,
         $additionalData = null,
         $packageKey = null
-    ) {
+    ): void {
         if ($this->isLoggingEnabled() && $severity >= $this->getLogLevel()) {
-            $this->getLogger()->log($message, $severity, $additionalData, $packageKey);
+            $this->getLogger()
+                ->log($message, $severity, $additionalData, $packageKey);
         }
     }
 
-    /**
-     * @return bool
-     */
-    public function isLoggingEnabled()
+    public function isLoggingEnabled(): bool
     {
-        return $this->getConfiguration()->isLoggingEnabled();
+        return $this->getConfiguration()
+            ->isLoggingEnabled();
     }
 
-    /**
-     * @return int
-     */
-    public function getLogLevel()
+    public function getLogLevel(): int
     {
-        return $this->getConfiguration()->getLogLevel();
+        return $this->getConfiguration()
+            ->getLogLevel();
     }
 
     /**
@@ -92,6 +89,7 @@ class LoggerService
         if (!isset($this->configuration)) {
             $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
+
         return $this->configuration;
     }
 
@@ -103,6 +101,7 @@ class LoggerService
         if (!is_object($this->logger)) {
             $this->injectLogger(new DevLogger());
         }
+
         return $this->logger;
     }
 }

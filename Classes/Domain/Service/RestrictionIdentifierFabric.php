@@ -34,30 +34,23 @@ class RestrictionIdentifierFabric
     /**
      * Restriction identifier fabric method
      *
-     * @param Configuration $configuration
-     * @param FrontendUserAuthentication $frontendUserAuthentication
      * @return RestrictionIdentifierInterface
      **/
-    public function getRestrictionIdentifier(
-        Configuration $configuration,
-        FrontendUserAuthentication $frontendUserAuthentication = null
-    ) {
+    public function getRestrictionIdentifier(Configuration $configuration, FrontendUserAuthentication $frontendUserAuthentication = null)
+    {
         $identificationIdentifier = $configuration->getIdentificationIdentifier();
-        switch ($identificationIdentifier) {
-            case 2:
-                if ($frontendUserAuthentication !== null) {
-                    new RestrictionIdentifierFrontendName();
-                    $restrictionIdentifier = new RestrictionIdentifierFrontendName();
-                    $restrictionIdentifier->setFrontendUserAuthentication($frontendUserAuthentication);
-                    return $restrictionIdentifier;
-                    break;
-                }
-            // no break
-            default:
-                $restrictionIdentifier = new RestrictionIdentifierClientIp();
-                $restrictionIdentifier->setConfiguration($configuration);
-                return $restrictionIdentifier;
-                break;
+
+        if ($identificationIdentifier === 2 && $frontendUserAuthentication !== null) {
+            new RestrictionIdentifierFrontendName();
+            $restrictionIdentifier = new RestrictionIdentifierFrontendName();
+            $restrictionIdentifier->setFrontendUserAuthentication($frontendUserAuthentication);
+
+            return $restrictionIdentifier;
         }
+
+        $restrictionIdentifier = new RestrictionIdentifierClientIp();
+        $restrictionIdentifier->setConfiguration($configuration);
+
+        return $restrictionIdentifier;
     }
 }

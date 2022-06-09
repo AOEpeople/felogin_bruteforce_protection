@@ -30,11 +30,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class FeLoginBruteForceApi
+ *
  * @package Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi
  */
 class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
 {
-    /** @var FeLoginBruteForceApiStore */
+    /**
+     * @var FeLoginBruteForceApiStore
+     */
     protected $apiStore;
 
     /**
@@ -49,18 +52,12 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
         }
     }
 
-    /**
-     * @return void
-     */
-    public function stopCountWithinThisRequest()
+    public function stopCountWithinThisRequest(): void
     {
         $this->apiStore->setProperty('stopCountWithinThisRequest', true);
     }
 
-    /**
-     * @return boolean
-     */
-    public function shouldCountWithinThisRequest()
+    public function shouldCountWithinThisRequest(): bool
     {
         return $this->apiStore->getProperty('stopCountWithinThisRequest') !== true;
     }

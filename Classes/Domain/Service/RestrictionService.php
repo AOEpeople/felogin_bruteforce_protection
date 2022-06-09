@@ -38,13 +38,11 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
- *
  * @package Aoe\\FeloginBruteforceProtection\\Domain\\Service
  *
- * @author Kevin Schu <kevin.schu@aoe.com>
- * @author Timo Fuchs <timo.fuchs@aoe.com>
- * @author Andre Wuttig <wuttig@portrino.de>
- *
+ * @author  Kevin Schu <kevin.schu@aoe.com>
+ * @author  Timo Fuchs <timo.fuchs@aoe.com>
+ * @author  Andre Wuttig <wuttig@portrino.de>
  */
 class RestrictionService
 {
@@ -103,9 +101,6 @@ class RestrictionService
      */
     protected $feLoginBruteForceApi;
 
-    /**
-     * @param RestrictionIdentifierInterface $restrictionIdentifier
-     */
     public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
     {
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -118,32 +113,22 @@ class RestrictionService
 
     /**
      * @param boolean $preventFailureCount
-     * @return void
      */
-    public static function setPreventFailureCount($preventFailureCount)
+    public static function setPreventFailureCount($preventFailureCount): void
     {
         self::$preventFailureCount = $preventFailureCount;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isClientRestricted()
+    public function isClientRestricted(): bool
     {
-        if (false === isset($this->clientRestricted)) {
-            if ($this->hasEntry() && $this->isRestricted($this->getEntry())) {
-                $this->clientRestricted = true;
-            } else {
-                $this->clientRestricted = false;
-            }
+        if (!isset($this->clientRestricted)) {
+            $this->clientRestricted = $this->hasEntry() && $this->isRestricted($this->getEntry());
         }
+
         return $this->clientRestricted;
     }
 
-    /**
-     * @return void
-     */
-    public function removeEntry()
+    public function removeEntry(): void
     {
         if ($this->hasEntry()) {
             $this->entryRepository->remove($this->entry);
@@ -155,10 +140,7 @@ class RestrictionService
         unset($this->entry);
     }
 
-    /**
-     * @return void
-     */
-    public function checkAndHandleRestriction()
+    public function checkAndHandleRestriction(): void
     {
         if (self::$preventFailureCount) {
             return;
@@ -169,7 +151,7 @@ class RestrictionService
             return;
         }
 
-        if (false === $this->hasEntry()) {
+        if (!$this->hasEntry()) {
             $this->createEntry();
         }
 
@@ -183,10 +165,30 @@ class RestrictionService
         $this->restrictionLog();
     }
 
+    public function hasEntry(): bool
+    {
+        return $this->getEntry() instanceof Entry;
+    }
+
     /**
-     * @return void
+     * @return Entry|null
      */
-    protected function restrictionLog()
+    public function getEntry()
+    {
+        if (!isset($this->entry)) {
+            $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
+            if ($entry instanceof Entry) {
+                $this->entry = $entry;
+                if ($this->isOutdated($entry)) {
+                    $this->removeEntry();
+                }
+            }
+        }
+
+        return $this->entry;
+    }
+
+    protected function restrictionLog(): void
     {
         if ($this->getFeLoginBruteForceApi()->shouldCountWithinThisRequest()) {
             if ($this->isClientRestricted()) {
@@ -203,20 +205,31 @@ class RestrictionService
     }
 
     /**
+     * @return FeLoginBruteForceApi
+     */
+    protected function getFeLoginBruteForceApi()
+    {
+        if (!isset($this->feLoginBruteForceApi)) {
+            $this->feLoginBruteForceApi = $this->objectManager->get(
+                FeLoginBruteForceApi::class
+            );
+        }
+
+        return $this->feLoginBruteForceApi;
+    }
+
+    /**
      * @param $message
      * @param $severity
      */
-    private function log($message, $severity)
+    private function log($message, $severity): void
     {
         $failureCount = 0;
         if ($this->hasEntry()) {
-            $failureCount = $this->getEntry()->getFailures();
+            $failureCount = $this->getEntry()
+                ->getFailures();
         }
-        if ($this->isClientRestricted()) {
-            $restricted = 'Yes';
-        } else {
-            $restricted = 'No';
-        }
+        $restricted = ($this->isClientRestricted()) ? 'Yes' : 'No';
         $additionalData = [
             'FAILURE_COUNT' => $failureCount,
             'RESTRICTED' => $restricted,
@@ -225,7 +238,8 @@ class RestrictionService
             'HTTP_USER_AGENT' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
         ];
 
-        $this->getLogger()->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
+        $this->getLogger()
+            ->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }
 
     /**
@@ -236,29 +250,24 @@ class RestrictionService
         if (!isset($this->logger)) {
             $this->logger = new Logger();
         }
+
         return $this->logger;
     }
 
-    /**
-     * @return void
-     */
-    private function createEntry()
+    private function createEntry(): void
     {
-        /** @var $entry Entry */
         $this->entry = $this->objectManager->get(Entry::class);
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
         $this->entry->setTstamp(time());
         $this->entry->setIdentifier($this->getClientIdentifier());
+
         $this->entryRepository->add($this->entry);
         $this->persistenceManager->persistAll();
         $this->clientRestricted = false;
     }
 
-    /**
-     * @return void
-     */
-    private function saveEntry()
+    private function saveEntry(): void
     {
         if ($this->entry->getFailures() > 0) {
             $this->entry->setTstamp(time());
@@ -270,109 +279,46 @@ class RestrictionService
         }
     }
 
-    /**
-     * @param Entry $entry
-     * @return boolean
-     */
-    private function isRestricted(Entry $entry)
+    private function isRestricted(Entry $entry): bool
     {
-        if ($this->hasMaximumNumberOfFailuresReached($entry)) {
-            if (false === $this->isRestrictionTimeReached($entry)) {
-                return true;
-            }
+        return $this->hasMaximumNumberOfFailuresReached($entry) && !$this->isRestrictionTimeReached($entry);
+    }
+
+    private function isOutdated(Entry $entry): bool
+    {
+        if ($this->hasMaximumNumberOfFailuresReached($entry) && $this->isRestrictionTimeReached($entry)) {
+            return true;
         }
-        return false;
+
+        return !$this->hasMaximumNumberOfFailuresReached($entry) && $this->isResetTimeOver($entry);
     }
 
-    /**
-     * @return boolean
-     */
-    public function hasEntry()
+    private function isResetTimeOver(Entry $entry): bool
     {
-        return ($this->getEntry() instanceof Entry);
+        return $entry->getCrdate() < (time() - $this->configuration->getResetTime());
     }
 
-    /**
-     * @return Entry|null
-     */
-    public function getEntry()
+    private function hasMaximumNumberOfFailuresReached(Entry $entry): bool
     {
-        if (false === isset($this->entry)) {
-            $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
-            if ($entry instanceof Entry) {
-                $this->entry = $entry;
-                if ($this->isOutdated($entry)) {
-                    $this->removeEntry();
-                }
-            }
-        }
-        return $this->entry;
+        return $entry->getFailures() >= $this->configuration->getMaximumNumberOfFailures();
     }
 
-    /**
-     * @param Entry $entry
-     * @return boolean
-     */
-    private function isOutdated(Entry $entry)
+    private function isRestrictionTimeReached(Entry $entry): bool
     {
-        return (
-            ($this->hasMaximumNumberOfFailuresReached($entry) && $this->isRestrictionTimeReached($entry)) ||
-            (false === $this->hasMaximumNumberOfFailuresReached($entry) && $this->isResetTimeOver($entry))
-        );
-    }
-
-    /**
-     * @param Entry $entry
-     * @return boolean
-     */
-    private function isResetTimeOver(Entry $entry)
-    {
-        return ($entry->getCrdate() < time() - $this->configuration->getResetTime());
-    }
-
-    /**
-     * @param Entry $entry
-     * @return boolean
-     */
-    private function hasMaximumNumberOfFailuresReached(Entry $entry)
-    {
-        return ($entry->getFailures() >= $this->configuration->getMaximumNumberOfFailures());
-    }
-
-    /**
-     * @param Entry $entry
-     * @return boolean
-     */
-    private function isRestrictionTimeReached(Entry $entry)
-    {
-        return ($entry->getTstamp() < time() - $this->configuration->getRestrictionTime());
+        return $entry->getTstamp() < (time() - $this->configuration->getRestrictionTime());
     }
 
     /**
      * Returns the client identifier based on the clients IP address.
-     *
-     * @return string
      */
-    private function getClientIdentifier()
+    private function getClientIdentifier(): string
     {
-        if (false === isset($this->clientIdentifier)) {
+        if (!isset($this->clientIdentifier)) {
             $this->clientIdentifier = md5(
                 $this->restrictionIdentifier->getIdentifierValue() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
             );
         }
-        return $this->clientIdentifier;
-    }
 
-    /**
-     * @return FeLoginBruteForceApi
-     */
-    protected function getFeLoginBruteForceApi()
-    {
-        if (!isset($this->feLoginBruteForceApi)) {
-            $this->feLoginBruteForceApi = $this->objectManager->get(
-                FeLoginBruteForceApi::class
-            );
-        }
-        return $this->feLoginBruteForceApi;
+        return $this->clientIdentifier;
     }
 }

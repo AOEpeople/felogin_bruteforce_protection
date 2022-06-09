@@ -32,32 +32,34 @@ use TYPO3\CMS\Core\SingletonInterface;
  * Class FeLoginBruteForceApiStore
  * This Class is a singleton which is able to store Property Values during a Request, when an Api Call to the
  * BruteForceProtection extension makes this necessary
+ *
  * @package Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi
  */
 class FeLoginBruteForceApiStore implements SingletonInterface
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     private $propertyStore = [];
 
     /**
      * @param $propertyName
      * @param $propertyValue
-     * @return void
      */
-    public function setProperty($propertyName, $propertyValue)
+    public function setProperty($propertyName, $propertyValue): void
     {
         $this->propertyStore[$propertyName] = $propertyValue;
     }
 
     /**
      * @param $propertyName
-     * @return null
      */
     public function getProperty($propertyName)
     {
         if (array_key_exists($propertyName, $this->propertyStore)) {
             return $this->propertyStore[$propertyName];
         }
+
         return null;
     }
 }

@@ -32,57 +32,55 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class Logger
+ *
  * @package Aoe\FeloginBruteforceProtection\Service\Logger
  */
 class Logger
 {
-    /** @var LoggerInterface */
-    private $loggerImplementation;
-
-    /** @var Configuration */
+    /**
+     * @var Configuration
+     */
     protected $configuration;
 
     /**
-     * @param LoggerInterface $loggerImplementation
+     * @var LoggerInterface
      */
-    public function injectLoggerImplementation(LoggerInterface $loggerImplementation)
+    private $loggerImplementation;
+
+
+    public function injectLoggerImplementation(LoggerInterface $loggerImplementation): void
     {
         $this->loggerImplementation = $loggerImplementation;
     }
 
     /**
-     * @param $message , The Message to log
-     * @param int $severity type and severity of log entry
-     * @param array|null $additionalData optional Array of additional data for the log entry which will be logged too
-     * @param string|null $packageKey optional string with a free key for the application so the log entries are easier
-     *                                to find
-     * @return void
+     * @param string      $message        the message to log
+     * @param int         $severity       type and severity of log entry
+     * @param array|null  $additionalData optional Array of additional data for the log entry which will be logged too
+     * @param string|null $packageKey     optional string with a free key for the application so the log entries are easier to find
      */
     public function log(
         $message,
         $severity = LoggerInterface::SEVERITY_INFO,
         $additionalData = null,
         $packageKey = null
-    ) {
+    ): void {
         if ($this->isLoggingEnabled() && $severity >= $this->getLogLevel()) {
-            $this->getLoggerImplementation()->log($message, $severity, $additionalData, $packageKey);
+            $this->getLoggerImplementation()
+                ->log($message, $severity, $additionalData, $packageKey);
         }
     }
 
-    /**
-     * @return bool
-     */
-    public function isLoggingEnabled()
+    public function isLoggingEnabled(): bool
     {
-        return $this->getConfiguration()->isLoggingEnabled();
+        return $this->getConfiguration()
+            ->isLoggingEnabled();
     }
 
-    /**
-     * @return int
-     */
-    public function getLogLevel()
+    public function getLogLevel(): int
     {
-        return $this->getConfiguration()->getLogLevel();
+        return $this->getConfiguration()
+            ->getLogLevel();
     }
 
     /**
@@ -93,6 +91,7 @@ class Logger
         if (!isset($this->configuration)) {
             $this->configuration = new Configuration();
         }
+
         return $this->configuration;
     }
 
@@ -106,6 +105,7 @@ class Logger
             $loggerImplementation = GeneralUtility::makeInstance(DevLogger::class);
             $this->injectLoggerImplementation($loggerImplementation);
         }
+
         return $this->loggerImplementation;
     }
 }

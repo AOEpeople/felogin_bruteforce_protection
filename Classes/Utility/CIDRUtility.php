@@ -36,6 +36,7 @@ class CIDRUtility
     /**
      * @param string $ip
      * @param string $range
+     *
      * @return boolean
      */
     public static function matchCIDR($ip, $range)
@@ -45,6 +46,7 @@ class CIDRUtility
         $subnet = ip2long($subnet);
         $mask = -1 << (32 - $bits);
         $subnet &= $mask; # nb: in case the supplied subnet wasn't correctly aligned
+
         return ($ip & $mask) == $subnet;
     }
 
@@ -54,14 +56,15 @@ class CIDRUtility
      * Invalid CIDR: 192.168.100.14
      *
      * @param string $ip
+     *
      * @return boolean
      */
     public static function isCIDR($ip)
     {
-        $ipBlock = "[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]";
-        $subnetMask = "[0-9]|[1-2][0-9]|3[0-2]";
+        $ipBlock = '[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]';
+        $subnetMask = '[0-9]|[1-2][0-9]|3[0-2]';
         $pattern = "/^(($ipBlock)\.){3}($ipBlock)(\/($subnetMask))$/";
 
-        return (preg_match($pattern, $ip) > 0);
+        return preg_match($pattern, $ip) > 0;
     }
 }

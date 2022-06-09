@@ -32,13 +32,7 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
  */
 interface FeLoginBruteForceApiInterface
 {
-    /**
-     * @return void
-     */
-    public function stopCountWithinThisRequest();
+    public function stopCountWithinThisRequest(): void;
 
-    /**
-     * @return boolean
-     */
-    public function shouldCountWithinThisRequest();
+    public function shouldCountWithinThisRequest(): bool;
 }

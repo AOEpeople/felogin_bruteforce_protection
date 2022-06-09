@@ -30,7 +30,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * @package Aoe\FeloginBruteforceProtection\Domain\Service
- * @author Patrick Roos <patrick.roos@aoe.com>
+ * @author  Patrick Roos <patrick.roos@aoe.com>
  */
 class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
 {
@@ -41,6 +41,7 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
 
     /**
      * the value of the restriction identifier
+     *
      * @return string
      */
     public function getIdentifierValue()
@@ -53,23 +54,19 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
                 $this->identifierValue = '';
             }
         }
+
         return $this->identifierValue;
     }
 
     /**
      * no precondition for frontend name
-     * @return boolean
      */
-    public function checkPreconditions()
+    public function checkPreconditions(): bool
     {
         return true;
     }
 
-    /**
-     * @param FrontendUserAuthentication $frontendUserAuthentication
-     * @return void
-     **/
-    public function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication)
+    public function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication): void
     {
         $this->frontendUserAuthentication = $frontendUserAuthentication;
     }
