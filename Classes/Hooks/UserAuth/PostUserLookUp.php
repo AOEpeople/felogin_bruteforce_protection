@@ -170,13 +170,13 @@ class PostUserLookUp
     private function hasFeUserLoggedIn(AbstractUserAuthentication $userAuthObject): bool
     {
         return $userAuthObject->loginType === 'FE' &&
-            $userAuthObject->loginFailure === false &&
+            !$userAuthObject->loginFailure &&
             is_array($userAuthObject->user) &&
             $userAuthObject->loginSessionStarted;
     }
 
     private function hasFeUserLogInFailed(AbstractUserAuthentication $userAuthObject): bool
     {
-        return $userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure === true && !$userAuthObject->user;
+        return $userAuthObject->loginType === 'FE' && $userAuthObject->loginFailure && !$userAuthObject->user;
     }
 }
