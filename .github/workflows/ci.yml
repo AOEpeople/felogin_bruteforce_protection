@@ -15,7 +15,9 @@ jobs:
 
     steps:
       - name: Start database server
-        run: sudo /etc/init.d/mysql start
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v2
+          tools: composer:2.2
 
       - name: Environment Check
         run: |
