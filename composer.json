@@ -95,6 +95,9 @@
             "@composer code-style",
             "@composer code-analysis",
             "@composer code-compatibility"
+        ],
+        "extension-release": [
+            "rm -rf .github .Build code-quality Tests .gitignore scrutinizer.yml"
         ]
     },
     "extra": {
