@@ -62,6 +62,9 @@
         ],
         "test:functional": [
             "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml Tests/Functional/"
+        ],
+        "extension-release": [
+            "rm -rf .github .Build code-quality Tests .gitignore scrutinizer.yml"
         ]
     },
     "extra": {
