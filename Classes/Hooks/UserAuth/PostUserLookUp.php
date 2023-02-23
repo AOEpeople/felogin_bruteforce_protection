@@ -98,12 +98,14 @@ class PostUserLookUp
      */
     public function processFailedLogin(&$params): void
     {
+        $frontendUserAuthentication = GeneralUtility::makeInstance(FrontendUserAuthentication::class);
+
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
             $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
             $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
                 $this->getConfiguration(),
-                null
+                $frontendUserAuthentication
             );
             $this->restrictionService = $this->initRestrictionService();
 
