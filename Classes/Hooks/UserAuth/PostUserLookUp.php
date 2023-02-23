@@ -94,7 +94,7 @@ class PostUserLookUp
                 } elseif ($this->hasFeUserLogInFailed($this->frontendUserAuthentication)) {
                     $this->restrictionService
                         ->checkAndHandleRestriction();
-                    $this->updateGlobals($this->frontendUserAuthentication);
+                    $this->updateGlobals();
                 }
             }
         }
@@ -141,7 +141,7 @@ class PostUserLookUp
         return $userAuthentication instanceof FrontendUserAuthentication;
     }
 
-    private function updateGlobals(FrontendUserAuthentication $userAuthObject): bool
+    private function updateGlobals(): bool
     {
         $GLOBALS['felogin_bruteforce_protection']['restricted'] = false;
         if ($this->restrictionService->isClientRestricted()) {
