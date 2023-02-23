@@ -95,14 +95,6 @@ parameters:
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
 		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$loginFailure\\.$#"
-			count: 2
-			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
-		-
-			message: "#^Access to an undefined property TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:\\$loginFailure\\.$#"
-			count: 1
-			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
-		-
 			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Hooks\\\\UserAuth\\\\PostUserLookUp\\:\\:getRestrictionIdentifierFabric\\(\\) should return Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFabric but returns object\\.$#"
 			count: 1
 			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php

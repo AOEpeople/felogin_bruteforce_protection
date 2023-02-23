@@ -145,7 +145,6 @@ class PostUserLookUp
     {
         $GLOBALS['felogin_bruteforce_protection']['restricted'] = false;
         if ($this->restrictionService->isClientRestricted()) {
-            $userAuthObject->loginFailure = 1;
             $GLOBALS['felogin_bruteforce_protection']['restricted'] = true;
             $GLOBALS['felogin_bruteforce_protection']['restriction_time'] = $this->getConfiguration()->getRestrictionTime();
             $GLOBALS['felogin_bruteforce_protection']['restriction_message'] = $this->getRestrictionMessage();
