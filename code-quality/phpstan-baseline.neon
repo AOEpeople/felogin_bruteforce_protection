@@ -99,10 +99,6 @@ parameters:
 			count: 1
 			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Hooks\\\\UserAuth\\\\PostUserLookUp\\:\\:getRestrictionMessage\\(\\) should return string but returns string\\|null\\.$#"
-			count: 1
-			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
-		-
 			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Hooks\\\\UserAuth\\\\PostUserLookUp\\:\\:initRestrictionService\\(\\) should return Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService but returns object\\.$#"
 			count: 1
 			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
