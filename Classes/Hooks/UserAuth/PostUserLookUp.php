@@ -170,7 +170,7 @@ class PostUserLookUp
         return true;
     }
 
-    private function getRestrictionMessage(): string
+    private function getRestrictionMessage(): ?string
     {
         $time = (int) ($this->getConfiguration()->getRestrictionTime() / 60);
 
