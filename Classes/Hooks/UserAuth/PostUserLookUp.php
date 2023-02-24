@@ -79,7 +79,6 @@ class PostUserLookUp
 
         // Continue only if the protection is enabled
         if ($this->getConfiguration()->isEnabled()) {
-            /** @var RestrictionIdentifierFabric $restrictionIdentifierFabric */
             $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
             $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
                 $this->getConfiguration(),
@@ -87,15 +86,31 @@ class PostUserLookUp
             );
             $this->restrictionService = $this->initRestrictionService();
 
+            if ($this->restrictionIdentifier->checkPreconditions() && $this->hasFeUserLoggedIn($this->frontendUserAuthentication)) {
+                $this->restrictionService
+                    ->removeEntry();
+            }
+        }
+    }
+
+    /**
+     * @param array $params
+     */
+    public function processFailedLogin(&$params): void
+    {
+        // Continue only if the protection is enabled
+        if ($this->getConfiguration()->isEnabled()) {
+            $restrictionIdentifierFabric = $this->getRestrictionIdentifierFabric();
+            $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
+                $this->getConfiguration(),
+                null
+            );
+            $this->restrictionService = $this->initRestrictionService();
+
             if ($this->restrictionIdentifier->checkPreconditions()) {
-                if ($this->hasFeUserLoggedIn($this->frontendUserAuthentication)) {
-                    $this->restrictionService
-                        ->removeEntry();
-                } elseif ($this->hasFeUserLogInFailed($this->frontendUserAuthentication)) {
-                    $this->restrictionService
-                        ->checkAndHandleRestriction();
-                    $this->updateGlobals();
-                }
+                $this->restrictionService
+                    ->checkAndHandleRestriction();
+                $this->updateGlobals();
             }
         }
     }
@@ -155,7 +170,7 @@ class PostUserLookUp
         return true;
     }
 
-    private function getRestrictionMessage(): string
+    private function getRestrictionMessage(): ?string
     {
         $time = (int) ($this->getConfiguration()->getRestrictionTime() / 60);
 
@@ -171,10 +186,5 @@ class PostUserLookUp
         return $userAuthObject->loginType === 'FE' &&
             is_array($userAuthObject->user) &&
             $userAuthObject->loginSessionStarted;
-    }
-
-    private function hasFeUserLogInFailed(AbstractUserAuthentication $userAuthObject): bool
-    {
-        return $userAuthObject->loginType === 'FE' && !$userAuthObject->user;
     }
 }
