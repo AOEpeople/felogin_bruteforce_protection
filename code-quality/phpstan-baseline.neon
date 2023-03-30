@@ -146,3 +146,7 @@ parameters:
 			message: "#^Binary operation \"\\-\" between 32 and string results in an error\\.$#"
 			count: 1
 			path: ../Classes/Utility/CIDRUtility.php
+		-
+			message: "#^Parameter \\#2 \\$frontendUserAuthentication of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFabric\\:\\:getRestrictionIdentifier\\(\\) expects TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\|null, object given\\.$#"
+			count: 1
+			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
