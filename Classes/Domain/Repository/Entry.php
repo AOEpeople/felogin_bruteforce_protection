@@ -26,6 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -39,7 +40,7 @@ class Entry extends Repository
     public function initializeObject(): void
     {
         /** @var Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $defaultQuerySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         // don't add the pid constraint
         $defaultQuerySettings->setRespectStoragePage(false);
         // don't add fields from enable columns constraint

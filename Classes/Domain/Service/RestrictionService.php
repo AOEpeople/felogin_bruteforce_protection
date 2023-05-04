@@ -106,9 +106,9 @@ class RestrictionService
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->restrictionIdentifier = $restrictionIdentifier;
 
-        $this->configuration = $this->objectManager->get(Configuration::class);
-        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
-        $this->entryRepository = $this->objectManager->get(EntryRepository::class);
+        $this->configuration = GeneralUtility::makeInstance(Configuration::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->entryRepository = GeneralUtility::makeInstance(EntryRepository::class);
     }
 
     /**
