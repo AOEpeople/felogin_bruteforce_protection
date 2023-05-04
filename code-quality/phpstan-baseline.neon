@@ -143,6 +143,10 @@ parameters:
 			count: 1
 			path: ../Classes/Utility/CIDRUtility.php
 		-
+			message: "#^Parameter \\#2 \\$frontendUserAuthentication of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFabric\\:\\:getRestrictionIdentifier\\(\\) expects TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\|null, object given\\.$#"
+			count: 1
+			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
+		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) does not accept object\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
