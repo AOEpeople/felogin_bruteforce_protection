@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
+use PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer;
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
@@ -62,6 +63,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
             // @todo for next upgrade
             NoSuperfluousPhpdocTagsFixer::class => null,
+            FunctionTypehintSpaceFixer::class => [
+                __DIR__ . '/../Classes/Hooks/UserAuth/PostUserLookUp.php',
+            ],
+
             // @todo strict php
             DeclareStrictTypesFixer::class => null,
             StrictComparisonFixer::class => null,
