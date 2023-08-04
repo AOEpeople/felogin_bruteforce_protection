@@ -111,7 +111,7 @@ parameters:
 			count: 1
 			path: ../Classes/Service/AuthUser.php
 		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$frontendUserAuthentication \\(TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\) does not accept object\\.$#"
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$frontendUserAuthentication \\(TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\.$#"
 			count: 1
 			path: ../Classes/Service/AuthUser.php
 		-

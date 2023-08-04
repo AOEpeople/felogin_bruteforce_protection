@@ -31,6 +31,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterfac
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use stdClass;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -89,12 +90,13 @@ class AuthUser extends AuthenticationService
      * @param string $mode Subtype of the service which is used to call the service.
      * @param array $loginData Submitted login form data
      * @param array $authInfo Information array. Holds submitted form data etc.
-     * @param object $pObj Parent object
+     * @param AbstractUserAuthentication $pObj Parent object
      * @todo Define visibility
      */
     public function initAuth($mode, $loginData, $authInfo, $pObj): void
     {
         $this->frontendUserAuthentication = $pObj;
+        parent::initAuth($mode, $loginData, $authInfo, $pObj);
     }
 
     /**
