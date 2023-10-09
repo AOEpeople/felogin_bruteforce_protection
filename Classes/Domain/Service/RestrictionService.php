@@ -185,7 +185,10 @@ class RestrictionService
             }
         }
 
-        return $this->entry ?? null;
+        if (isset($this->entry)) {
+            return $this->entry;
+        }
+        return null;
     }
 
     protected function restrictionLog(): void
