@@ -32,15 +32,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Configuration\Exception;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Command
- *
- * @author  Andre Wuttig <wuttig@portrino.de>
- */
 class CleanUpCommand extends Command
 {
     /**
@@ -83,10 +76,6 @@ class CleanUpCommand extends Command
         $this->configuration = $configuration;
     }
 
-    /**
-     * @throws IllegalObjectTypeException
-     * @throws Exception
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entriesToCleanUp = $this->entryRepository->findEntriesToCleanUp(

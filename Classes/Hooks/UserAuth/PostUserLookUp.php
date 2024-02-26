@@ -35,11 +35,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
-/**
- * Class PostUserLookUp
- *
- * @package Aoe\FeloginBruteforceProtection\Hooks\UserAuth
- */
 class PostUserLookUp
 {
     /**
@@ -62,10 +57,7 @@ class PostUserLookUp
      */
     protected $frontendUserAuthentication;
 
-    /**
-     * @param array $params
-     */
-    public function handlePostUserLookUp(&$params): void
+    public function handlePostUserLookUp(array &$params): void
     {
         /** @var FrontendUserAuthentication $frontendUserAuthentication */
         $frontendUserAuthentication = $params['pObj'];

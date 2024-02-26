@@ -26,20 +26,17 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- */
 class RestrictionServiceFrontendNameWithUserTest extends RestrictionServiceFrontendNameAbstract
 {
     /**
      * (non-PHPdoc)
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $loginFormData['uname'] = 'TESTLOGINNAME';
-        $this->frontendUserAuthentication->expects($this->any())->method('getLoginFormData')->will(
-            $this->returnValue($loginFormData)
-        );
+        $this->frontendUserAuthentication
+            ->method('getLoginFormData')
+            ->willReturn($loginFormData);
     }
 }

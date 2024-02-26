@@ -28,11 +28,6 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class FeLoginBruteForceApi
- *
- * @package Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi
- */
 class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
 {
     /**

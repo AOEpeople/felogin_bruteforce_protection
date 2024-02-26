@@ -26,10 +26,6 @@ namespace Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Interface ApiInterface
- * @package Aoe\FeloginBruteforceProtection\Service\FeLoginBruteForceApi
- */
 interface FeLoginBruteForceApiInterface
 {
     public function stopCountWithinThisRequest(): void;

@@ -74,9 +74,11 @@ class AuthUser extends AuthenticationService
         if (!isset($GLOBALS['TSFE'])) {
             $GLOBALS['TSFE'] = new stdClass();
         }
+
         if (empty($GLOBALS['TSFE']->sys_page)) {
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         }
+
         if (empty($GLOBALS['TSFE']->tmpl)) {
             $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         }
@@ -114,6 +116,7 @@ class AuthUser extends AuthenticationService
                 'username' => '',
             ];
         }
+
         return parent::getUser();
     }
 
@@ -129,6 +132,7 @@ class AuthUser extends AuthenticationService
         if ($this->isProtectionEnabled() && $this->getRestrictionService()->isClientRestricted()) {
             return -1;
         }
+
         return 100;
     }
 
@@ -146,6 +150,7 @@ class AuthUser extends AuthenticationService
         if (!isset($this->configuration)) {
             $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         }
+
         return $this->configuration;
     }
 
@@ -173,6 +178,7 @@ class AuthUser extends AuthenticationService
 
             $this->restrictionService = GeneralUtility::makeInstance(RestrictionService::class, $restrictionIdentifier);
         }
+
         return $this->restrictionService;
     }
 }

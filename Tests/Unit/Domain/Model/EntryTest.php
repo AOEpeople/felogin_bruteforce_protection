@@ -27,11 +27,8 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @package Aoe\\FeloginBruteforceProtection\\Tests\\Domain\\Model
- */
 class EntryTest extends UnitTestCase
 {
     /**
@@ -39,56 +36,41 @@ class EntryTest extends UnitTestCase
      */
     protected $entry;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entry = new Entry();
     }
 
-    /**
-     * @test
-     */
-    public function setIdentifierForStringSetsIdentifier()
+    public function testSetIdentifierForStringSetsIdentifier(): void
     {
         $this->entry->setIdentifier('Conceived at T3CON10');
         $this->assertSame('Conceived at T3CON10', $this->entry->getIdentifier());
     }
 
-    /**
-     * @test
-     */
-    public function setFailuresForIntegerSetsFailures()
+    public function testSetFailuresForIntegerSetsFailures(): void
     {
         $this->entry->setFailures(12);
         $this->assertSame(12, $this->entry->getFailures());
     }
 
-    /**
-     * @test
-     **/
-    public function setCrdateForTimestampStringSetsCrdate()
+    public function testSetCrdateForTimestampStringSetsCrdate(): void
     {
         $time = 1;
         $this->entry->setCrdate($time);
         $this->assertSame($time, $this->entry->getCrdate());
     }
 
-    /**
-     * @test
-     **/
-    public function setTstampForTimestampStringSetsTstamp()
+    public function testSetTstampForTimestampStringSetsTstamp(): void
     {
         $time = 1;
         $this->entry->setTstamp($time);
         $this->assertSame($time, $this->entry->getTstamp());
     }
 
-    /**
-     * @test
-     **/
-    public function increaseFailuresShouldIncrementFailures()
+    public function testIncreaseFailuresShouldIncrementFailures(): void
     {
         $this->entry->setFailures(12);
         $this->entry->increaseFailures();
-        $this->assertEquals(13, $this->entry->getFailures());
+        $this->assertSame(13, $this->entry->getFailures());
     }
 }

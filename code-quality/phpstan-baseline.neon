@@ -1,59 +1,62 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method (.*) has no return typehint specified\\.$#"
+			message: "#^Method (.*) has no return type specified\\.$#"
 			path: ../Classes/
 		-
-			message: "#^Method (.*) no typehint specified\\.$#"
-			path: ../Classes/
-		-
-			message: "#^PHPDoc tag @param has invalid value (.*)#"
+			message: "#^Method (.*) no type specified\\.$#"
 			path: ../Classes/
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\:\\:logicalOr\\(\\) invoked with 2 parameters, 1 required\\.$#"
 			path: ../Classes/
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\(.*)\\:\\:\\$(.*) \\((.*)\\) in isset\\(\\) is not nullable\\.$#"
+			path: ../Classes/
 
-
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setCrdate\\(\\) has no return typehint specified\\.$#"
+			message: "#^PHPDoc tag @return with type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierInterface is not subtype of native type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierClientIp\\|Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFrontendName\\.$#"
 			count: 1
-			path: ../Classes/Domain/Model/Entry.php
+			path: ../Classes/Domain/Service/RestrictionIdentifierFabric.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Model/Entry.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$identifier with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$identifier with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/Entry.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$maxFailures with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/Entry.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$restrictionTime with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/Entry.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$secondsTillReset with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/Entry.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$maxFailures with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/EntryRepository.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$restrictionTime with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/EntryRepository.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$secondsTillReset with no typehint specified\\.$#"
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/EntryRepository.php
 		-
 			message: "#^Strict comparison using \\!\\=\\= between null and null will always evaluate to false\\.$#"
 			count: 1
 			path: ../Classes/Domain/Repository/EntryRepository.php
+		-
+			message: "#^Parameter \\#1 \\$crdate of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setCrdate\\(\\) expects string, int\\<1, max\\> given\\.$#"
+			count: 1
+			path: ../Classes/Domain/Service/RestrictionService.php
+		-
+			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int\\<1, max\\> given\\.$#"
+			count: 2
+			path: ../Classes/Domain/Service/RestrictionService.php
 		-
 			message: "#^Call to an undefined method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findOneByIdentifier\\(\\)\\.$#"
 			count: 1
@@ -63,28 +66,12 @@ parameters:
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
 		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:log\\(\\) has parameter \\$message with no typehint specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:log\\(\\) has parameter \\$severity with no typehint specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Parameter \\#1 \\$crdate of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setCrdate\\(\\) expects string, int given\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
 			message: "#^Parameter \\#1 \\$entry of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:hasMaximumNumberOfFailuresReached\\(\\) expects Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry, Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\|null given\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
 		-
 			message: "#^Parameter \\#1 \\$entry of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:isRestricted\\(\\) expects Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry, Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\|null given\\.$#"
 			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int given\\.$#"
-			count: 2
 			path: ../Classes/Domain/Service/RestrictionService.php
 		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\) does not accept object\\.$#"
@@ -123,7 +110,7 @@ parameters:
 			count: 1
 			path: ../Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApi.php
 		-
-			message: "#^Variable \\$apiStore in isset\\(\\) is always null\\.$#"
+			message: "#^Variable \\$apiStore in isset\\(\\) always exists and is always null\\.$#"
 			count: 1
 			path: ../Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApi.php
 		-
@@ -134,6 +121,14 @@ parameters:
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\Logger\\\\LoggerService\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) does not accept object\\.$#"
 			count: 1
 			path: ../Classes/Service/Logger/LoggerService.php
+		-
+			message: "#^Cannot cast mixed to int\\.$#"
+			count: 5
+			path: ../Classes/System/Configuration.php
+		-
+			message: "#^Cannot cast mixed to string\\.$#"
+			count: 1
+			path: ../Classes/System/Configuration.php
 		-
 			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
 			count: 1

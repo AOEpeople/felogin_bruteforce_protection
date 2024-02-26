@@ -26,20 +26,13 @@ namespace Aoe\FeloginBruteforceProtection\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Class CIDRUtility
- *
- * @package Aoe\FeloginBruteforceProtection\Utility
- */
 class CIDRUtility
 {
     /**
      * @param string $ip
      * @param string $range
-     *
-     * @return boolean
      */
-    public static function matchCIDR($ip, $range)
+    public static function matchCIDR($ip, $range): bool
     {
         [$subnet, $bits] = explode('/', $range);
         $ip = ip2long($ip);
@@ -54,12 +47,8 @@ class CIDRUtility
      * Checks if an ip address corresponds to the CIDR format.
      * Valid CIDR: 192.168.100.14/24
      * Invalid CIDR: 192.168.100.14
-     *
-     * @param string $ip
-     *
-     * @return boolean
      */
-    public static function isCIDR($ip)
+    public static function isCIDR(string $ip): bool
     {
         $ipBlock = '[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]';
         $subnetMask = '[0-9]|[1-2][0-9]|3[0-2]';

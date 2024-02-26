@@ -26,11 +26,6 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * Interface LoggerInterface
- *
- * @package Aoe\FeloginBruteforceProtection\Service\Logger
- */
 interface LoggerInterface
 {
     /**

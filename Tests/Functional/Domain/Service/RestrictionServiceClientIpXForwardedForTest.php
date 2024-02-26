@@ -2,6 +2,9 @@
 
 namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
+use Aoe\FeloginBruteforceProtection\System\Configuration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -26,31 +29,28 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- */
 class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClientIpAbstract
 {
     /**
      * (non-PHPdoc)
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->configuration->expects($this->any())->method('getXForwardedFor')->will($this->returnValue(true));
+        $this->configuration
+            ->method('getXForwardedFor')
+            ->willReturn(true);
     }
 
     /**
-     * @test
      * @dataProvider dataProviderIsClientRestrictedWithExcludedIp
-     * @param string $clientIp
-     * @param array $excludedIPs
-     * @param boolean $shouldClientRestricted
      */
-    public function isClientRestrictedWithExcludedIpWithoutCIRD($clientIp, array $excludedIPs, $shouldClientRestricted)
+    public function testIsClientRestrictedWithExcludedIpWithoutCIRD(string $clientIp, array $excludedIPs, bool $shouldClientRestricted): void
     {
-        $this->configuration->expects($this->any())->method('getExcludedIps')->will($this->returnValue($excludedIPs));
-        $this->inject($this->restriction, 'configuration', $this->configuration);
+        $this->configuration
+            ->method('getExcludedIps')
+            ->willReturn($excludedIPs);
+        GeneralUtility::addInstance(Configuration::class, $this->configuration);
 
         $_SERVER['HTTP_X_FORWARDED_FOR'] = $clientIp;
 

@@ -29,10 +29,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- * @author  Patrick Roos <patrick.roos@aoe.com>
- */
 class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
 {
     /**
@@ -79,6 +75,7 @@ class RestrictionIdentifierClientIp extends RestrictionIdentifierAbstract
         if (in_array($this->getIdentifierValue(), $this->configuration->getExcludedIps())) {
             return true;
         }
+
         foreach ($this->configuration->getExcludedIps() as $excludedIp) {
             // CIDR notation is used within excluded IPs
             if (CIDRUtility::isCIDR($excludedIp) && CIDRUtility::matchCIDR($this->getIdentifierValue(), $excludedIp)) {

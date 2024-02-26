@@ -28,10 +28,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
 
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- * @author  Patrick Roos <patrick.roos@aoe.com>
- */
 class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
 {
     /**

@@ -30,23 +30,14 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- */
 class RestrictionIdentifierFabricTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['cms', 'core', 'lang', 'extensionmanager'];
+    protected array $coreExtensionsToLoad = ['cms', 'core', 'lang', 'extensionmanager'];
 
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
     /**
      * @var Configuration
@@ -66,20 +57,21 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
     /**
      * (non-PHPdoc)
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->configuration = $this->createMock(Configuration::class);
         $this->frontendUserAuthentication = $this->createMock(
             FrontendUserAuthentication::class
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierClientIp()
+    public function testIsInstanceOfRestrictionIdentifierClientIp(): void
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
+        $this->configuration
+            ->method('getIdentificationIdentifier')
+            ->willReturn(1);
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
@@ -88,14 +80,11 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierClientIpWithNonExistingIdentifier()
+    public function testIsInstanceOfRestrictionIdentifierClientIpWithNonExistingIdentifier(): void
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will(
-            $this->returnValue(10)
-        );
+        $this->configuration
+            ->method('getIdentificationIdentifier')
+            ->willReturn(10);
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
@@ -104,12 +93,11 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierClientIpWithSecondParam()
+    public function testIsInstanceOfRestrictionIdentifierClientIpWithSecondParam(): void
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
+        $this->configuration
+            ->method('getIdentificationIdentifier')
+            ->willReturn(1);
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
@@ -121,10 +109,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierClientIpWithoutConfigurationValue()
+    public function testIsInstanceOfRestrictionIdentifierClientIpWithoutConfigurationValue(): void
     {
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
@@ -134,10 +119,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierClientIpWithoutConfigurationValueWithSecondParam()
+    public function testIsInstanceOfRestrictionIdentifierClientIpWithoutConfigurationValueWithSecondParam(): void
     {
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
@@ -150,12 +132,11 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierFrontendUsername()
+    public function testIsInstanceOfRestrictionIdentifierFrontendUsername(): void
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
+        $this->configuration
+            ->method('getIdentificationIdentifier')
+            ->willReturn(2);
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(
@@ -167,12 +148,11 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function isInstanceOfRestrictionIdentifierClientIpWithMissingFrontendUsername()
+    public function testIsInstanceOfRestrictionIdentifierClientIpWithMissingFrontendUsername(): void
     {
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(2));
+        $this->configuration
+            ->method('getIdentificationIdentifier')
+            ->willReturn(2);
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
 
         $this->assertInstanceOf(

@@ -36,8 +36,10 @@ class RestrictionIdentifierFabric
      *
      * @return RestrictionIdentifierInterface
      **/
-    public function getRestrictionIdentifier(Configuration $configuration, FrontendUserAuthentication $frontendUserAuthentication = null)
-    {
+    public function getRestrictionIdentifier(
+        Configuration $configuration,
+        FrontendUserAuthentication $frontendUserAuthentication = null
+    ): RestrictionIdentifierFrontendName | RestrictionIdentifierClientIp {
         $identificationIdentifier = $configuration->getIdentificationIdentifier();
 
         if ($identificationIdentifier === 2 && $frontendUserAuthentication !== null) {

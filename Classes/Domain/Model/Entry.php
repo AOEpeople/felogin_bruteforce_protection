@@ -28,12 +28,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\\Domain\Model
- *
- * @author  Kevin Schu <kevin.schu@aoe.com>
- * @author  Andre Wuttig <wuttig@portrino.de>
- */
 class Entry extends AbstractEntity
 {
     /**
@@ -61,7 +55,7 @@ class Entry extends AbstractEntity
     /**
      * @param string $crdate
      */
-    public function setCrdate($crdate)
+    public function setCrdate($crdate): void
     {
         $this->crdate = $crdate;
     }
@@ -77,7 +71,7 @@ class Entry extends AbstractEntity
     /**
      * @param string $tstamp
      */
-    public function setTstamp($tstamp)
+    public function setTstamp($tstamp): void
     {
         $this->tstamp = $tstamp;
     }

@@ -26,9 +26,6 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- */
 class RestrictionServiceFrontendNameWithoutUserTest extends RestrictionServiceFrontendNameAbstract
 {
 }

@@ -26,10 +26,6 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- * @author Patrick Roos <patrick.roos@aoe.com>
- */
 interface RestrictionIdentifierInterface
 {
     /**

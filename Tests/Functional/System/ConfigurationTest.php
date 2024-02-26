@@ -28,140 +28,94 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\System;
 
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Exception;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Class ConfigurationTest
- */
 class ConfigurationTest extends FunctionalTestCase
 {
-    /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['cms', 'lang', 'extensionmanager'];
+    protected array $coreExtensionsToLoad = ['cms', 'lang', 'extensionmanager'];
+
+    protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
     /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
-
-    /**
-     * @var Configuration $configuration
+     * @var Configuration
      */
     private $configuration;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->configuration = new Configuration();
     }
 
-    /**
-     * @test
-     */
-    public function doesIsEnabledReturnFalse()
+    public function testDoesIsEnabledReturnFalse(): void
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_DISABLED, '1');
         $this->assertFalse($this->configuration->isEnabled());
     }
 
-    /**
-     * @test
-     */
-    public function doesIsEnabledReturnTrue()
+    public function testDoesIsEnabledReturnTrue(): void
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_DISABLED, 0);
         $this->assertTrue($this->configuration->isEnabled());
     }
 
-    /**
-     * @test
-     */
-    public function checkGetMaximumNumberOfFailuresReturn()
+    public function testCheckGetMaximumNumberOfFailuresReturn(): void
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_MAX_FAILURES, 10);
-        $this->assertEquals(10, $this->configuration->getMaximumNumberOfFailures());
+        $this->assertSame(10, $this->configuration->getMaximumNumberOfFailures());
     }
 
-    /**
-     * @test
-     */
-    public function checkGetRestrictionTimeReturn()
+    public function testCheckGetRestrictionTimeReturn(): void
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_RESTRICTION_TIME, 300);
-        $this->assertEquals(300, $this->configuration->getRestrictionTime());
+        $this->assertSame(300, $this->configuration->getRestrictionTime());
     }
 
-    /**
-     * @test
-     */
-    public function checkGetResetTimeReturn()
+    public function testCheckGetResetTimeReturn(): void
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_SECONDS_TILL_RESET, 50);
-        $this->assertEquals(50, $this->configuration->getResetTime());
+        $this->assertSame(50, $this->configuration->getResetTime());
     }
 
-    /**
-     * @test
-     */
-    public function checkGetIdentificationIdentifierReturn()
+    public function testCheckGetIdentificationIdentifierReturn(): void
     {
         $this->setGlobalConfigurationValue(Configuration::CONF_IDENTIFICATION_IDENTIFIER, 1);
-        $this->assertEquals(1, $this->configuration->getIdentificationIdentifier());
+        $this->assertSame(1, $this->configuration->getIdentificationIdentifier());
     }
 
-    /**
-     * @test
-     */
-    public function doesGetXForwardedForReturnTrue()
+    public function testDoesGetXForwardedForReturnTrue(): void
     {
         $this->setGlobalConfigurationValue(Configuration::X_FORWARDED_FOR, 1);
-        $this->assertEquals(true, $this->configuration->getXForwardedFor());
+        $this->assertTrue($this->configuration->getXForwardedFor());
     }
 
-    /**
-     * @test
-     */
-    public function doesGetXForwardedForReturnFalse()
+    public function testDoesGetXForwardedForReturnFalse(): void
     {
         $this->setGlobalConfigurationValue(Configuration::X_FORWARDED_FOR, 0);
         $this->assertFalse($this->configuration->getXForwardedFor());
     }
 
-    /**
-     * @test
-     */
-    public function doesGetExcludedIpsReturnEmptyArray()
+    public function testDoesGetExcludedIpsReturnEmptyArray(): void
     {
         $this->setGlobalConfigurationValue(Configuration::EXCLUDED_IPS, '');
         $this->assertCount(1, $this->configuration->getExcludedIps());
     }
 
-    /**
-     * @test
-     */
-    public function doesGetExcludedIpsReturnArrayValues()
+    public function testDoesGetExcludedIpsReturnArrayValues(): void
     {
         $this->setGlobalConfigurationValue(Configuration::EXCLUDED_IPS, '127.0.0.1,192.168.0.0.1,192.0.0.0/8');
         $this->assertCount(3, $this->configuration->getExcludedIps());
     }
 
-    /**
-     * @test
-     */
-    public function testExceptionOfGetFunction()
+    public function testExceptionOfGetFunction(): void
     {
         $this->expectException(Exception::class);
         $this->configuration->get('thisKeyDoesNotExist');
     }
 
-    /**
-     * @param $key
-     * @param $value
-     */
-    private function setGlobalConfigurationValue($key, $value)
+    private function setGlobalConfigurationValue(string $key, string | int $value): void
     {
         $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('felogin_bruteforce_protection');
         $config[$key] = $value;

@@ -31,9 +31,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * @package    Tx_FeloginBruteforceProtection
  * @subpackage Domain_Repository
- * @author     Kevin Schu <kevin.schu@aoemedia.de>
  */
 class Entry extends Repository
 {
@@ -99,10 +97,12 @@ class Entry extends Repository
             $query->lessThan('crdate', $age),
             $query->lessThan('failures', $maxFailures),
         ];
+
         if ($identifier !== null) {
             $constraintsRestrictedEntries[] = $query->equals('identifier', $identifier);
             $constraintsResettableEntries[] = $query->equals('identifier', $identifier);
         }
+
         $query->matching(
             $query->logicalOr(
                 $query->logicalAnd($constraintsRestrictedEntries),

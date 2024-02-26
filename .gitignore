@@ -3,6 +3,7 @@
 
 # Build folder
 .Build
+.cache
 
 # PHP Dependencies + Dev
 /composer.lock

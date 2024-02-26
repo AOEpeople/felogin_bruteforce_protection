@@ -2,6 +2,10 @@
 
 namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
 
+use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
+use Aoe\FeloginBruteforceProtection\System\Configuration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -25,34 +29,27 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Functional\Domain\Service;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- */
 class RestrictionServiceClientIpRemoteAddressTest extends RestrictionServiceClientIpAbstract
 {
-    /**
-     * (non-PHPdoc)
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->configuration->expects($this->any())->method('getXForwardedFor')->will($this->returnValue(false));
+        $this->configuration->method('getXForwardedFor')
+            ->willReturn(false);
     }
 
     /**
-     * @test
      * @dataProvider dataProviderIsClientRestrictedWithExcludedIp
-     * @param string $clientIp
-     * @param array $excludedIPs
-     * @param boolean $shouldClientRestricted
      */
-    public function isClientRestrictedWithExcludedIpWithoutCIRD($clientIp, array $excludedIPs, $shouldClientRestricted)
+    public function testIsClientRestrictedWithExcludedIpWithoutCIRD(string $clientIp, array $excludedIPs, bool $shouldClientRestricted): void
     {
-        $this->configuration->expects($this->any())->method('getExcludedIps')->will($this->returnValue($excludedIPs));
-        $this->inject($this->restriction, 'configuration', $this->configuration);
+        $this->configuration->method('getExcludedIps')
+            ->willReturn($excludedIPs);
 
         $_SERVER['REMOTE_ADDR'] = $clientIp;
+        GeneralUtility::addInstance(Configuration::class, $this->configuration);
+
+        $this->restriction = new RestrictionService($this->restrictionIdentifier);
 
         $this->assertNotEquals($shouldClientRestricted, $this->restrictionIdentifier->checkPreconditions());
     }

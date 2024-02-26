@@ -36,34 +36,42 @@ class Configuration
      * @var string
      */
     public const CONF_MAX_FAILURES = 'max_failures';
+
     /**
      * @var string
      */
     public const CONF_DISABLED = 'disabled';
+
     /**
      * @var string
      */
     public const CONF_RESTRICTION_TIME = 'restriction_time';
+
     /**
      * @var string
      */
     public const CONF_SECONDS_TILL_RESET = 'seconds_till_reset';
+
     /**
      * @var string
      */
     public const LOGGING_ENABLED = 'logging_enabled';
+
     /**
      * @var string
      */
     public const LOGGING_LEVEL = 'logging_level';
+
     /**
      * @var string
      */
     public const EXCLUDED_IPS = 'exclude_ips';
+
     /**
      * @var string
      */
     public const X_FORWARDED_FOR = 'x_forwarded_for';
+
     /**
      * @var string
      */
@@ -129,7 +137,7 @@ class Configuration
 
     public function getExcludedIps(): array
     {
-        return explode(',', $this->get(self::EXCLUDED_IPS));
+        return explode(',', (string) $this->get(self::EXCLUDED_IPS));
     }
 
     public function getXForwardedFor(): bool
@@ -143,16 +151,14 @@ class Configuration
     }
 
     /**
-     * @param string $key
-     *
      * @return mixed
-     * @throws Exception
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (array_key_exists($key, $this->configuration)) {
             return $this->configuration[$key];
         }
+
         throw new Exception('Configuration key "' . $key . '" does not exist.');
     }
 }

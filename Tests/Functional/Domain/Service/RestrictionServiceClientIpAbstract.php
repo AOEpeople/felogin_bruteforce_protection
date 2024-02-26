@@ -33,31 +33,24 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use Aoe\FeloginBruteforceProtection\Tests\Fixtures\Classes\EntryRepositoryMock;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @package Aoe\FeloginBruteforceProtection\Domain\Service
- */
 class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 {
-    protected $configurationToUseInTestInstance = [
+    protected array $configurationToUseInTestInstance = [
         'SYS' => [
             'encryptionKey' => '2929d9d6b1cad1be1b68bfc23807763b',
         ],
         'TYPO3_CONF_VARS' => [],
     ];
 
-    /**
-     * @var array
-     */
-    protected $coreExtensionsToLoad = ['cms', 'lang', 'extensionmanager'];
+    protected array $coreExtensionsToLoad = ['cms', 'lang', 'extensionmanager'];
 
-    /**
-     * @var array
-     */
-    protected $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
     /**
      * @var Configuration
@@ -84,7 +77,7 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
      */
     protected $restriction;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -98,140 +91,187 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIPv6'] = 0;
 
+        $_SERVER['REMOTE_ADDR'] = 'xyz';
+
         $this->configuration = $this->getMockBuilder(Configuration::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->configuration->expects($this->any())->method('isLoggingEnabled')->will($this->returnValue(false));
-        $this->frontendUserAuthentication = $this->getMockBuilder(
-            FrontendUserAuthentication::class
-        )->getMock();
-        $this->configuration->expects($this->any())->method('getIdentificationIdentifier')->will($this->returnValue(1));
+        $this->configuration
+            ->method('isLoggingEnabled')
+            ->willReturn(false);
+        $this->frontendUserAuthentication = $this->getMockBuilder(FrontendUserAuthentication::class)
+            ->getMock();
+        $this->configuration
+            ->method('getIdentificationIdentifier')
+            ->willReturn(1);
         $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
         $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier(
             $this->configuration
         );
-        $this->restriction = new RestrictionService($this->restrictionIdentifier);
 
         $logger = $this->getMockBuilder(Logger::class)
-            ->setMethodsExcept(['log'])
+            ->onlyMethods(['log'])
             ->getMock();
 
-        $this->inject(
-            $this->restriction,
-            'persistenceManager',
+        GeneralUtility::setSingletonInstance(
+            PersistenceManager::class,
             $this->getMockBuilder(PersistenceManager::class)->disableOriginalConstructor()->getMock()
         );
-        $this->inject($this->restriction, 'logger', $logger);
+        GeneralUtility::addInstance(Logger::class, $logger);
     }
 
-    /**
-     * @test
-     */
-    public function isNotClientRestrictedWhenMaximumNumbersOfFailureNotReached()
+    public function testIsNotClientRestrictedWhenMaximumNumbersOfFailureNotReached(): void
     {
-        $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
-        $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
-        $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
+        $this->configuration
+            ->method('getMaximumNumberOfFailures')
+            ->willReturn(10);
+        $this->configuration
+            ->method('getResetTime')
+            ->willReturn(300);
+        $this->configuration
+            ->method('getRestrictionTime')
+            ->willReturn(3000);
+
+        $entry = $this->getMockBuilder(Entry::class)
+            ->getMock();
+        $entry->method('getFailures')
+            ->willReturn(0);
+        $entry->method('getCrdate')
+            ->willReturn(time() - 200);
+
         $entryRepository = $this->getAccessibleMock(
-            EntryRepository::class,
+            EntryRepositoryMock::class,
             ['findOneByIdentifier', 'remove'],
             [],
             '',
             false
         );
+        $entryRepository->method('findOneByIdentifier')
+            ->willReturn($entry);
 
-        $entry = $this->getMockBuilder(Entry::class)->getMock();
-        $entry->expects($this->any())->method('getFailures')->will($this->returnValue(0));
-        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 200));
+        GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
+        GeneralUtility::addInstance(Configuration::class, $this->configuration);
 
-        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
-        $this->inject($this->restriction, 'entryRepository', $entryRepository);
-        $this->inject($this->restriction, 'configuration', $this->configuration);
-
+        $this->restriction = new RestrictionService($this->restrictionIdentifier);
         $this->assertFalse($this->restriction->isClientRestricted());
     }
 
-    /**
-     * @test
-     */
-    public function isClientRestrictedWithFailures()
+    public function testIsClientRestrictedWithFailures(): void
     {
-        $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
-        $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
-        $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
-        $entry = $this->getMockBuilder(Entry::class)->disableOriginalConstructor()->getMock();
-        $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
-        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
-        $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 400));
+        $this->configuration
+            ->method('getMaximumNumberOfFailures')
+            ->willReturn(10);
+        $this->configuration
+            ->method('getResetTime')
+            ->willReturn(300);
+        $this->configuration
+            ->method('getRestrictionTime')
+            ->willReturn(3000);
+
+        $entry = $this->getMockBuilder(Entry::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $entry->method('getFailures')
+            ->willReturn(10);
+        $entry->method('getCrdate')
+            ->willReturn(time() - 400);
+        $entry->method('getTstamp')
+            ->willReturn(time() - 400);
+
         $entryRepository = $this->getAccessibleMock(
-            EntryRepository::class,
+            EntryRepositoryMock::class,
             ['findOneByIdentifier', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
-        $this->inject($this->restriction, 'entryRepository', $entryRepository);
-        $this->inject($this->restriction, 'configuration', $this->configuration);
+        $entryRepository->method('findOneByIdentifier')
+            ->willReturn($entry);
+
+        GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
+        GeneralUtility::addInstance(Configuration::class, $this->configuration);
+
+        $this->restriction = new RestrictionService($this->restrictionIdentifier);
         $this->assertTrue($this->restriction->isClientRestricted());
     }
 
-    /**
-     * @test
-     */
-    public function isClientRestrictedWithFailuresAndTimeout()
+    public function testIsClientRestrictedWithFailuresAndTimeout(): void
     {
-        $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
-        $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
-        $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
+        $this->configuration
+            ->method('getMaximumNumberOfFailures')
+            ->willReturn(10);
+        $this->configuration
+            ->method('getResetTime')
+            ->willReturn(300);
+        $this->configuration
+            ->method('getRestrictionTime')
+            ->willReturn(3000);
 
-        $entry = $this->getMockBuilder(Entry::class)->getMock();
-        $entry->expects($this->any())->method('getFailures')->will($this->returnValue(10));
-        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 200));
-        $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 4000));
+        $entry = $this->getMockBuilder(Entry::class)
+            ->getMock();
+        $entry->method('getFailures')
+            ->willReturn(10);
+        $entry->method('getCrdate')
+            ->willReturn(time() - 200);
+        $entry->method('getTstamp')
+            ->willReturn(time() - 4000);
+
         $entryRepository = $this->getAccessibleMock(
-            EntryRepository::class,
+            EntryRepositoryMock::class,
             ['findOneByIdentifier', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
-        $this->inject($this->restriction, 'entryRepository', $entryRepository);
-        $this->inject($this->restriction, 'configuration', $this->configuration);
+        $entryRepository->method('findOneByIdentifier')
+            ->willReturn($entry);
+
+        GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
+        GeneralUtility::addInstance(Configuration::class, $this->configuration);
+
+        $this->restriction = new RestrictionService($this->restrictionIdentifier);
         $this->assertFalse($this->restriction->isClientRestricted());
     }
 
-    /**
-     * @test
-     */
-    public function isClientRestrictedWithLessFailures()
+    public function testIsClientRestrictedWithLessFailures(): void
     {
-        $this->configuration->expects($this->any())->method('getMaximumNumberOfFailures')->will($this->returnValue(10));
-        $this->configuration->expects($this->any())->method('getResetTime')->will($this->returnValue(300));
-        $this->configuration->expects($this->any())->method('getRestrictionTime')->will($this->returnValue(3000));
+        $this->configuration
+            ->method('getMaximumNumberOfFailures')
+            ->willReturn(10);
+        $this->configuration
+            ->method('getResetTime')
+            ->willReturn(300);
+        $this->configuration
+            ->method('getRestrictionTime')
+            ->willReturn(3000);
 
-        $entry = $this->getMockBuilder(Entry::class)->getMock();
-        $entry->expects($this->any())->method('getFailures')->will($this->returnValue(5));
-        $entry->expects($this->any())->method('getCrdate')->will($this->returnValue(time() - 400));
-        $entry->expects($this->any())->method('getTstamp')->will($this->returnValue(time() - 400));
+        $entry = $this->getMockBuilder(Entry::class)
+            ->getMock();
+        $entry->method('getFailures')
+            ->willReturn(5);
+        $entry->method('getCrdate')
+            ->willReturn(time() - 400);
+        $entry->method('getTstamp')
+            ->willReturn(time() - 400);
+
         $entryRepository = $this->getAccessibleMock(
-            EntryRepository::class,
+            EntryRepositoryMock::class,
             ['findOneByIdentifier', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->expects($this->any())->method('findOneByIdentifier')->will($this->returnValue($entry));
-        $this->inject($this->restriction, 'entryRepository', $entryRepository);
-        $this->inject($this->restriction, 'configuration', $this->configuration);
+        $entryRepository->method('findOneByIdentifier')
+            ->willReturn($entry);
+
+        GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
+        GeneralUtility::addInstance(Configuration::class, $this->configuration);
+
+        $this->restriction = new RestrictionService($this->restrictionIdentifier);
         $this->assertFalse($this->restriction->isClientRestricted());
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderIsClientRestrictedWithExcludedIp()
+    public static function dataProviderIsClientRestrictedWithExcludedIp(): array
     {
         return [
             ['192.168.1.2', ['192.168.1.2'], true],

@@ -28,11 +28,6 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class DevLogger
- *
- * @package Aoe\FeloginBruteforceProtection\Service\Logger
- */
 class DevLogger implements LoggerInterface
 {
     /**
@@ -50,9 +45,11 @@ class DevLogger implements LoggerInterface
         if (!isset($packageKey)) {
             $packageKey = '';
         }
+
         if (!isset($additionalData)) {
             $additionalData = false;
         }
+
         GeneralUtility::devLog($message, $packageKey, $severity, $additionalData);
     }
 }

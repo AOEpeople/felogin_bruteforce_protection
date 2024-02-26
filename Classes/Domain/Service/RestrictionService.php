@@ -37,69 +37,29 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
-/**
- * @package Aoe\\FeloginBruteforceProtection\\Domain\\Service
- *
- * @author  Kevin Schu <kevin.schu@aoe.com>
- * @author  Timo Fuchs <timo.fuchs@aoe.com>
- * @author  Andre Wuttig <wuttig@portrino.de>
- */
 class RestrictionService
 {
-    /**
-     * @var boolean
-     */
-    protected static $preventFailureCount = false;
+    protected static bool $preventFailureCount = false;
 
-    /**
-     * @var RestrictionIdentifierInterface
-     */
-    protected $restrictionIdentifier;
+    protected RestrictionIdentifierInterface $restrictionIdentifier;
 
-    /**
-     * @var string
-     */
-    protected $clientIdentifier;
+    protected string $clientIdentifier;
 
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    protected Configuration $configuration;
 
-    /**
-     * @var EntryRepository
-     */
-    protected $entryRepository;
+    protected EntryRepository $entryRepository;
 
-    /**
-     * @var PersistenceManager
-     */
-    protected $persistenceManager;
+    protected PersistenceManager $persistenceManager;
 
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
+    protected ObjectManagerInterface $objectManager;
 
-    /**
-     * @var Entry
-     */
-    protected $entry;
+    protected Entry $entry;
 
-    /**
-     * @var boolean
-     */
-    protected $clientRestricted;
+    protected bool $clientRestricted;
 
-    /**
-     * @var Logger
-     */
-    protected $logger;
+    protected Logger $logger;
 
-    /**
-     * @var FeLoginBruteForceApi
-     */
-    protected $feLoginBruteForceApi;
+    protected FeLoginBruteForceApi $feLoginBruteForceApi;
 
     public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
     {
@@ -111,10 +71,7 @@ class RestrictionService
         $this->entryRepository = GeneralUtility::makeInstance(EntryRepository::class);
     }
 
-    /**
-     * @param boolean $preventFailureCount
-     */
-    public static function setPreventFailureCount($preventFailureCount): void
+    public static function setPreventFailureCount(bool $preventFailureCount): void
     {
         self::$preventFailureCount = $preventFailureCount;
     }
@@ -136,6 +93,7 @@ class RestrictionService
 
             $this->log('Bruteforce Counter removed', LoggerInterface::SEVERITY_INFO);
         }
+
         $this->clientRestricted = false;
         unset($this->entry);
     }
@@ -170,10 +128,7 @@ class RestrictionService
         return $this->getEntry() instanceof Entry;
     }
 
-    /**
-     * @return Entry|null
-     */
-    public function getEntry()
+    public function getEntry(): ?Entry
     {
         if (!isset($this->entry)) {
             $entry = $this->entryRepository->findOneByIdentifier($this->getClientIdentifier());
@@ -188,6 +143,7 @@ class RestrictionService
         if (isset($this->entry)) {
             return $this->entry;
         }
+
         return null;
     }
 
@@ -207,10 +163,7 @@ class RestrictionService
         }
     }
 
-    /**
-     * @return FeLoginBruteForceApi
-     */
-    protected function getFeLoginBruteForceApi()
+    protected function getFeLoginBruteForceApi(): FeLoginBruteForceApi
     {
         if (!isset($this->feLoginBruteForceApi)) {
             $this->feLoginBruteForceApi = $this->objectManager->get(
@@ -221,17 +174,14 @@ class RestrictionService
         return $this->feLoginBruteForceApi;
     }
 
-    /**
-     * @param $message
-     * @param $severity
-     */
-    private function log($message, $severity): void
+    private function log(string $message, int $severity): void
     {
         $failureCount = 0;
         if ($this->hasEntry()) {
             $failureCount = $this->getEntry()
                 ->getFailures();
         }
+
         $restricted = ($this->isClientRestricted()) ? 'Yes' : 'No';
         $additionalData = [
             'FAILURE_COUNT' => $failureCount,
@@ -245,10 +195,7 @@ class RestrictionService
             ->log($message, $severity, $additionalData, 'felogin_bruteforce_protection');
     }
 
-    /**
-     * @return Logger
-     */
-    private function getLogger()
+    private function getLogger(): Logger
     {
         if (!isset($this->logger)) {
             $this->logger = new Logger();
@@ -275,6 +222,7 @@ class RestrictionService
         if ($this->entry->getFailures() > 0) {
             $this->entry->setTstamp(time());
         }
+
         $this->entryRepository->add($this->entry);
         $this->persistenceManager->persistAll();
         if ($this->hasMaximumNumberOfFailuresReached($this->entry)) {

@@ -27,56 +27,43 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Utility;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Utility\CIDRUtility;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class CIDRUtilityTest extends UnitTestCase
 {
     /**
-     * @test
      * @dataProvider dataProviderMatchIpInRange
-     * @param string $ip
-     * @param string $range
      */
-    public function shouldMatchIpInRage($ip, $range)
+    public function testShouldMatchIpInRage(string $ip, string $range): void
     {
         $this->assertTrue(CIDRUtility::matchCIDR($ip, $range));
     }
 
     /**
-     * @test
      * @dataProvider dataProviderNotMatchIpInRange
-     * @param string $ip
-     * @param string $range
      */
-    public function shouldNotMatchIpInRange($ip, $range)
+    public function testShouldNotMatchIpInRange(string $ip, string $range): void
     {
         $this->assertFalse(CIDRUtility::matchCIDR($ip, $range));
     }
 
     /**
-     * @test
      * @dataProvider dataProviderValidateIpAsCIRD
-     * @param string $ip
      */
-    public function shouldValidateIpAsCIRD($ip)
+    public function testShouldValidateIpAsCIRD(string $ip): void
     {
         $this->assertTrue(CIDRUtility::isCIDR($ip));
     }
 
     /**
-     * @test
      * @dataProvider dataProviderNotValidateIpAsCIRD
-     * @param string $ip
      */
-    public function shouldNotValidateIpAsCIRD($ip)
+    public function testShouldNotValidateIpAsCIRD(string $ip): void
     {
         $this->assertFalse(CIDRUtility::isCIDR($ip));
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderMatchIpInRange()
+    public static function dataProviderMatchIpInRange(): array
     {
         return [
             ['192.168.30.2', '192.0.0.0/8'],
@@ -86,10 +73,7 @@ class CIDRUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderNotMatchIpInRange()
+    public static function dataProviderNotMatchIpInRange(): array
     {
         return [
             ['197.190.30.2', '192.0.0.0/8'],
@@ -99,10 +83,7 @@ class CIDRUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderValidateIpAsCIRD()
+    public static function dataProviderValidateIpAsCIRD(): array
     {
         return [
             ['1.1.1.1/8'],
@@ -113,10 +94,7 @@ class CIDRUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderNotValidateIpAsCIRD()
+    public static function dataProviderNotValidateIpAsCIRD(): array
     {
         return [
             ['192.168.30.2/48'],

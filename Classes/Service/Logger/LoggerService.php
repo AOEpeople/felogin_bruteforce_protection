@@ -29,11 +29,6 @@ namespace Aoe\FeloginBruteforceProtection\Service\Logger;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Interface LoggerInterface
- *
- * @package Aoe\FeloginBruteforceProtection\Service\Logger
- */
 class LoggerService
 {
     /**
