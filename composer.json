@@ -62,16 +62,16 @@
             "export TYPO3_PATH_WEB=$PWD/.Build/Web"
         ],
         "test": [
-            "[ -e .Build/bin/phpunit ] || composer update",
             "@composer test:unit",
             "@composer test:functional"
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests-v10.xml Tests/Unit"
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c Tests/UnitTests.xml Tests/Unit"
         ],
         "test:functional": [
-            "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml Tests/Functional/"
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/FunctionalTests.xml Tests/Functional/"
         ],
         "code-style": [
             "[ -e ./.Build/bin/rector ] || composer install",
