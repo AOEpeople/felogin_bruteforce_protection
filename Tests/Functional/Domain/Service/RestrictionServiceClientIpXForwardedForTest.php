@@ -45,8 +45,11 @@ class RestrictionServiceClientIpXForwardedForTest extends RestrictionServiceClie
     /**
      * @dataProvider dataProviderIsClientRestrictedWithExcludedIp
      */
-    public function testIsClientRestrictedWithExcludedIpWithoutCIRD(string $clientIp, array $excludedIPs, bool $shouldClientRestricted): void
-    {
+    public function testIsClientRestrictedWithExcludedIpWithoutCIRD(
+        string $clientIp,
+        array $excludedIPs,
+        bool $shouldClientRestricted
+    ): void {
         $this->configuration
             ->method('getExcludedIps')
             ->willReturn($excludedIPs);

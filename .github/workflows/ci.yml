@@ -20,7 +20,7 @@ jobs:
           mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up PHP Version ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
@@ -58,9 +58,9 @@ jobs:
           typo3DatabasePassword: root
           typo3DatabaseUsername: root
 
-#      - name: Upload coverage results to Scrutinizer
-#        if: matrix.typo3 == '^11.5' && matrix.php == '8.2'
-#        run: |
-#          wget https://scrutinizer-ci.com/ocular.phar
-#          php ocular.phar code-coverage:upload --format=php-clover reports/php_unittests/coverage_clover.xml
-#          find 'Tests/Functional' -wholename '*Test.php' -exec php ocular.phar code-coverage:upload --format=php-clover {}reports/php_functionaltests/coverage_clover.xml \;
+      - name: Upload coverage results to Scrutinizer
+        if: matrix.typo3 == '^11.5' && matrix.php == '8.2'
+        run: |
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_unittests/coverage_clover.xml
+          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_functionaltests/coverage_clover.xml

@@ -1,9 +1,7 @@
 includes:
+    - ../.Build/vendor/symplify/phpstan-rules/config/services/services.neon
+    - ../.Build/vendor/symplify/phpstan-rules/config/code-complexity-rules.neon
     - phpstan-baseline.neon
-    - ../.Build/vendor/symplify/phpstan-rules/config/packages/cognitive-complexity/cognitive-complexity-rules.neon
-
-rules:
-    - Symplify\PHPStanRules\Rules\NoDefaultExceptionRule
 
 parameters:
     level: max
@@ -15,8 +13,6 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
 
 services:
-    - class: Symplify\PHPStanRules\Matcher\ArrayStringAndFnMatcher
-    - class: Symplify\PHPStanRules\Formatter\RequiredWithMessageFormatter
     -
         class: Symplify\PHPStanRules\Rules\ForbiddenFuncCallRule
         tags: [phpstan.rules.rule]

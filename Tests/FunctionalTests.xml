@@ -49,9 +49,9 @@
     </source>
     <coverage>
         <report>
-            <clover outputFile="../reports/php_functionaltests/coverage_clover.xml"/>
-            <html outputDirectory="../reports/php_functionaltests/html-coverage" lowUpperBound="50" highLowerBound="90"/>
-            <text outputFile="../reports/php_functionaltests/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+            <clover outputFile="../.Build/reports/php_functionaltests/coverage_clover.xml"/>
+            <html outputDirectory="../.Build/reports/php_functionaltests/html-coverage" lowUpperBound="50" highLowerBound="90"/>
+            <text outputFile="../.Build/reports/php_functionaltests/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
         </report>
     </coverage>
     <php>

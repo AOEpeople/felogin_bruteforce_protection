@@ -42,7 +42,6 @@ class Logger
      */
     private $loggerImplementation;
 
-
     public function injectLoggerImplementation(LoggerInterface $loggerImplementation): void
     {
         $this->loggerImplementation = $loggerImplementation;

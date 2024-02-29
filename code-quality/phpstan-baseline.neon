@@ -153,3 +153,11 @@ parameters:
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$persistenceManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\PersistenceManager\\) does not accept object\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
+		-
+			message: "#^On passing a constant, the method should have an enum type\\. See https\\://phpstan\\.org/writing\\-php\\-code/phpdoc\\-types\\#literals\\-and\\-constants$#"
+			count: 3
+			path: ../Classes/Command/CleanUpCommand.php
+		-
+			message: "#^Anonymous variables in a \"\\$GLOBALS\\['TSFE'\\]\\-\\>\\.\\.\\.\" property fetch can lead to false dead property\\. Make sure the variable type is known$#"
+			count: 4
+			path: ../Classes/Service/AuthUser.php

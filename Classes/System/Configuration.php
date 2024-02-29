@@ -77,10 +77,7 @@ class Configuration
      */
     public const CONF_IDENTIFICATION_IDENTIFIER = 'identification_identifier';
 
-    /**
-     * @var array
-     */
-    private $configuration = [];
+    private array $configuration = [];
 
     /**
      * Initialize configuration array
