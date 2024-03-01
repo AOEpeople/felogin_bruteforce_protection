@@ -59,8 +59,12 @@ jobs:
           typo3DatabaseUsername: root
 
       - name: Upload coverage results to Scrutinizer
+        uses: sudo-bot/action-scrutinizer@latest
         if: matrix.typo3 == '^11.5' && matrix.php == '8.0'
-        run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_unittests/coverage_clover.xml
-          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_functionaltests/coverage_clover.xml
+        with:
+          cli-args: "--format=php-clover .Build/reports/php_unittests/coverage_clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"
+
+#        run: |
+#          wget https://scrutinizer-ci.com/ocular.phar
+#          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_unittests/coverage_clover.xml
+#          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_functionaltests/coverage_clover.xml
