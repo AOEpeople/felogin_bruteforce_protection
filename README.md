@@ -1,8 +1,8 @@
 # Brute Force Protection for TYPO3
 
 [![Build Status](https://travis-ci.org/AOEpeople/felogin_bruteforce_protection.svg?branch=master)](https://travis-ci.org/AOEpeople/felogin_bruteforce_protection)
-[![Code Coverage](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/?branch=main)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/AOEpeople/felogin_bruteforce_protection/?branch=main)
 
 Protects TYPO3s frontend authentication (e.g. fe_login) against brute force attacks.
 

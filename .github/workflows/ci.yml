@@ -60,13 +60,18 @@ jobs:
           typo3DatabasePassword: root
           typo3DatabaseUsername: root
 
+      - name: Tests for Scrutinizer with Coverage
+        if: matrix.typo3 == '^11.5' && matrix.php == '8.0'
+        run: |
+          composer test:coverage
+        env:
+          typo3DatabaseHost: 127.0.0.1
+          typo3DatabaseName: typo3
+          typo3DatabasePassword: root
+          typo3DatabaseUsername: root
+
       - name: Upload coverage results to Scrutinizer
         uses: sudo-bot/action-scrutinizer@latest
         if: matrix.typo3 == '^11.5' && matrix.php == '8.0'
         with:
-          cli-args: "--format=php-clover .Build/reports/php_unittests/coverage_clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"
-
-#        run: |
-#          wget https://scrutinizer-ci.com/ocular.phar
-#          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_unittests/coverage_clover.xml
-#          php ocular.phar code-coverage:upload --format=php-clover .Build/reports/php_functionaltests/coverage_clover.xml
+          cli-args: "--format=php-clover .Build/reports/php_all_tests/coverage_clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"

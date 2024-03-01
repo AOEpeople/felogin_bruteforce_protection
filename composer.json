@@ -67,11 +67,15 @@
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c Tests/UnitTests.xml Tests/Unit"
+            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests-v10.xml Tests/Unit"
         ],
         "test:functional": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/FunctionalTests.xml Tests/Functional/"
+            "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml Tests/Functional/"
+        ],
+        "test:coverage": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/AllTests.xml Tests"
         ],
         "code-style": [
             "[ -e ./.Build/bin/rector ] || composer install",

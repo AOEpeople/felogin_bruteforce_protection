@@ -20,7 +20,7 @@
          backupGlobals="true"
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="../.Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php"
-         cacheDirectory="../.cache/phpunit-functional"
+         cacheDirectory="../.cache/phpunit-all"
          cacheResult="false"
          colors="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
@@ -39,7 +39,7 @@
                 This path either needs an adaption in extensions, or an extension's
                 test location path needs to be given to phpunit.
             -->
-            <directory>../../../../../../typo3/sysext/*/Tests/Functional/</directory>
+            <directory>../../../../../../typo3/sysext/*/Tests/</directory>
         </testsuite>
     </testsuites>
     <source>
@@ -49,9 +49,9 @@
     </source>
     <coverage>
         <report>
-            <clover outputFile="../.Build/reports/php_functionaltests/coverage_clover.xml"/>
-            <html outputDirectory="../.Build/reports/php_functionaltests/html-coverage" lowUpperBound="50" highLowerBound="90"/>
-            <text outputFile="../.Build/reports/php_functionaltests/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+            <clover outputFile="../.Build/reports/php_all_tests/coverage_clover.xml"/>
+            <html outputDirectory="../.Build/reports/php_all_tests/html-coverage" lowUpperBound="50" highLowerBound="90"/>
+            <text outputFile="../.Build/reports/php_all_tests/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
         </report>
     </coverage>
     <php>

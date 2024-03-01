@@ -38,6 +38,7 @@ class EntryTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        $this->resetSingletonInstances = true;
         $this->entry = new Entry();
     }
 
