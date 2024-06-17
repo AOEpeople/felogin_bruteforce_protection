@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "typo3/cms-core": "^11.5",
+        "typo3/cms-core": "^11.5 || ^12.4",
         "typo3/cms-extbase": "*",
         "typo3/cms-sv": "*",
         "typo3/cms-backend": "*",
@@ -26,7 +26,6 @@
         "typo3/cms-frontend": "*"
     },
     "require-dev": {
-        "nimut/typo3-complete": "^v11.5",
         "typo3/testing-framework": "^7.0",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpstan/phpstan": "^1.10",
