@@ -49,6 +49,7 @@ jobs:
 
       - name: check code-style
         run: |
+          ./.Build/bin/phpstan analyse --version
           composer code-check-pipeline
 
       - name: Tests
