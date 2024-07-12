@@ -8,18 +8,15 @@ use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
-use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
-use Rector\EarlyReturn\Rector\If_\ChangeAndIfToEarlyReturnRector;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector;
-use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\Rector\Identical\StrStartsWithRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\YieldDataProviderRector;
@@ -43,7 +40,6 @@ return RectorConfig::configure()
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
-        SetList::PHP_74,
         SetList::PHP_80,
         SetList::PHP_81,
         SetList::PHP_82,
@@ -58,12 +54,9 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         RecastingRemovalRector::class,
-        PostIncDecToPreIncDecRector::class,
-        ChangeAndIfToEarlyReturnRector::class,
         IssetOnPropertyObjectToPropertyExistsRector::class,
         FlipTypeControlToUseExclusiveTypeRector::class,
         RenameVariableToMatchNewTypeRector::class,
-        AddLiteralSeparatorToNumberRector::class,
         RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
 
         // @todo strict php

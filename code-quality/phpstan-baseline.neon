@@ -47,18 +47,6 @@ parameters:
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
 		-
-			message: "#^Cannot call method getFailures\\(\\) on Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\|null\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Parameter \\#1 \\$entry of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:hasMaximumNumberOfFailuresReached\\(\\) expects Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry, Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\|null given\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Parameter \\#1 \\$entry of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:isRestricted\\(\\) expects Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry, Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\|null given\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$frontendUserAuthentication \\(TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\.$#"
 			count: 1
 			path: ../Classes/Service/AuthUser.php
@@ -66,14 +54,6 @@ parameters:
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
 			count: 1
 			path: ../Classes/Service/Logger/DevLogger.php
-		-
-			message: "#^Cannot cast mixed to int\\.$#"
-			count: 5
-			path: ../Classes/System/Configuration.php
-		-
-			message: "#^Cannot cast mixed to string\\.$#"
-			count: 1
-			path: ../Classes/System/Configuration.php
 		-
 			message: "#^Binary operation \"\\-\" between 32 and string results in an error\\.$#"
 			count: 1
