@@ -1,119 +1,201 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method (.*) has no return type specified\\.$#"
-			path: ../Classes/
-		-
-			message: "#^Method (.*) no type specified\\.$#"
-			path: ../Classes/
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\(.*)\\:\\:\\$(.*) \\((.*)\\) in isset\\(\\) is not nullable\\.$#"
-			path: ../Classes/
-		-
-			message: "#^PHPDoc tag @return with type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierInterface is not subtype of native type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierClientIp\\|Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFrontendName\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionIdentifierFabric.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$identifier with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/EntryRepository.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/EntryRepository.php
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/EntryRepository.php
-		-
-			message: "#^Call to an undefined method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findOneByIdentifier\\(\\)\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$frontendUserAuthentication \\(TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\.$#"
-			count: 1
-			path: ../Classes/Service/AuthUser.php
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
-			count: 1
-			path: ../Classes/Service/Logger/DevLogger.php
-		-
-			message: "#^Binary operation \"\\-\" between 32 and string results in an error\\.$#"
-			count: 1
-			path: ../Classes/Utility/CIDRUtility.php
-		-
 			message: "#^On passing a constant, the method should have an enum type\\. See https\\://phpstan\\.org/writing\\-php\\-code/phpdoc\\-types\\#literals\\-and\\-constants$#"
 			count: 3
-			path: ../Classes/Command/CleanUpCommand.php
-		-
-			message: "#^Anonymous variables in a \"\\$GLOBALS\\['TSFE'\\]\\-\\>\\.\\.\\.\" property fetch can lead to false dead property\\. Make sure the variable type is known$#"
-			count: 4
-			path: ../Classes/Service/AuthUser.php
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
-			count: 2
-			path: ../Classes/Domain/Repository/Entry.php
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
-			count: 2
-			path: ../Classes/Domain/Repository/EntryRepository.php
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:getLoginFormData\\(\\) invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php
-		-
-			message: "#^Call to method get\\(\\) on an unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\.$#"
-			count: 2
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int\\<1, max\\> given\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-		-
-			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$loginSessionStarted\\.$#"
-			count: 1
-			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
-			count: 1
-			path: ../Classes/Service/AuthUser.php
+			path: Classes/Command/CleanUpCommand.php
+
 		-
 			message: "#^Class Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry extends generic class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository but does not specify its types\\: T$#"
 			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
+			path: Classes/Domain/Repository/Entry.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$identifier with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/Entry.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/Entry.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/Entry.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/Entry.php
+
+		-
+			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
+			count: 2
+			path: Classes/Domain/Repository/Entry.php
+
 		-
 			message: "#^Class Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository extends generic class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository but does not specify its types\\: T$#"
 			count: 1
-			path: ../Classes/Domain/Repository/EntryRepository.php
+			path: Classes/Domain/Repository/EntryRepository.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$identifier with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/EntryRepository.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/EntryRepository.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/EntryRepository.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
+			count: 1
+			path: Classes/Domain/Repository/EntryRepository.php
+
 		-
 			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findEntriesToCleanUp\\(\\) return type with generic interface TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryResultInterface does not specify its types\\: TKey, TValue$#"
 			count: 1
-			path: ../Classes/Domain/Repository/EntryRepository.php
+			path: Classes/Domain/Repository/EntryRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
+			count: 2
+			path: Classes/Domain/Repository/EntryRepository.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierAbstract\\:\\:\\$identifierValue \\(string\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionIdentifierClientIp.php
+
+		-
+			message: "#^PHPDoc tag @return with type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierInterface is not subtype of native type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierClientIp\\|Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFrontendName\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionIdentifierFabric.php
+
+		-
+			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:getLoginFormData\\(\\) invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionIdentifierFrontendName.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierAbstract\\:\\:\\$identifierValue \\(string\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionIdentifierFrontendName.php
+
+		-
+			message: "#^Call to an undefined method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findOneByIdentifier\\(\\)\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionService.php
+
+		-
+			message: "#^Call to method get\\(\\) on an unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\.$#"
+			count: 2
+			path: Classes/Domain/Service/RestrictionService.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionService.php
+
+		-
+			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int\\<1, max\\> given\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionService.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionService.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
+			count: 1
+			path: Classes/Domain/Service/RestrictionService.php
+
+		-
+			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$loginSessionStarted\\.$#"
+			count: 1
+			path: Classes/Hooks/UserAuth/PostUserLookUp.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Hooks\\\\UserAuth\\\\PostUserLookUp\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Hooks/UserAuth/PostUserLookUp.php
+
+		-
+			message: "#^Anonymous variables in a \"\\$GLOBALS\\['TSFE'\\]\\-\\>\\.\\.\\.\" property fetch can lead to false dead property\\. Make sure the variable type is known$#"
+			count: 4
+			path: Classes/Service/AuthUser.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Service/AuthUser.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$frontendUserAuthentication \\(TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\.$#"
+			count: 1
+			path: Classes/Service/AuthUser.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
+			count: 1
+			path: Classes/Service/AuthUser.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$restrictionService \\(Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Service/AuthUser.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\FeLoginBruteForceApi\\\\FeLoginBruteForceApi\\:\\:__construct\\(\\) has parameter \\$apiStore with no type specified\\.$#"
+			count: 1
+			path: Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApi.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\FeLoginBruteForceApi\\\\FeLoginBruteForceApiStore\\:\\:getProperty\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApiStore.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\FeLoginBruteForceApi\\\\FeLoginBruteForceApiStore\\:\\:getProperty\\(\\) has parameter \\$propertyName with no type specified\\.$#"
+			count: 1
+			path: Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApiStore.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\FeLoginBruteForceApi\\\\FeLoginBruteForceApiStore\\:\\:setProperty\\(\\) has parameter \\$propertyName with no type specified\\.$#"
+			count: 1
+			path: Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApiStore.php
+
+		-
+			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\FeLoginBruteForceApi\\\\FeLoginBruteForceApiStore\\:\\:setProperty\\(\\) has parameter \\$propertyValue with no type specified\\.$#"
+			count: 1
+			path: Classes/Service/FeLoginBruteForceApi/FeLoginBruteForceApiStore.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
+			count: 1
+			path: Classes/Service/Logger/DevLogger.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\Logger\\\\Logger\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Service/Logger/Logger.php
+
+		-
+			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\Logger\\\\LoggerService\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) in isset\\(\\) is not nullable\\.$#"
+			count: 1
+			path: Classes/Service/Logger/LoggerService.php
+
+		-
+			message: "#^Binary operation \"\\-\" between 32 and string results in an error\\.$#"
+			count: 1
+			path: Classes/Utility/CIDRUtility.php
