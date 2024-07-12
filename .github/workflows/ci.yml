@@ -49,7 +49,7 @@ jobs:
 
       - name: check code-style
         run: |
-          composer check-style
+          composer code-style
 
       - name: Tests
         run: |
