@@ -26,6 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 class Entry extends AbstractEntity
@@ -42,13 +43,13 @@ class Entry extends AbstractEntity
 
     /**
      * @var string
-     * @TYPO3\CMS\Extbase\Annotation\Validate(validator="NotEmpty")
+     * @Validate(validator="NotEmpty")
      */
     protected $identifier;
 
     /**
      * @var integer
-     * @TYPO3\CMS\Extbase\Annotation\Validate(validator="NotEmpty")
+     * @Validate(validator="NotEmpty")
      */
     protected $failures;
 

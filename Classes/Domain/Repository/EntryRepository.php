@@ -50,7 +50,6 @@ class EntryRepository extends Repository
      * @param      $secondsTillReset
      * @param      $maxFailures
      * @param      $restrictionTime
-     * @param null $identifier
      *
      * @return array|QueryResultInterface
      */

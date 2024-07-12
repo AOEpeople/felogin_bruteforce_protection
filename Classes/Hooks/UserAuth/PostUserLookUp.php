@@ -129,7 +129,7 @@ class PostUserLookUp
     /**
      * @return RestrictionIdentifierFabric
      */
-    protected function getRestrictionIdentifierFabric()
+    protected function getRestrictionIdentifierFabric(): object
     {
         return GeneralUtility::makeInstance(RestrictionIdentifierFabric::class);
     }
@@ -137,7 +137,7 @@ class PostUserLookUp
     /**
      * @return RestrictionService
      */
-    protected function initRestrictionService()
+    protected function initRestrictionService(): object
     {
         return GeneralUtility::makeInstance(RestrictionService::class, $this->restrictionIdentifier);
     }

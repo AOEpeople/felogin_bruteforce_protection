@@ -163,7 +163,7 @@ class AuthUser extends AuthenticationService
     /**
      * @return RestrictionIdentifierFabric
      */
-    protected function getRestrictionIdentifierFabric()
+    protected function getRestrictionIdentifierFabric(): object
     {
         return GeneralUtility::makeInstance(RestrictionIdentifierFabric::class);
     }
@@ -171,7 +171,7 @@ class AuthUser extends AuthenticationService
     /**
      * @return RestrictionService
      */
-    private function getRestrictionService()
+    private function getRestrictionService(): object
     {
         if (!isset($this->restrictionService)) {
             /** @var RestrictionIdentifierFabric $restrictionIdentifierFabric */

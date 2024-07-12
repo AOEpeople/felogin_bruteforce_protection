@@ -35,9 +35,6 @@ class FeLoginBruteForceApi implements FeLoginBruteForceApiInterface
      */
     protected $apiStore;
 
-    /**
-     * @param null $apiStore
-     */
     public function __construct($apiStore = null)
     {
         if (isset($apiStore)) {

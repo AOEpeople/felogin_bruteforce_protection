@@ -50,8 +50,8 @@ class CIDRUtility
      */
     public static function isCIDR(string $ip): bool
     {
-        $ipBlock = '[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]';
-        $subnetMask = '[0-9]|[1-2][0-9]|3[0-2]';
+        $ipBlock = '\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5]';
+        $subnetMask = '\d|[1-2]\d|3[0-2]';
         $pattern = "/^(($ipBlock)\.){3}($ipBlock)(\/($subnetMask))$/";
 
         return preg_match($pattern, $ip) > 0;
