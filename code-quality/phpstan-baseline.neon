@@ -9,7 +9,6 @@ parameters:
 		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\(.*)\\:\\:\\$(.*) \\((.*)\\) in isset\\(\\) is not nullable\\.$#"
 			path: ../Classes/
-
 		-
 			message: "#^PHPDoc tag @return with type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierInterface is not subtype of native type Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierClientIp\\|Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierFrontendName\\.$#"
 			count: 1
@@ -70,47 +69,38 @@ parameters:
 			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
 			count: 2
 			path: ../Classes/Domain/Repository/Entry.php
-
 		-
 			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
 			count: 2
 			path: ../Classes/Domain/Repository/EntryRepository.php
-
 		-
 			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:getLoginFormData\\(\\) invoked with 0 parameters, 1 required\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php
-
 		-
 			message: "#^Call to method get\\(\\) on an unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\.$#"
 			count: 2
 			path: ../Classes/Domain/Service/RestrictionService.php
-
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
-
 		-
 			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int\\<1, max\\> given\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
-
 		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
-
 		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
-
 		-
 			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$loginSessionStarted\\.$#"
 			count: 1
 			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
-
 		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
 			count: 1
