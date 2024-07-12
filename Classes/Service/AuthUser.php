@@ -70,6 +70,12 @@ class AuthUser extends AuthenticationService
      */
     public function init(): bool
     {
+        $loginTypePost = GeneralUtility::_POST('logintype');
+
+        if ($loginTypePost != 'login') {
+            return parent::init();
+        }
+
         ExtensionManagementUtility::loadBaseTca(false);
         if (!isset($GLOBALS['TSFE'])) {
             $GLOBALS['TSFE'] = new stdClass();
