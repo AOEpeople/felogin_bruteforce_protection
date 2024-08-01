@@ -26,7 +26,7 @@
         "typo3/cms-frontend": "*"
     },
     "require-dev": {
-        "typo3/testing-framework": "^7.0",
+        "typo3/testing-framework": "^8.0",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
@@ -66,11 +66,15 @@
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests-v10.xml Tests/Unit"
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c Tests/Unit/UnitTests.xml Tests/Unit"
         ],
         "test:functional": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml Tests/Functional/"
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/Functional/FunctionalTests.xml Tests/Functional/"
+        ],
+        "test:functional-filter": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/Functional/FunctionalTests.xml Tests/Functional --filter testIsInstanceOfRestrictionIdentifierClientIpWithMissingFrontendUsername"
         ],
         "test:coverage": [
             "[ -e .Build/bin/phpunit ] || composer update",
@@ -88,7 +92,7 @@
             "./.Build/bin/phpstan analyse -c code-quality/phpstan.neon --memory-limit=1G --generate-baseline"
         ],
         "code-compatibility": [
-            "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer install",
+            "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer update",
             "[ -d ./reports/php_checkstyle ] || mkdir -p reports/php_checkstyle/",
             "./code-quality/configure-checkstyle.sh",
             "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/* -p . --runtime-set testVersion 8.0",

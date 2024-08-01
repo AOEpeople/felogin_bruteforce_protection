@@ -42,6 +42,7 @@ class PostUserLookUpTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->postUserLookUp = $this
             ->getMockBuilder(PostUserLookUp::class)
             ->disableOriginalConstructor()

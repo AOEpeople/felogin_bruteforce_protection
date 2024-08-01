@@ -71,6 +71,7 @@ class AuthUser extends AuthenticationService
     public function init(): bool
     {
         $loginTypePost = GeneralUtility::_POST('logintype');
+        #$value = $request->getParsedBody()['tx_scheduler']);
 
         if ($loginTypePost != 'login') {
             return parent::init();
@@ -86,6 +87,7 @@ class AuthUser extends AuthenticationService
         }
 
         if (empty($GLOBALS['TSFE']->tmpl)) {
+            #$fullTypoScript = $request()->getAttribute('frontend.typoscript')->getSetupArray();
             $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         }
 
