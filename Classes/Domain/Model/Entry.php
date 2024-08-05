@@ -32,12 +32,12 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class Entry extends AbstractEntity
 {
     /**
-     * @var string
+     * @var int
      */
     protected $tstamp;
 
     /**
-     * @var string
+     * @var int
      */
     protected $crdate;
 
@@ -54,7 +54,7 @@ class Entry extends AbstractEntity
     protected $failures;
 
     /**
-     * @param string $crdate
+     * @param int $crdate
      */
     public function setCrdate($crdate): void
     {
@@ -62,7 +62,7 @@ class Entry extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getCrdate()
     {
@@ -70,7 +70,7 @@ class Entry extends AbstractEntity
     }
 
     /**
-     * @param string $tstamp
+     * @param int $tstamp
      */
     public function setTstamp($tstamp): void
     {
@@ -78,7 +78,7 @@ class Entry extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getTstamp()
     {

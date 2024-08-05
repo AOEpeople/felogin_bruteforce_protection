@@ -96,31 +96,6 @@ parameters:
 			path: ../Classes/Domain/Service/RestrictionService.php
 
 		-
-			message: "#^Call to method get\\(\\) on an unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\.$#"
-			count: 2
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int\\<1, max\\> given\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
 			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$loginSessionStarted\\.$#"
 			count: 1
 			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
