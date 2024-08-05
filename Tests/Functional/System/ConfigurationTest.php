@@ -34,8 +34,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class ConfigurationTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = ['cms', 'lang', 'extensionmanager'];
-
     protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
     /**

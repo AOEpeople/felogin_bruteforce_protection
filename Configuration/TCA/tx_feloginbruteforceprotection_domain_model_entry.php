@@ -46,7 +46,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'failures' => [
@@ -56,7 +57,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'int,required',
+                'eval' => 'number',
+                'required' => true,
             ],
         ],
     ],
