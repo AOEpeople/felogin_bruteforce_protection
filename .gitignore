@@ -14,3 +14,9 @@
 /vendor
 /var
 code-quality/tmp
+
+# Reports
+/Tests/Functional/.phpunit.cache
+/Tests/Unit/.phpunit.cache
+/Tests/reports
+
