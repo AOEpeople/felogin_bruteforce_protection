@@ -33,7 +33,6 @@ return RectorConfig::configure()
         SetList::EARLY_RETURN,
         SetList::PRIVATIZATION,
         SetList::TYPE_DECLARATION,
-        SetList::PHP_80,
         SetList::PHP_81,
         SetList::PHP_82,
         SetList::PHP_83,
