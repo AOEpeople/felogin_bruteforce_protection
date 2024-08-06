@@ -54,20 +54,11 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
      */
     private $configuration;
 
-    /**
-     * @var RestrictionIdentifierFabric
-     */
-    private $restrictionIdentifierFabric;
+    private RestrictionIdentifierFabric $restrictionIdentifierFabric;
 
-    /**
-     * @var RestrictionIdentifierFrontendName
-     */
-    private $restrictionIdentifier;
+    private RestrictionIdentifierFrontendName $restrictionIdentifier;
 
-    /**
-     * @var RestrictionService
-     */
-    private $restriction;
+    private RestrictionService $restriction;
 
     /**
      * (non-PHPdoc)

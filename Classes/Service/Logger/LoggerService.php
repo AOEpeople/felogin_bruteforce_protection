@@ -36,10 +36,7 @@ class LoggerService
      */
     protected $configuration;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function injectLogger(LoggerInterface $logger): void
     {
@@ -88,10 +85,7 @@ class LoggerService
         return $this->configuration;
     }
 
-    /**
-     * @return LoggerInterface
-     */
-    private function getLogger()
+    private function getLogger(): LoggerInterface
     {
         if (!is_object($this->logger)) {
             $this->injectLogger(new DevLogger());

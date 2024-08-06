@@ -48,10 +48,7 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
      */
     private MockObject $frontendUserAuthentication;
 
-    /**
-     * @var RestrictionIdentifierFabric
-     */
-    private $restrictionIdentifierFabric;
+    private RestrictionIdentifierFabric $restrictionIdentifierFabric;
 
     /**
      * (non-PHPdoc)

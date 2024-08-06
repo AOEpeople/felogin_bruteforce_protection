@@ -47,10 +47,6 @@ class EntryRepository extends Repository
     }
 
     /**
-     * @param      $secondsTillReset
-     * @param      $maxFailures
-     * @param      $restrictionTime
-     *
      * @return array|QueryResultInterface
      */
     public function findEntriesToCleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null)

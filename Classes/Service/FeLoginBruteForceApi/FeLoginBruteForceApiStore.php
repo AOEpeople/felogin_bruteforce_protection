@@ -34,23 +34,13 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class FeLoginBruteForceApiStore implements SingletonInterface
 {
-    /**
-     * @var array
-     */
-    private $propertyStore = [];
+    private array $propertyStore = [];
 
-    /**
-     * @param $propertyName
-     * @param $propertyValue
-     */
     public function setProperty($propertyName, $propertyValue): void
     {
         $this->propertyStore[$propertyName] = $propertyValue;
     }
 
-    /**
-     * @param $propertyName
-     */
     public function getProperty($propertyName)
     {
         if (array_key_exists($propertyName, $this->propertyStore)) {
