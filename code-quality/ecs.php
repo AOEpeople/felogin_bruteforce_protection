@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
-use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer;
-use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
-use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayListItemNewlineFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
@@ -21,7 +17,7 @@ return ECSConfig::configure()
     ->withPaths([
         __DIR__ . '/../Classes',
         __DIR__ . '/../Tests',
-        __DIR__ . '/../code-quality',
+        __DIR__ . '/ecs.php',
     ])
     ->withSets([
         SetList::COMMON,
@@ -38,21 +34,10 @@ return ECSConfig::configure()
     )
     ->withSkip([
         // Default Skips
-        Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer::class => [
-            __DIR__ . '/ecs.php',
-        ],
+        NotOperatorWithSuccessorSpaceFixer::class => null,
         ArrayListItemNewlineFixer::class => null,
         ArrayOpenerAndCloserNewlineFixer::class => null,
-        ClassAttributesSeparationFixer::class => null,
-        OrderedImportsFixer::class => null,
-        NotOperatorWithSuccessorSpaceFixer::class => null,
         ExplicitStringVariableFixer::class => null,
-        ArrayIndentationFixer::class => null,
-        '\SlevomatCodingStandard\Sniffs\Whitespaces\DuplicateSpacesSniff.DuplicateSpaces' => null,
-        '\SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff.PartialUse' => null,
-
-        // @todo for next upgrade
-        NoSuperfluousPhpdocTagsFixer::class => null,
 
         // @todo strict php
         DeclareStrictTypesFixer::class => null,
