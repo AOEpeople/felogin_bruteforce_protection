@@ -26,6 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
@@ -43,7 +44,7 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
     public function getIdentifierValue()
     {
         if (!isset($this->identifierValue)) {
-            $loginFormData = $this->frontendUserAuthentication->getLoginFormData();
+            $loginFormData = $this->frontendUserAuthentication->getLoginFormData($this->getRequest());
             if (isset($loginFormData['uname']) && !empty($loginFormData['uname'])) {
                 $this->identifierValue = $loginFormData['uname'];
             } else {
@@ -65,5 +66,10 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
     public function setFrontendUserAuthentication(FrontendUserAuthentication $frontendUserAuthentication): void
     {
         $this->frontendUserAuthentication = $frontendUserAuthentication;
+    }
+
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

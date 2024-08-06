@@ -81,11 +81,6 @@ parameters:
 			path: ../Classes/Domain/Service/RestrictionIdentifierFabric.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:getLoginFormData\\(\\) invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php
-
-		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierAbstract\\:\\:\\$identifierValue \\(string\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php

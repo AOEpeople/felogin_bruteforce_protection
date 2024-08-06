@@ -78,6 +78,9 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIPv6'] = 0;
 
+        /** Dirty workaround, not proud of it */
+        $GLOBALS['TYPO3_REQUEST'] = new InternalRequest();
+
         $this->configuration = $this->getAccessibleMock(
             Configuration::class,
             [],
