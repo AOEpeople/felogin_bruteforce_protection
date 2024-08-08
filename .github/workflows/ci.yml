@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         typo3: [ ^12.4 ]
-        php: [ 8.1', '8.2', '8.3' ]
+        php: [ '8.1', '8.2', '8.3' ]
 
     steps:
       - name: Start database server
@@ -61,7 +61,7 @@ jobs:
           typo3DatabaseUsername: root
 
       - name: Tests for Scrutinizer with Coverage
-        if: matrix.typo3 == '^11.5' && matrix.php == '8.3'
+        if: matrix.typo3 == '^12.4' && matrix.php == '8.3'
         run: |
           composer test:coverage
         env:
@@ -72,6 +72,6 @@ jobs:
 
       - name: Upload coverage results to Scrutinizer
         uses: sudo-bot/action-scrutinizer@latest
-        if: matrix.typo3 == '^11.5' && matrix.php == '8.3'
+        if: matrix.typo3 == '^12.4' && matrix.php == '8.3'
         with:
           cli-args: "--format=php-clover .Build/reports/php_all_tests/coverage_clover.xml --revision=${{ github.event.pull_request.head.sha || github.sha }}"
