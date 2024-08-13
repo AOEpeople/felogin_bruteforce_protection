@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class AuthUser extends AuthenticationService
 {
@@ -66,31 +65,19 @@ class AuthUser extends AuthenticationService
      */
     protected $frontendUserAuthentication;
 
-    protected ?ServerRequestInterface $request = null;
-
     /**
      * Load extbase dependencies to use repositories and persistence.
      * returns TRUE if the service is available
      */
     public function init(): bool
     {
-        // Lazy-load the Request object within init
-        if ($this->request === null) {
-            $this->request = $GLOBALS['TYPO3_REQUEST'];
-        }
-
-
-        #$loginTypePost = GeneralUtility::_POST('logintype');
-        // laut docs:
-        $loginTypePost = $this->request->getParsedBody(['tx_scheduler']);
-
-        // google:
-        #$loginTypePost = $_POST['logintype'] ?? null;
-        #$loginTypePost = is_string($loginTypePost) ? GeneralUtility::removeXSS($loginTypePost) : null;
-
-
-        if ($loginTypePost != 'login') {
-            return parent::init();
+        $request = $this->getRequest();
+        if ($request::class === ServerRequestInterface::class) {
+            $loginTypePost = $this->getRequest()
+                ->getParsedBody()['logintype'];
+            if ($loginTypePost != 'login') {
+                return parent::init();
+            }
         }
 
         ExtensionManagementUtility::loadBaseTca(false);
@@ -103,13 +90,7 @@ class AuthUser extends AuthenticationService
         }
 
         if (empty($GLOBALS['TSFE']->tmpl)) {
-            // docs
-            $GLOBALS['TSFE']->tmpl = $this->request->getAttribute('frontend.typoscript')->getSetupArray();
-            // google
-            #$GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-            #$GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TypoScriptFrontendController::class, $GLOBALS['TYPO3_CONF_VARS'], $GLOBALS['TSFE']->id, $GLOBALS['TSFE']->type);
-            // old
-            #$GLOBALS['TSFE']->tmpl->start($GLOBALS['TSFE']->sys_page->getRootLine());
+            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         }
 
         return parent::init();
@@ -209,5 +190,10 @@ class AuthUser extends AuthenticationService
         }
 
         return $this->restrictionService;
+    }
+
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }
