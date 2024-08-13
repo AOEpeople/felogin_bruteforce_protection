@@ -81,42 +81,12 @@ parameters:
 			path: ../Classes/Domain/Service/RestrictionIdentifierFabric.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\:\\:getLoginFormData\\(\\) invoked with 0 parameters, 1 required\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php
-
-		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierAbstract\\:\\:\\$identifierValue \\(string\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php
 
 		-
 			message: "#^Call to an undefined method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findOneByIdentifier\\(\\)\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Call to method get\\(\\) on an unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\.$#"
-			count: 2
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager not found\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Parameter \\#1 \\$tstamp of method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Model\\\\Entry\\:\\:setTstamp\\(\\) expects string, int\\<1, max\\> given\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager \\(TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface\\) does not accept TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManager\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
-
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionService\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionService.php
 

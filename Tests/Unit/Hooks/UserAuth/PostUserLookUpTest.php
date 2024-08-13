@@ -27,6 +27,7 @@ namespace Aoe\FeloginBruteforceProtection\Tests\Unit\Hooks\UserAuth;
  ***************************************************************/
 
 use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -35,13 +36,14 @@ class PostUserLookUpTest extends UnitTestCase
     /**
      * @var PostUserLookUp
      */
-    private $postUserLookUp;
+    private MockObject $postUserLookUp;
 
     /**
      * (non-PHPdoc)
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->postUserLookUp = $this
             ->getMockBuilder(PostUserLookUp::class)
             ->disableOriginalConstructor()

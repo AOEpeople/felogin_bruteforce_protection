@@ -70,12 +70,6 @@ class Entry extends Repository
             ->getFirst();
     }
 
-    /**
-     * @param $secondsTillReset
-     * @param $maxFailures
-     * @param $restrictionTime
-     * @param $identifier
-     */
     public function cleanUp($secondsTillReset, $maxFailures, $restrictionTime, $identifier = null): void
     {
         $time = time();

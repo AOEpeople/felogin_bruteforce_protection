@@ -30,6 +30,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterface;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
@@ -70,10 +71,13 @@ class AuthUser extends AuthenticationService
      */
     public function init(): bool
     {
-        $loginTypePost = GeneralUtility::_POST('logintype');
-
-        if ($loginTypePost != 'login') {
-            return parent::init();
+        $request = $this->getRequest();
+        if ($request::class === ServerRequestInterface::class) {
+            $loginTypePost = $this->getRequest()
+                ->getParsedBody()['logintype'];
+            if ($loginTypePost != 'login') {
+                return parent::init();
+            }
         }
 
         ExtensionManagementUtility::loadBaseTca(false);
@@ -186,5 +190,10 @@ class AuthUser extends AuthenticationService
         }
 
         return $this->restrictionService;
+    }
+
+    private function getRequest(): ServerRequestInterface
+    {
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 }

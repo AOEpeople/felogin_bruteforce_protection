@@ -18,15 +18,15 @@
     ],
     "require": {
         "php": "^8.0",
-        "typo3/cms-core": "^11.5 || ^12.4",
-        "typo3/cms-extbase": "*",
-        "typo3/cms-sv": "*",
-        "typo3/cms-backend": "*",
-        "typo3/cms-reports": "*",
-        "typo3/cms-frontend": "*"
+        "typo3/cms-core": "^12.4",
+        "typo3/cms-extbase": "^12.4",
+        "typo3/cms-sv": "^12.4",
+        "typo3/cms-backend": "^12.4",
+        "typo3/cms-reports": "^12.4",
+        "typo3/cms-frontend": "^12.4"
     },
     "require-dev": {
-        "typo3/testing-framework": "^7.0",
+        "typo3/testing-framework": "^8.0",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
@@ -66,18 +66,22 @@
         ],
         "test:unit": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests-v10.xml Tests/Unit"
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web .Build/bin/phpunit -c Tests/Unit/UnitTests.xml Tests/Unit"
         ],
         "test:functional": [
             "[ -e .Build/bin/phpunit ] || composer update",
-            "TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests-v10.xml Tests/Functional/"
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/Functional/FunctionalTests.xml Tests/Functional/"
+        ],
+        "test:functional-filter": [
+            "[ -e .Build/bin/phpunit ] || composer update",
+            "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/Functional/FunctionalTests.xml Tests/Functional --filter testIsInstanceOfRestrictionIdentifierClientIpWithMissingFrontendUsername"
         ],
         "test:coverage": [
             "[ -e .Build/bin/phpunit ] || composer update",
             "XDEBUG_MODE=coverage TYPO3_PATH_WEB=$PWD/.Build/Web typo3DatabaseName=feloginbruteforce typo3DatabaseHost=127.0.0.1 typo3DatabaseUsername=root typo3DatabasePassword=root .Build/bin/phpunit -c Tests/AllTests.xml Tests"
         ],
         "code-style": [
-            "[ -e ./.Build/bin/rector ] || composer install",
+            "[ -e ./.Build/bin/rector ] || composer update",
             "./.Build/bin/ecs check --config code-quality/ecs.php",
             "./.Build/bin/rector process --dry-run --config code-quality/rector.php"
         ],
@@ -88,11 +92,12 @@
             "./.Build/bin/phpstan analyse -c code-quality/phpstan.neon --memory-limit=1G --generate-baseline"
         ],
         "code-compatibility": [
-            "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer install",
+            "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer update",
             "[ -d ./reports/php_checkstyle ] || mkdir -p reports/php_checkstyle/",
             "./code-quality/configure-checkstyle.sh",
-            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/* -p . --runtime-set testVersion 8.0",
-            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/* -p . --runtime-set testVersion 8.3"
+            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*/Tests/reports/* -p . --runtime-set testVersion 8.1",
+            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*/Tests/reports/* -p . --runtime-set testVersion 8.2",
+            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*/Tests/reports/* -p . --runtime-set testVersion 8.3"
         ],
         "code-check-pipeline": [
             "@composer code-style",

@@ -33,8 +33,6 @@ use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 class RestrictionService
@@ -51,8 +49,6 @@ class RestrictionService
 
     protected PersistenceManager $persistenceManager;
 
-    protected ObjectManagerInterface $objectManager;
-
     protected Entry $entry;
 
     protected bool $clientRestricted;
@@ -63,12 +59,12 @@ class RestrictionService
 
     public function __construct(RestrictionIdentifierInterface $restrictionIdentifier)
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->restrictionIdentifier = $restrictionIdentifier;
 
         $this->configuration = GeneralUtility::makeInstance(Configuration::class);
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->entryRepository = GeneralUtility::makeInstance(EntryRepository::class);
+        $this->feLoginBruteForceApi = GeneralUtility::makeInstance(FeLoginBruteForceApi::class);
     }
 
     public static function setPreventFailureCount(bool $preventFailureCount): void
@@ -161,12 +157,6 @@ class RestrictionService
 
     protected function getFeLoginBruteForceApi(): FeLoginBruteForceApi
     {
-        if (!isset($this->feLoginBruteForceApi)) {
-            $this->feLoginBruteForceApi = $this->objectManager->get(
-                FeLoginBruteForceApi::class
-            );
-        }
-
         return $this->feLoginBruteForceApi;
     }
 
@@ -202,7 +192,7 @@ class RestrictionService
 
     private function createEntry(): void
     {
-        $this->entry = $this->objectManager->get(Entry::class);
+        $this->entry = GeneralUtility::makeInstance(Entry::class);
         $this->entry->setFailures(0);
         $this->entry->setCrdate(time());
         $this->entry->setTstamp(time());
