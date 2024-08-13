@@ -32,10 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PostUserLookUpTest extends UnitTestCase
 {
-    /**
-     * @var PostUserLookUp
-     */
-    private $postUserLookUp;
+    private PostUserLookUp $postUserLookUp;
 
     /**
      * (non-PHPdoc)

@@ -29,18 +29,18 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/../Classes',
         __DIR__ . '/../Tests',
-        __DIR__ . '/../code-quality',
+        __DIR__ . '/rector.php',
     ])
     ->withPhpSets(
-        true,
-        false
+        true
     )
     ->withSets([
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
-        SetList::PHP_80,
+        SetList::PRIVATIZATION,
+        SetList::TYPE_DECLARATION,
         SetList::PHP_81,
         SetList::PHP_82,
         SetList::PHP_83,

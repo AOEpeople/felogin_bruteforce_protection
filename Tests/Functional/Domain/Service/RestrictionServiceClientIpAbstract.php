@@ -34,6 +34,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Aoe\FeloginBruteforceProtection\Tests\Fixtures\Classes\EntryRepositoryMock;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -52,15 +53,9 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    protected MockObject $configuration;
 
-    /**
-     * @var FrontendUserAuthentication
-     */
-    protected $frontendUserAuthentication;
+    protected MockObject $frontendUserAuthentication;
 
     /**
      * @var RestrictionIdentifierFabric

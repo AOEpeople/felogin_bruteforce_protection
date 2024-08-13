@@ -30,6 +30,7 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierClientIp
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFrontendName;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -39,15 +40,9 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private MockObject $configuration;
 
-    /**
-     * @var FrontendUserAuthentication
-     */
-    private $frontendUserAuthentication;
+    private MockObject $frontendUserAuthentication;
 
     /**
      * @var RestrictionIdentifierFabric

@@ -91,8 +91,8 @@
             "[ -e ./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs ] || composer install",
             "[ -d ./reports/php_checkstyle ] || mkdir -p reports/php_checkstyle/",
             "./code-quality/configure-checkstyle.sh",
-            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/* -p . --runtime-set testVersion 8.0",
-            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/* -p . --runtime-set testVersion 8.3"
+            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*/Tests/reports/* -p . --runtime-set testVersion 8.0",
+            "./.Build/vendor/symplify/easy-coding-standard/vendor/squizlabs/php_codesniffer/bin/phpcs -d memory_limit=1G --standard=PHPCompatibility --colors --ignore=*/.Build/*,*/Tests/reports/* -p . --runtime-set testVersion 8.3"
         ],
         "code-check-pipeline": [
             "@composer code-style",
