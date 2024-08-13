@@ -2,7 +2,6 @@
 
 use Aoe\FeloginBruteforceProtection\Hooks\UserAuth\PostUserLookUp;
 use Aoe\FeloginBruteforceProtection\Service\AuthUser;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') or die();
