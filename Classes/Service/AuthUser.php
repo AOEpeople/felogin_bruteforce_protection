@@ -31,14 +31,9 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierInterfac
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use Psr\Http\Message\ServerRequestInterface;
-use stdClass;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\AuthenticationService;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 class AuthUser extends AuthenticationService
@@ -49,13 +44,6 @@ class AuthUser extends AuthenticationService
     protected $configuration;
 
     /**
-     * Object manager
-     *
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
      * @var RestrictionService
      */
     protected $restrictionService;
@@ -64,37 +52,6 @@ class AuthUser extends AuthenticationService
      * @var FrontendUserAuthentication
      */
     protected $frontendUserAuthentication;
-
-    /**
-     * Load extbase dependencies to use repositories and persistence.
-     * returns TRUE if the service is available
-     */
-    public function init(): bool
-    {
-        $request = $this->getRequest();
-        if ($request::class === ServerRequestInterface::class) {
-            $loginTypePost = $this->getRequest()
-                ->getParsedBody()['logintype'];
-            if ($loginTypePost != 'login') {
-                return parent::init();
-            }
-        }
-
-        ExtensionManagementUtility::loadBaseTca(false);
-        if (!isset($GLOBALS['TSFE'])) {
-            $GLOBALS['TSFE'] = new stdClass();
-        }
-
-        if (empty($GLOBALS['TSFE']->sys_page)) {
-            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        }
-
-        if (empty($GLOBALS['TSFE']->tmpl)) {
-            $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        }
-
-        return parent::init();
-    }
 
     /**
      * Initialize authentication service
