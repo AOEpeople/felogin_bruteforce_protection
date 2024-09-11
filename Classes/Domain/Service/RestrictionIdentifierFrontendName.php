@@ -47,6 +47,13 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
             $loginFormData = $this->frontendUserAuthentication->getLoginFormData($this->getRequest());
             if (isset($loginFormData['uname']) && !empty($loginFormData['uname'])) {
                 $this->identifierValue = $loginFormData['uname'];
+            } elseif(array_key_exists('feuser_login_username', $_POST)) {
+                /**
+                 * If we build our own FE-login-form, then it can happen, that TYPO3 doesn't recognize the username,
+                 * so we must support the "workaround", that we can (during the FE-login-process) manually put the
+                 * username in the $_POST-variable 'feuser_login_username'.
+                 */
+                $this->identifierValue = $_POST['feuser_login_username'];
             } else {
                 $this->identifierValue = '';
             }
