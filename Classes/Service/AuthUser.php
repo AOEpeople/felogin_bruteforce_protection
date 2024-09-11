@@ -148,9 +148,4 @@ class AuthUser extends AuthenticationService
 
         return $this->restrictionService;
     }
-
-    private function getRequest(): ServerRequestInterface
-    {
-        return $GLOBALS['TYPO3_REQUEST'];
-    }
 }
