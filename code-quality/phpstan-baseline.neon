@@ -66,11 +66,6 @@ parameters:
 			path: ../Classes/Domain/Repository/EntryRepository.php
 
 		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
-			count: 2
-			path: ../Classes/Domain/Repository/EntryRepository.php
-
-		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierAbstract\\:\\:\\$identifierValue \\(string\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionIdentifierClientIp.php
@@ -101,22 +96,12 @@ parameters:
 			path: ../Classes/Hooks/UserAuth/PostUserLookUp.php
 
 		-
-			message: "#^Anonymous variables in a \"\\$GLOBALS\\['TSFE'\\]\\-\\>\\.\\.\\.\" property fetch can lead to false dead property\\. Make sure the variable type is known$#"
-			count: 4
-			path: ../Classes/Service/AuthUser.php
-
-		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$configuration \\(Aoe\\\\FeloginBruteforceProtection\\\\System\\\\Configuration\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../Classes/Service/AuthUser.php
 
 		-
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$frontendUserAuthentication \\(TYPO3\\\\CMS\\\\Frontend\\\\Authentication\\\\FrontendUserAuthentication\\) does not accept TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\.$#"
-			count: 1
-			path: ../Classes/Service/AuthUser.php
-
-		-
-			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Service\\\\AuthUser\\:\\:\\$objectManager has unknown class TYPO3\\\\CMS\\\\Extbase\\\\Object\\\\ObjectManagerInterface as its type\\.$#"
 			count: 1
 			path: ../Classes/Service/AuthUser.php
 

@@ -76,8 +76,8 @@ class EntryRepository extends Repository
 
         $query->matching(
             $query->logicalOr(
-                $query->logicalAnd($constraintsRestrictedEntries),
-                $query->logicalAnd($constraintsResettableEntries)
+                $query->logicalAnd(...$constraintsRestrictedEntries),
+                $query->logicalAnd(...$constraintsResettableEntries)
             )
         );
 
