@@ -1,9 +1,5 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^On passing a constant, the method should have an enum type\\. See https\\://phpstan\\.org/writing\\-php\\-code/phpdoc\\-types\\#literals\\-and\\-constants$#"
-			count: 3
-			path: ../Classes/Command/CleanUpCommand.php
 
 		-
 			message: "#^Class Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry extends generic class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository but does not specify its types\\: T$#"
@@ -79,11 +75,6 @@ parameters:
 			message: "#^Property Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Service\\\\RestrictionIdentifierAbstract\\:\\:\\$identifierValue \\(string\\) in isset\\(\\) is not nullable\\.$#"
 			count: 1
 			path: ../Classes/Domain/Service/RestrictionIdentifierFrontendName.php
-
-		-
-			message: "#^Call to an undefined method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository\\:\\:findOneByIdentifier\\(\\)\\.$#"
-			count: 1
-			path: ../Classes/Domain/Service/RestrictionService.php
 
 		-
 			message: "#^Access to protected property TYPO3\\\\CMS\\\\Core\\\\Authentication\\\\AbstractUserAuthentication\\:\\:\\$loginSessionStarted\\.$#"

@@ -33,7 +33,6 @@ use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionIdentifierFabric;
 use Aoe\FeloginBruteforceProtection\Domain\Service\RestrictionService;
 use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
-use Aoe\FeloginBruteforceProtection\Tests\Fixtures\Classes\EntryRepositoryMock;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -139,13 +138,13 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
             ->willReturn(time() - 200);
 
         $entryRepository = $this->getAccessibleMock(
-            EntryRepositoryMock::class,
-            ['findOneByIdentifier', 'remove'],
+            EntryRepository::class,
+            ['findOneBy', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneByIdentifier')
+        $entryRepository->method('findOneBy')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -178,13 +177,13 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
             ->willReturn(time() - 400);
 
         $entryRepository = $this->getAccessibleMock(
-            EntryRepositoryMock::class,
-            ['findOneByIdentifier', 'remove'],
+            EntryRepository::class,
+            ['findOneBy', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneByIdentifier')
+        $entryRepository->method('findOneBy')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -216,13 +215,13 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
             ->willReturn(time() - 4000);
 
         $entryRepository = $this->getAccessibleMock(
-            EntryRepositoryMock::class,
-            ['findOneByIdentifier', 'remove'],
+            EntryRepository::class,
+            ['findOneBy', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneByIdentifier')
+        $entryRepository->method('findOneBy')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -254,13 +253,13 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
             ->willReturn(time() - 400);
 
         $entryRepository = $this->getAccessibleMock(
-            EntryRepositoryMock::class,
-            ['findOneByIdentifier', 'remove'],
+            EntryRepository::class,
+            ['findOneBy', 'remove'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneByIdentifier')
+        $entryRepository->method('findOneBy')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
