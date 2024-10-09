@@ -26,6 +26,7 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -77,6 +78,6 @@ class RestrictionIdentifierFrontendName extends RestrictionIdentifierAbstract
 
     private function getRequest(): ServerRequestInterface
     {
-        return $GLOBALS['TYPO3_REQUEST'];
+        return $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
     }
 }

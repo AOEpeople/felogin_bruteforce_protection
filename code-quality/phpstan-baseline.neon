@@ -145,3 +145,7 @@ parameters:
 			message: "#^Binary operation \"\\-\" between 32 and string results in an error\\.$#"
 			count: 1
 			path: ../Classes/Utility/CIDRUtility.php
+		-
+			message: "#^On passing a constant, the method should have an enum type\\. See https\\://phpstan\\.org/writing\\-php\\-code/phpdoc\\-types\\#literals\\-and\\-constants$#"
+			count: 3
+			path: ../Classes/Command/CleanUpCommand.php
