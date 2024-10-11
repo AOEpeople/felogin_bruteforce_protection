@@ -33,7 +33,6 @@ use Aoe\FeloginBruteforceProtection\Service\Logger\Logger;
 use Aoe\FeloginBruteforceProtection\Service\Logger\LoggerInterface;
 use Aoe\FeloginBruteforceProtection\System\Configuration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 class RestrictionService
 {
@@ -46,8 +45,6 @@ class RestrictionService
     protected Configuration $configuration;
 
     protected EntryRepository $entryRepository;
-
-    protected PersistenceManager $persistenceManager;
 
     protected Entry $entry;
 
@@ -62,7 +59,6 @@ class RestrictionService
         $this->restrictionIdentifier = $restrictionIdentifier;
 
         $this->configuration = GeneralUtility::makeInstance(Configuration::class);
-        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->entryRepository = GeneralUtility::makeInstance(EntryRepository::class);
         $this->feLoginBruteForceApi = GeneralUtility::makeInstance(FeLoginBruteForceApi::class);
     }
@@ -84,8 +80,7 @@ class RestrictionService
     public function removeEntry(): void
     {
         if ($this->hasEntry()) {
-            $this->entryRepository->remove($this->entry);
-            $this->persistenceManager->persistAll();
+            $this->entryRepository->removeEntry($this->entry);
 
             $this->log('Bruteforce Counter removed', LoggerInterface::SEVERITY_INFO);
         }
@@ -114,7 +109,7 @@ class RestrictionService
         }
 
         $this->entry->increaseFailures();
-        $this->saveEntry();
+        $this->updateEntry();
 
         $this->restrictionLog();
     }
@@ -127,7 +122,7 @@ class RestrictionService
     public function getEntry(): ?Entry
     {
         if (!isset($this->entry)) {
-            $entry = $this->entryRepository->findOneBy(['identifier' => $this->getClientIdentifier()]);
+            $entry = $this->entryRepository->findOneEntryByIdentifier($this->getClientIdentifier());
             if ($entry instanceof Entry) {
                 $this->entry = $entry;
                 if ($this->isOutdated($entry)) {
@@ -198,19 +193,17 @@ class RestrictionService
         $this->entry->setTstamp(time());
         $this->entry->setIdentifier($this->getClientIdentifier());
 
-        $this->entryRepository->add($this->entry);
-        $this->persistenceManager->persistAll();
+        $this->entryRepository->createEntry($this->entry);
         $this->clientRestricted = false;
     }
 
-    private function saveEntry(): void
+    private function updateEntry(): void
     {
         if ($this->entry->getFailures() > 0) {
             $this->entry->setTstamp(time());
         }
 
-        $this->entryRepository->add($this->entry);
-        $this->persistenceManager->persistAll();
+        $this->entryRepository->updateEntry($this->entry);
         if ($this->hasMaximumNumberOfFailuresReached($this->entry)) {
             $this->clientRestricted = true;
         }

@@ -1,36 +1,5 @@
 parameters:
 	ignoreErrors:
-
-		-
-			message: "#^Class Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry extends generic class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository but does not specify its types\\: T$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$identifier with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$maxFailures with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$restrictionTime with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-
-		-
-			message: "#^Method Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\Entry\\:\\:cleanUp\\(\\) has parameter \\$secondsTillReset with no type specified\\.$#"
-			count: 1
-			path: ../Classes/Domain/Repository/Entry.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$constraints of method TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\QueryInterface\\<TYPO3\\\\CMS\\\\Extbase\\\\DomainObject\\\\DomainObjectInterface\\>\\:\\:logicalAnd\\(\\) expects TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ConstraintInterface, array\\<int, TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Generic\\\\Qom\\\\ComparisonInterface\\> given\\.$#"
-			count: 2
-			path: ../Classes/Domain/Repository/Entry.php
-
 		-
 			message: "#^Class Aoe\\\\FeloginBruteforceProtection\\\\Domain\\\\Repository\\\\EntryRepository extends generic class TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\Repository but does not specify its types\\: T$#"
 			count: 1

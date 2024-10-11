@@ -123,7 +123,7 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
 
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
@@ -134,7 +134,7 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             ->willReturn(0);
         $entry->method('getCrdate')
             ->willReturn(time() - 400);
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -163,12 +163,12 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             ->willReturn(time() - 400);
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -197,12 +197,12 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             ->willReturn(time() - 4000);
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -231,12 +231,12 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             ->willReturn(time() - 400);
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);

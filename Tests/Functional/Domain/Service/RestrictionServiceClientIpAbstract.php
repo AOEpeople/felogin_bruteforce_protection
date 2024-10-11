@@ -139,12 +139,12 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -178,12 +178,12 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -216,12 +216,12 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);
@@ -254,12 +254,12 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 
         $entryRepository = $this->getAccessibleMock(
             EntryRepository::class,
-            ['findOneBy', 'remove'],
+            ['findOneEntryByIdentifier', 'removeEntry'],
             [],
             '',
             false
         );
-        $entryRepository->method('findOneBy')
+        $entryRepository->method('findOneEntryByIdentifier')
             ->willReturn($entry);
 
         GeneralUtility::setSingletonInstance(EntryRepository::class, $entryRepository);

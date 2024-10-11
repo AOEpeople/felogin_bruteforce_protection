@@ -26,24 +26,97 @@ namespace Aoe\FeloginBruteforceProtection\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Aoe\FeloginBruteforceProtection\Domain\Model\Entry;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class EntryRepository extends Repository
 {
-    public function initializeObject(): void
+    private const ENTRY_DB_TABLE = 'tx_feloginbruteforceprotection_domain_model_entry';
+
+    /**
+     * We don't use the extbase-logic to do the DB-query - because we must do the DB-query BEFORE the FE-user is initialised - and
+     * this would lead to the TYPO3-deprecation 'Using extbase in a context without TypoScript. Will stop working with TYPO3 v13.'
+     */
+    public function findOneEntryByIdentifier(string $identifier): ?Entry
     {
-        /** @var Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
-        // don't add the pid constraint
-        $defaultQuerySettings->setRespectStoragePage(false);
-        // don't add fields from enable columns constraint
-        $defaultQuerySettings->setIgnoreEnableFields(true);
-        // don't add sys_language_uid constraint
-        $defaultQuerySettings->setRespectSysLanguage(false);
-        $this->setDefaultQuerySettings($defaultQuerySettings);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::ENTRY_DB_TABLE);
+        $records = $queryBuilder->select('*')
+            ->from(self::ENTRY_DB_TABLE)
+            ->where(
+                $queryBuilder->expr()
+                    ->eq('identifier', $queryBuilder->createNamedParameter($identifier, \PDO::PARAM_STR)),
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        if (count($records) === 1) {
+            $entry = new Entry();
+            $entry->_setProperty('uid', $records[0]['uid']);
+            $entry->_setProperty('pid', $records[0]['pid']);
+            $entry->_setProperty('tstamp', $records[0]['tstamp']);
+            $entry->_setProperty('crdate', $records[0]['crdate']);
+            $entry->_setProperty('identifier', $records[0]['identifier']);
+            $entry->_setProperty('failures', $records[0]['failures']);
+            return $entry;
+        }
+
+        return null;
+    }
+
+    /**
+     * We don't use the extbase-logic to do the DB-query - because we must do the DB-query BEFORE the FE-user is initialised - and
+     * this would lead to the TYPO3-deprecation 'Using extbase in a context without TypoScript. Will stop working with TYPO3 v13.'
+     */
+    public function createEntry(Entry $entry): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::ENTRY_DB_TABLE);
+        $queryBuilder->insert(self::ENTRY_DB_TABLE)
+            ->values([
+                'pid' => 0,
+                'tstamp' => $entry->getTstamp(),
+                'crdate' => $entry->getCrdate(),
+                'identifier' => $entry->getIdentifier(),
+                'failures' => $entry->getFailures(),
+            ])
+            ->executeStatement();
+    }
+
+    /**
+     * We don't use the extbase-logic to do the DB-query - because we must do the DB-query BEFORE the FE-user is initialised - and
+     * this would lead to the TYPO3-deprecation 'Using extbase in a context without TypoScript. Will stop working with TYPO3 v13.'
+     */
+    public function updateEntry(Entry $entry): void
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::ENTRY_DB_TABLE);
+        $queryBuilder->update(self::ENTRY_DB_TABLE)
+            ->set('failures', $entry->getFailures())
+            ->set('tstamp', $entry->getTstamp())
+            ->where(
+                $queryBuilder->expr()
+                    ->eq('identifier', $queryBuilder->createNamedParameter($entry->getIdentifier(), \PDO::PARAM_STR)),
+            )
+            ->executeStatement();
+    }
+
+    /**
+     * We don't use the extbase-logic to do the DB-query - because we must do the DB-query BEFORE the FE-user is initialised - and
+     * this would lead to the TYPO3-deprecation 'Using extbase in a context without TypoScript. Will stop working with TYPO3 v13.'
+     */
+    public function removeEntry(Entry $entry): void
+    {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::ENTRY_DB_TABLE);
+        $queryBuilder->delete(self::ENTRY_DB_TABLE)
+            ->where(
+                $queryBuilder->expr()
+                    ->eq('identifier', $queryBuilder->createNamedParameter($entry->getIdentifier(), \PDO::PARAM_STR)),
+            )
+            ->executeStatement();
     }
 
     /**
