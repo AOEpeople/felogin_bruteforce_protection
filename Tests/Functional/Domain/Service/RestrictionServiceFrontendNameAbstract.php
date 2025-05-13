@@ -54,8 +54,6 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
      */
     private $configuration;
 
-    private RestrictionIdentifierFabric $restrictionIdentifierFabric;
-
     private RestrictionIdentifierFrontendName $restrictionIdentifier;
 
     private RestrictionService $restriction;
@@ -95,8 +93,8 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
             ->getMock();
         $this->configuration->method('getIdentificationIdentifier')
             ->willReturn(2);
-        $this->restrictionIdentifierFabric = new RestrictionIdentifierFabric();
-        $this->restrictionIdentifier = $this->restrictionIdentifierFabric->getRestrictionIdentifier(
+        $restrictionIdentifierFabric = new RestrictionIdentifierFabric();
+        $this->restrictionIdentifier = $restrictionIdentifierFabric->getRestrictionIdentifier(
             $this->configuration,
             $this->frontendUserAuthentication
         );
