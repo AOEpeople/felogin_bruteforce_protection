@@ -44,10 +44,7 @@ class RestrictionServiceFrontendNameAbstract extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
-    /**
-     * @var FrontendUserAuthentication
-     */
-    protected MockObject $frontendUserAuthentication;
+    protected MockObject|FrontendUserAuthentication $frontendUserAuthentication;
 
     /**
      * @var Configuration

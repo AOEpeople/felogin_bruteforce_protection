@@ -43,7 +43,6 @@ class RestrictionIdentifierFabric
         $identificationIdentifier = $configuration->getIdentificationIdentifier();
 
         if ($identificationIdentifier === 2 && $frontendUserAuthentication !== null) {
-            new RestrictionIdentifierFrontendName();
             $restrictionIdentifier = new RestrictionIdentifierFrontendName();
             $restrictionIdentifier->setFrontendUserAuthentication($frontendUserAuthentication);
 

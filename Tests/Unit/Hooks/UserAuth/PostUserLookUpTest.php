@@ -33,10 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PostUserLookUpTest extends UnitTestCase
 {
-    /**
-     * @var PostUserLookUp
-     */
-    private MockObject $postUserLookUp;
+    private MockObject|PostUserLookUp $postUserLookUp;
 
     /**
      * (non-PHPdoc)
@@ -58,7 +55,9 @@ class PostUserLookUpTest extends UnitTestCase
         $feUserAuth = $this->getMockBuilder(FrontendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $feUserAuth->loginType = 'BE';
+
         $params = [];
         $params['pObj'] = $feUserAuth;
         $this->postUserLookUp->handlePostUserLookUp($params);

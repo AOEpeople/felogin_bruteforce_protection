@@ -4,10 +4,13 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 6
+    level: 8
     paths:
-        - "../Classes/"
-    tmpDir: tmp
+        - "../Classes"
+        - "../Tests"
+        - "../Configuration"
+        - "../Resources"
+        - "../code-quality"
 
     ignoreErrors:
             - identifier: missingType.iterableValue

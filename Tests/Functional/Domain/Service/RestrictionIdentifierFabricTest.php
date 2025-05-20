@@ -38,15 +38,9 @@ class RestrictionIdentifierFabricTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
-    /**
-     * @var Configuration
-     */
-    private MockObject $configuration;
+    private MockObject&Configuration $configuration;
 
-    /**
-     * @var FrontendUserAuthentication
-     */
-    private MockObject $frontendUserAuthentication;
+    private MockObject&FrontendUserAuthentication $frontendUserAuthentication;
 
     private RestrictionIdentifierFabric $restrictionIdentifierFabric;
 

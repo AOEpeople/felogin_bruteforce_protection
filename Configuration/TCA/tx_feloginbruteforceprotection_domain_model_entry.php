@@ -15,10 +15,14 @@ return [
         'iconfile' => 'EXT:felogin_bruteforce_protection/Resources/Public/Icons/TCA/Entry.gif',
     ],
     'types' => [
-        '1' => ['showitem' => 'identifier, failures'],
+        '1' => [
+            'showitem' => 'identifier, failures',
+        ],
     ],
     'palettes' => [
-        '1' => ['showitem' => ''],
+        '1' => [
+            'showitem' => '',
+        ],
     ],
     'columns' => [
         'tstamp' => [

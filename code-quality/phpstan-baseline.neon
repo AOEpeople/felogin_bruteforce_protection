@@ -115,6 +115,32 @@ parameters:
 			count: 1
 			path: ../Classes/Utility/CIDRUtility.php
 		-
-			message: "#^On passing a constant, the method should have an enum type\\. See https\\://phpstan\\.org/writing\\-php\\-code/phpdoc\\-types\\#literals\\-and\\-constants$#"
-			count: 3
-			path: ../Classes/Command/CleanUpCommand.php
+			message: '#^Class PhpCsFixer\\Fixer\\(.*) not found\.$#'
+			identifier: class.notFound
+			path: ../code-quality/ecs.php
+		-
+			message: '#^Call to an undefined method Aoe\\FeloginBruteforceProtection\\System\\Configuration\:\:method\(\)\.$#'
+			identifier: method.notFound
+			count: 12
+			path: ../Tests/Functional/Domain/Service/RestrictionServiceFrontendNameAbstract.php
+		-
+			message: '#^Call to an undefined method Aoe\\FeloginBruteforceProtection\\Hooks\\UserAuth\\PostUserLookUp\|PHPUnit\\Framework\\MockObject\\MockObject\:\:handlePostUserLookUp\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../Tests/Unit/Hooks/UserAuth/PostUserLookUpTest.php
+		-
+			message: '#^Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject\|TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthentication\:\:method\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../Tests/Functional/Domain/Service/RestrictionServiceFrontendNameWithUserTest.php
+		-
+			message: '#^Property Aoe\\FeloginBruteforceProtection\\Tests\\Functional\\Domain\\Service\\RestrictionServiceClientIpAbstract\:\:\$restrictionIdentifier \(Aoe\\FeloginBruteforceProtection\\Domain\\Service\\RestrictionIdentifierClientIp\) does not accept Aoe\\FeloginBruteforceProtection\\Domain\\Service\\RestrictionIdentifierClientIp\|Aoe\\FeloginBruteforceProtection\\Domain\\Service\\RestrictionIdentifierFrontendName\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../Tests/Functional/Domain/Service/RestrictionServiceClientIpAbstract.php
+
+		-
+			message: '#^Property Aoe\\FeloginBruteforceProtection\\Tests\\Functional\\Domain\\Service\\RestrictionServiceFrontendNameAbstract\:\:\$restrictionIdentifier \(Aoe\\FeloginBruteforceProtection\\Domain\\Service\\RestrictionIdentifierFrontendName\) does not accept Aoe\\FeloginBruteforceProtection\\Domain\\Service\\RestrictionIdentifierClientIp\|Aoe\\FeloginBruteforceProtection\\Domain\\Service\\RestrictionIdentifierFrontendName\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../Tests/Functional/Domain/Service/RestrictionServiceFrontendNameAbstract.php

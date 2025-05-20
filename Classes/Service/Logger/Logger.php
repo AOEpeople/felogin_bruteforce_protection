@@ -88,7 +88,7 @@ class Logger
 
     private function getLoggerImplementation(): LoggerInterface
     {
-        if (!is_object($this->loggerImplementation)) {
+        if (isset($this->loggerImplementation)) {
             /** @var LoggerInterface $loggerImplementation */
             $loggerImplementation = GeneralUtility::makeInstance(DevLogger::class);
             $this->injectLoggerImplementation($loggerImplementation);

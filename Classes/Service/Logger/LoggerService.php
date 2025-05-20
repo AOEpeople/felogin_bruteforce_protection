@@ -87,7 +87,7 @@ class LoggerService
 
     private function getLogger(): LoggerInterface
     {
-        if (!is_object($this->logger)) {
+        if (!isset($this->logger)) {
             $this->injectLogger(new DevLogger());
         }
 

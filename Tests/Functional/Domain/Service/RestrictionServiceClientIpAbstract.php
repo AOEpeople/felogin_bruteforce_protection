@@ -50,15 +50,9 @@ class RestrictionServiceClientIpAbstract extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/felogin_bruteforce_protection'];
 
-    /**
-     * @var Configuration
-     */
-    protected MockObject $configuration;
+    protected MockObject&Configuration $configuration;
 
-    /**
-     * @var FrontendUserAuthentication
-     */
-    protected MockObject $frontendUserAuthentication;
+    protected MockObject&FrontendUserAuthentication $frontendUserAuthentication;
 
     /**
      * @var RestrictionIdentifierFabric

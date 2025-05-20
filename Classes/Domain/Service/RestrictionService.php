@@ -71,7 +71,7 @@ class RestrictionService
     public function isClientRestricted(): bool
     {
         if (!isset($this->clientRestricted)) {
-            $this->clientRestricted = $this->hasEntry() && $this->isRestricted($this->getEntry());
+            $this->clientRestricted = $this->hasEntry() && $this->getEntry() !== null && $this->isRestricted($this->getEntry());
         }
 
         return $this->clientRestricted;
@@ -104,7 +104,7 @@ class RestrictionService
             $this->createEntry();
         }
 
-        if ($this->hasMaximumNumberOfFailuresReached($this->getEntry())) {
+        if ($this->getEntry() !== null && $this->hasMaximumNumberOfFailuresReached($this->getEntry())) {
             return;
         }
 
@@ -158,7 +158,7 @@ class RestrictionService
     private function log(string $message, int $severity): void
     {
         $failureCount = 0;
-        if ($this->hasEntry()) {
+        if ($this->hasEntry() && $this->getEntry() !== null) {
             $failureCount = $this->getEntry()
                 ->getFailures();
         }
